@@ -135,7 +135,7 @@ def loginWithCookies(browser, cookpath, url):
 
 # 今日头条：格言提醒
 def post_maimai_msg(browser, content):
-    print("postWeiToutiao begin")
+    print("post_maimai_msg begin")
     # load
     browser.get("https://maimai.cn/web/feed_explore")
     time.sleep(8)
@@ -223,10 +223,45 @@ def post_sleep_maimai():
         print(e)
         driver.quit()
         traceback.print_exc()
+        return False
+    return True
+
+
+def send_msg_to_maimai(msg):
+    sleeptime = random.randint(0, 5)
+    print(sleeptime)
+    time.sleep(sleeptime)
+    sys = platform.system()
+    if sys == "Windows":
+        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\maimai.pkl"
+        liunx_weibo_login = "https://maimai.cn/"
+        liunx_weibo = "https://maimai.cn/"
+    else:
+        weibo_driver_path = r"/root/bin/chromedriver"
+        weibo_coook_path = r"/root/bin/maimai.pkl"
+        # weibo_coook_txt = r"/root/bin/toutiao.txt"
+        liunx_weibo_login = "https://maimai.cn/"
+        liunx_weibo = "https://maimai.cn/"
+
+    try:
+        driver = init_browser(weibo_driver_path)
+        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
+        loginWithCookies(driver, weibo_coook_path, liunx_weibo)
+        post_maimai_msg(driver, msg)
+        # 脚本退出时，一定要主动调用 driver.quit !!!
+        # https://cloud.tencent.com/developer/article/1404558
+        driver.quit()
+
+        logging.info(msg)
+    except Exception as e:
+        print(e)
+        driver.quit()
+        traceback.print_exc()
 
 
 if __name__ == '__main__':
-    post_sleep_maimai()
+    send_msg_to_maimai(query_sleep_content())
     # init_log()
     # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
     # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"

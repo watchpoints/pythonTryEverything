@@ -186,7 +186,7 @@ def postWeiToutiao(browser, content):
 
 
 def post_sleep_toutiao():
-    sleeptime = random.randint(0, 20)
+    sleeptime = random.randint(0, 5)
     print(sleeptime)
     time.sleep(sleeptime)
     sys = platform.system()
@@ -219,9 +219,40 @@ def post_sleep_toutiao():
         driver.quit()
         traceback.print_exc()
 
+def send_msg_to_toutiao(msg):
+    sleeptime = random.randint(0, 5)
+    print(sleeptime)
+    time.sleep(sleeptime)
+    sys = platform.system()
+    if sys == "Windows":
+        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\toutiao.pkl"
+        liunx_weibo_login = "https://mp.toutiao.com"
+        liunx_weibo = "https://mp.toutiao.com"
+    else:
+        weibo_driver_path = r"/root/bin/chromedriver"
+        weibo_coook_path = r"/root/bin/toutiao.pkl"
+        # weibo_coook_txt = r"/root/bin/toutiao.txt"
+        liunx_weibo_login = "https://mp.toutiao.com"
+        liunx_weibo = "https://mp.toutiao.com"
+
+    try:
+        driver = init_browser(weibo_driver_path)
+        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
+        loginWithCookies(driver, weibo_coook_path, liunx_weibo)
+        postWeiToutiao(driver, msg)
+        # 脚本退出时，一定要主动调用 driver.quit !!!
+        # https://cloud.tencent.com/developer/article/1404558
+        driver.quit()
+    except Exception as e:
+        print(e)
+        driver.quit()
+        traceback.print_exc()
+        return False
+    return True
 
 if __name__ == '__main__':
-    post_sleep_toutiao()
+    send_msg_to_toutiao(query_sleep_content())
     # init_log()
     # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
     # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"

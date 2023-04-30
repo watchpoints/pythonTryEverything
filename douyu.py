@@ -169,6 +169,39 @@ def post_douyu_msg(browser, coook_path, content):
     logging.info(r"push douyu{content}")
 
 
+def send_msg_to_douyu(msg):
+    sleeptime = random.randint(0, 5)
+    print(sleeptime)
+    time.sleep(sleeptime)
+    sys = platform.system()
+    if sys == "Windows":
+        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\douyu.pkl"
+        liunx_weibo_login = "https://yuba.douyu.com"
+        liunx_weibo = "https://yuba.douyu.com"
+    else:
+        weibo_driver_path = r"/root/bin/chromedriver"
+        weibo_coook_path = r"/root/bin/douyu.pkl"
+        liunx_weibo_login = "https://yuba.douyu.com"
+        liunx_weibo = "https://yuba.douyu.com"
+
+    try:
+        driver = init_browser(weibo_driver_path)
+        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
+        # loginWithCookies(driver, weibo_coook_path, liunx_weibo)
+        post_douyu_msg(driver, weibo_coook_path, msg)
+        # 脚本退出时，一定要主动调用 driver.quit !!!
+        # https://cloud.tencent.com/developer/article/1404558
+        driver.quit()
+
+        logging.info(msg)
+    except Exception as e:
+        print(e)
+        driver.quit()
+        traceback.print_exc()
+        return False
+    return True
+
 def post_sleep_douyu():
     sleeptime = random.randint(0, 10)
     print(sleeptime)
@@ -201,8 +234,6 @@ def post_sleep_douyu():
         print(e)
         driver.quit()
         traceback.print_exc()
-
-
 if __name__ == '__main__':
     post_sleep_douyu()
     # init_log()

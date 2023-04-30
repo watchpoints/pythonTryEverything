@@ -4,8 +4,9 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 import sleep
-import http.server
+from threading import Thread
 from flask import Flask, request, jsonify
+from queue import Queue
 
 from flask import Flask, request, abort, render_template
 from wechatpy import parse_message, create_reply
@@ -14,6 +15,17 @@ from wechatpy.exceptions import (
     InvalidSignatureException,
     InvalidAppIdException,
 )
+q=Queue(100)  #创建一个先进先出的队列
+#定义消费者线程
+class Consumer(Thread):
+
+    def run(self):
+        global q
+        while True:
+            logging.info('消费者线程开始消费线程了')
+            msg=q.get()       #默认阻塞
+            logging.info('消费线程得到了数据：{}'.format(msg))
+            sleep.send_msg_to_blog(msg)
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -52,6 +64,8 @@ def wechat():
             content = " 加油，小王同学，我相信你一定能做到 \n"
             content = content + msg.content
             logging.info(content)
+            global q
+            q.put(content)
             reply = create_reply(content, msg)
         else:
             reply = create_reply("Sorry, can not handle this for now", msg)
@@ -117,7 +131,8 @@ if __name__ == "__main__":
     # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("10 15 * * *"), id="do_show_sleep_job")
     backsched.start()
     
-    
+    t2=Consumer()
+    t2.start()
     # server_address = ("", 8089)
     # httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
     # httpd.serve_forever()

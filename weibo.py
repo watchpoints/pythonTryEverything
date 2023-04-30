@@ -41,15 +41,12 @@ def init_browser(chromedriver_path: str):
     chrome_options.add_argument('disable-infobars')
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('window-size=1920x1480')
+    chrome_options.add_argument('blink-settings=imagesEnabled=false')
     sys = platform.system()
     print(sys)
     if sys == "Windows":
         print("sys=OS is Windows!!!")
-        # if len(chromedriver_path) == 0:
-        #     path = r"D:\local\Python\tool\chromedriver.exe"
-        # else:
-        #     path = chromedriver_path
+        chrome_options.add_argument('--headless')
     elif sys == "Linux":
         print("sys=OS is centos!!!")
         # if len(chromedriver_path) == 0:
@@ -60,9 +57,8 @@ def init_browser(chromedriver_path: str):
         # chrome_options.add_argument('--no-sandbox')
         # chrome_options.add_argument('--disable-gpu')
         # chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument('headless')
-        chrome_options.add_argument('no-sandbox')
-        chrome_options.add_argument('disable-dev-shm-usage')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
 
         # headless将在无头模式下启动Chrome浏览上下文
     # chrome_options.binary_location = chromedriver_path  Chrome has crashed. 不能这样写
@@ -119,31 +115,35 @@ def gen_url_Cookies(driver, cook_path: str, url: str):
 def loginWithCookies(browser, cookpath, url):
     browser.get(url)
     cookies = pickle.load(open(cookpath, "rb"))
+    print(cookies)
     for cookie in cookies:
         if 'expiry' in cookie:
             cookie['expiry'] = int(cookie['expiry'])
         browser.add_cookie(cookie)
-    time.sleep(1)
+    time.sleep(2)
     browser.refresh()
     print("loginWithCookies")
 
 
 # 格言提醒
 def post_weibo(browser, content):
+    print("post_weibo begin")
     # load
     browser.get("https://weibo.com/")
-    time.sleep(5)
+    browser.refresh()
+    browser.implicitly_wait(60)
     print(r"get https://weibo.com is ok")
     logging.debug(r"get https://weibo.com is ok")
+    
     # 微头条内容框
     # presence_of_element_located（locator）：判断某个元素是否存在DOM中
     # 如果判断条件成立，就执行下一步，否则继续等待，直到超过设定的最长等待时间，然后抛出TimeOutEcpection的异常信息。
-    weitoutiao_content = WebDriverWait(browser, 15).until(EC.presence_of_element_located(
+    weitoutiao_content = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, ".Form_input_2gtXx")))
     # CSS选择器 https://www.w3school.com.cn/cssref/css_selectors.asp
     # https://github.com/seleniumhq/selenium/issues/1480
     # div CLASS .intro id .
-    time.sleep(5)
+    time.sleep(2)
     weitoutiao_content.send_keys(content)
     print("write msg")
     logging.debug(r"write msg")
@@ -163,7 +163,7 @@ def post_weibo(browser, content):
 
 
 def post_sleep_weibo():
-    sleeptime = random.randint(0, 20)
+    sleeptime = random.randint(0, 10)
     print(sleeptime)
     time.sleep(sleeptime)
     sys = platform.system()
@@ -193,10 +193,43 @@ def post_sleep_weibo():
     except Exception as e:
         print(e)
         traceback.print_exc()
+        driver.quit()
 
+
+def send_msg_to_weibo(msg):
+    sleeptime = random.randint(0, 5)
+    print(1)
+    time.sleep(sleeptime)
+    sys = platform.system()
+    if sys == "Windows":
+        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\weibo.pkl"
+        liunx_weibo_login = "https://weibo.com/newlogin"
+        liunx_weibo = "https://weibo.com/"
+    else:
+        weibo_driver_path = r"/root/bin/chromedriver"
+        weibo_coook_path = r"/root/bin/cookies.pkl"
+        liunx_weibo_login = "https://weibo.com/newlogin"
+        liunx_weibo = "https://weibo.com/"
+
+    try:
+        driver = init_browser(weibo_driver_path)
+        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
+        loginWithCookies(driver, weibo_coook_path, liunx_weibo)
+        post_weibo(driver, msg)
+        # 脚本退出时，一定要主动调用 driver.quit !!!
+        # https://cloud.tencent.com/developer/article/1404558
+        driver.quit()
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        driver.quit()
+        return False
+    return True
 
 if __name__ == '__main__':
-    post_sleep_weibo()
+    send_msg_to_weibo(query_sleep_content())
     # init_log()
     # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
     # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
