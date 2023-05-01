@@ -15,17 +15,22 @@ from wechatpy.exceptions import (
     InvalidSignatureException,
     InvalidAppIdException,
 )
-q=Queue(100)  #创建一个先进先出的队列
-#定义消费者线程
+import signal
+
+q = Queue(100)  # 创建一个先进先出的队列
+
+
+# 定义消费者线程
 class Consumer(Thread):
 
     def run(self):
         global q
         while True:
             logging.info('消费者线程开始消费线程了')
-            msg=q.get()       #默认阻塞
+            msg = q.get()  # 默认阻塞
             logging.info('消费线程得到了数据：{}'.format(msg))
             sleep.send_msg_to_blog(msg)
+
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -38,7 +43,6 @@ AES_KEY = os.getenv("WECHAT_AES_KEY", "Quk4OepZpDVkhWnevUNnOXfoynwT1gg83cYdBpaZX
 APPID = os.getenv("WECHAT_APPID", "wx94e03776e64ee600")
 
 app = Flask(__name__)
-
 
 
 @app.route("/wechat", methods=["GET", "POST"])
@@ -86,10 +90,12 @@ def wechat():
             else:
                 reply = create_reply("Sorry, can not handle this for now", msg)
             return crypto.encrypt_message(reply.render(), nonce, timestamp)
-        
+
+
 @app.route('/')
 def hello_world():
     return 'Hello, World!'
+
 
 @app.route('/api/json', methods=['POST'])
 def example():
@@ -105,15 +111,37 @@ def example():
         # 返回 JSON 格式的响应
         response = {'message': 'Hello, {}, you are {} years old.'.format(name, age)}
         return jsonify(response)
-    
+
+
+class TimeoutException(Exception):
+    pass
+
+
+def timeout_handler(signum, frame):
+    raise TimeoutException("Function execution timed out.")
+
+
+def EeasyHabitSleep():
+    # 设置超时时间 10分钟
+    signal.alarm(600)
+    try:
+        sleep.show_sleep()
+    finally:
+        # 取消超时设置
+        signal.alarm(0)
+
+
 if __name__ == "__main__":
+    # 设置超时时间为20分钟
+    signal.signal(signal.SIGALRM, timeout_handler)
+
     # not  execute logging  fucntion before  here
     logging.basicConfig(level=logging.DEBUG,
                         format=LOG_FORMAT,
                         datefmt=DATE_FORMAT,
                         filename="./pythonTryEverything.log"
                         )
-  
+
     logging.info("""
         ┌──────────────────────────────────────────────────────────────────────┐
         │                                                                      │    
@@ -123,15 +151,15 @@ if __name__ == "__main__":
     """)
 
     job_defaults = {
-                'coalesce': False,
-                'max_instances': 1
-            }
+        'coalesce': False,
+        'max_instances': 1
+    }
     backsched = BackgroundScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("0 22 * * *"), id="do_show_sleep_job")
+    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("0 22 * * *"), id="do_show_sleep_job")
     # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("10 15 * * *"), id="do_show_sleep_job")
     backsched.start()
-    
-    t2=Consumer()
+
+    t2 = Consumer()
     t2.start()
     # server_address = ("", 8089)
     # httpd = http.server.HTTPServer(server_address, http.server.SimpleHTTPRequestHandler)
@@ -139,11 +167,8 @@ if __name__ == "__main__":
     # host: 绑定的ip(域名)
     # port: 监听的端口号
     # debug: 是否开启调试模式
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=True, use_reloader=False)
     # export FLASK_APP=xx.py  # 指定flask应用所在的文件路径
     # export FLASK_ENV=development  # 设置项目的环境, 默认是生产环境
     # flask run -h 0.0.0.0 -p 8000  # 启动测试服务器并接受请求
     # http://127.0.0.1:8000/
-
-
-        

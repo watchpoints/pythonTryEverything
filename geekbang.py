@@ -1,21 +1,19 @@
 #!/usr/bin/python
 # -*-coding:utf-8 -*-
+import logging
+import platform
+import random
 import time
-from selenium import webdriver
-from selenium.webdriver import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
+import traceback
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 # from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-import platform
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-import logging
-import traceback
-import time
-import random
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
+
 import myblog
+
 
 # 格言提醒
 def postJike(browser, post_url, content):
@@ -23,7 +21,7 @@ def postJike(browser, post_url, content):
     # load
     browser.get(post_url)
     time.sleep(3)
-    
+
     # 填写内容
     weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, ".PostContainer_webpcBox_2GefL")))
@@ -33,7 +31,7 @@ def postJike(browser, post_url, content):
     # https://blog.csdn.net/weixin_44065501/article/details/89314538
     weitoutiao_content.send_keys(Keys.ENTER)
     time.sleep(2)
-    
+
     # class ="byte-btn byte-btn-primary byte-btn-size-default byte-btn-shape-square publish-content" type="button" > < span > 发布 < / span > < / button >
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR,
                                                ".Button_webpcButton_2jdHV.Button_primary_3fC65.Button_small_1FrvR")
@@ -54,8 +52,8 @@ def send_msg_to_jike(msg):
     print(sleeptime)
     time.sleep(sleeptime)
     sys = platform.system()
-    log_url ="https://horde.geekbang.org/home"
-    post_url ="https://horde.geekbang.org/home"
+    log_url = "https://horde.geekbang.org/home"
+    post_url = "https://horde.geekbang.org/home"
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
         weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\jike.pkl"
@@ -76,6 +74,7 @@ def send_msg_to_jike(msg):
         traceback.print_exc()
         return False
     return True
+
 
 if __name__ == '__main__':
     send_msg_to_jike(myblog.query_sleep_content())

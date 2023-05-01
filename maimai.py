@@ -19,6 +19,7 @@ import traceback
 import datetime
 import time
 import random
+import myblog
 
 
 # 获取发表内容
@@ -191,40 +192,7 @@ def post_maimai_msg(browser, content):
 
 
 def post_sleep_maimai():
-    sleeptime = random.randint(0, 10)
-    print(sleeptime)
-    time.sleep(sleeptime)
-    sys = platform.system()
-    if sys == "Windows":
-        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\maimai.pkl"
-        liunx_weibo_login = "https://maimai.cn/"
-        liunx_weibo = "https://maimai.cn/"
-    else:
-        weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/maimai.pkl"
-        # weibo_coook_txt = r"/root/bin/toutiao.txt"
-        liunx_weibo_login = "https://maimai.cn/"
-        liunx_weibo = "https://maimai.cn/"
-
-    liunx_msg = query_sleep_content()
-
-    try:
-        driver = init_browser(weibo_driver_path)
-        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
-        loginWithCookies(driver, weibo_coook_path, liunx_weibo)
-        post_maimai_msg(driver, liunx_msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
-        driver.quit()
-
-        logging.info(liunx_msg)
-    except Exception as e:
-        print(e)
-        driver.quit()
-        traceback.print_exc()
-        return False
-    return True
+    send_msg_to_maimai(myblog.query_sleep_content())
 
 
 def send_msg_to_maimai(msg):
@@ -249,15 +217,12 @@ def send_msg_to_maimai(msg):
         gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
         loginWithCookies(driver, weibo_coook_path, liunx_weibo)
         post_maimai_msg(driver, msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
-        driver.quit()
-
         logging.info(msg)
     except Exception as e:
         print(e)
-        driver.quit()
         traceback.print_exc()
+    finally:
+        driver.quit()
 
 
 if __name__ == '__main__':

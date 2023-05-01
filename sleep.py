@@ -1,45 +1,66 @@
 import logging
+import signal
+
 import weibo
-import os
 import toutiao
 import maimai
 import douyu
-import time
+import myblog
+import mycsdn
+
 
 # easy sleep
 def show_sleep():
-    os.system("ps -ef | grep google-chrome  | grep -v grep | awk '{print $2}' | xargs kill")
-    logging.info("22点打卡，关机睡觉，手机一定要放客厅")
-    weibo.post_sleep_weibo()
-    weibo.post_sleep_weibo()
+    try:
+        myblog.KillChromebeta()
+        logging.info("22点打卡，关机睡觉，手机一定要放客厅")
+        # weibo.post_sleep_weibo()
+        # 微博定时提醒
+        myblog.KillChromebeta()
+        toutiao.post_sleep_toutiao()  # easy sleep
 
-    toutiao.post_sleep_toutiao()  # easy sleep
-    toutiao.post_sleep_toutiao()  # easy sleep
+        # 斗鱼时提醒
+        myblog.KillChromebeta()
+        douyu.post_sleep_douyu()
+        # 脉脉定时提醒
+        myblog.KillChromebeta()
+        maimai.post_sleep_maimai()
 
-    # 斗鱼
-    douyu.post_sleep_douyu()
-    douyu.post_sleep_douyu()
-    maimai.post_sleep_maimai()
-    maimai.post_sleep_maimai()
-    
-    
-def send_msg_to_blog(wechat_txt:str):
-    logging.debug("send_msg_to_blog:" +wechat_txt)
-    if weibo.send_msg_to_weibo(wechat_txt) == False:
-        print("post weibo failed")
-        logging.error("post weibo failed")
-        
-    print("post send_msg_to_toutiao")
-    if toutiao.send_msg_to_toutiao(wechat_txt) ==False:
-       logging.error("post toutiao failed")
-    print("post send_msg_to_douyu")
-    if douyu.send_msg_to_douyu(wechat_txt) == False:
-        logging.error("post douyu failed")
-    print("post send_msg_to_maimai")
-    if maimai.send_msg_to_maimai(wechat_txt) == False:
-        logging.error("post maimai failed")
-  
+        # 脉脉定时提醒
+        myblog.KillChromebeta()
+        mycsdn.send_msg_to_csdn(myblog.query_sleep_content())
+    finally:
+        print("end")
+
+
+def send_msg_to_blog(wechat_txt: str):
+    try:
+        logging.debug("send_msg_to_blog:" + wechat_txt)
+        myblog.KillChromebeta()
+        # if not weibo.send_msg_to_weibo(wechat_txt):
+        #     print("post weibo failed")
+        #     logging.error("post weibo failed")
+
+        print("post send_msg_to_toutiao")
+        myblog.KillChromebeta()
+        if not toutiao.send_msg_to_toutiao(wechat_txt):
+            logging.error("post toutiao failed")
+        print("post send_msg_to_douyu")
+        myblog.KillChromebeta()
+        if not douyu.send_msg_to_douyu(wechat_txt):
+            logging.error("post douyu failed")
+        print("post send_msg_to_maimai")
+        myblog.KillChromebeta()
+        if not maimai.send_msg_to_maimai(wechat_txt):
+            logging.error("post maimai failed")
+
+        myblog.KillChromebeta()
+        if not mycsdn.send_msg_to_csdn(wechat_txt):
+            logging.error("post mycsdn failed")
+    finally:
+        signal.alarm(0)  # 成功完成任务，取消超时信号
+        print("end")
+
+
 if __name__ == '__main__':
-    send_msg_to_blog("this is a test")  
-    
-    
+    send_msg_to_blog("this is a test")
