@@ -42,6 +42,7 @@ def init_browser(chromedriver_path: str):
     chrome_options.add_argument('disable-infobars')
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--window-size=1920x1480')
     # chrome_options.add_argument('blink-settings=imagesEnabled=false') # 无图模式
     sys = platform.system()
     print(sys)

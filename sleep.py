@@ -7,6 +7,8 @@ import maimai
 import douyu
 import myblog
 import mycsdn
+import dedao
+import zhishi
 
 
 # easy sleep
@@ -29,6 +31,14 @@ def show_sleep():
         # 脉脉定时提醒
         myblog.KillChromebeta()
         mycsdn.send_msg_to_csdn(myblog.query_sleep_content())
+
+        # 得到定时提醒
+        myblog.KillChromebeta()
+        dedao.send_msg_to_dedao(myblog.query_sleep_content())
+
+        # 知识星球定时提醒
+        myblog.KillChromebeta()
+        zhishi.send_msg_to_zhishi(myblog.query_sleep_content())
     finally:
         print("end")
 
@@ -57,10 +67,22 @@ def send_msg_to_blog(wechat_txt: str):
         myblog.KillChromebeta()
         if not mycsdn.send_msg_to_csdn(wechat_txt):
             logging.error("post mycsdn failed")
+
+        myblog.KillChromebeta()
+        if not dedao.send_msg_to_dedao(wechat_txt):
+            logging.error("post dedao failed")
+
+        myblog.KillChromebeta()
+        if not zhishi.send_msg_to_zhishi(wechat_txt):
+            logging.error("post send_msg_to_zhishi failed")
+
     finally:
         signal.alarm(0)  # 成功完成任务，取消超时信号
         print("end")
 
 
 if __name__ == '__main__':
-    send_msg_to_blog("this is a test")
+    # send_msg_to_blog("this is a test")
+    myblog.KillChromebeta()
+    if not zhishi.send_msg_to_zhishi("testtest"):
+        logging.error("post send_msg_to_zhishi failed")
