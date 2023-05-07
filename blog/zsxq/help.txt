@@ -1,5 +1,8 @@
-Scrapy 知识星球
+https://www.imooc.com/article/257687
+https://github.com/chanwoood/crawl-zsxq
+https://github.com/wbsabc/zsxq-spider
 
+Scrapy 知识星球
 
 Scrapy 2.8 documentation¶
 Scrapy is a fast high-level web crawling and web scraping framework, used to crawl websites and extract structured data from their pages. It can be used for a wide range of purposes, from data mining to monitoring and automated testing.
