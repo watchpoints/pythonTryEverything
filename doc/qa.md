@@ -1,3 +1,7 @@
+---------奇迹提问：自动提交代码-------------
+
+git_pull.bat
+
 ---------奇迹提问：在window下可以，在liunx上不可用-------------
 
 element not interactable IN selenium?
