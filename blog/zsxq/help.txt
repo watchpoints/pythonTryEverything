@@ -1,8 +1,25 @@
+# 知识星球
+
+https://www.runoob.com/w3cnote/scrapy-detail.html
+
+scrapy startproject mySpider
+https://github.com/xueshanlinghu/zsxq_to_pdf/blob/master/crawl.py
+
 https://www.imooc.com/article/257687
 https://github.com/chanwoood/crawl-zsxq
 https://github.com/wbsabc/zsxq-spider
-
+https://github.com/zzayne/go-crawler
 Scrapy 知识星球
+https://learnku.com/articles/48022
 
+https://github.com/wbsabc/zsxq-spider/blob/master/crawl.py
 Scrapy 2.8 documentation¶
-Scrapy is a fast high-level web crawling and web scraping framework, used to crawl websites and extract structured data from their pages. It can be used for a wide range of purposes, from data mining to monitoring and automated testing.
+Scrapy is a fast high-level web crawling and web scraping framework, used to crawl websites and extract structured data from their pages. It can be used for a wide range of purposes, from data mining to monitoring and automated testing.''https://zhuanlan.zhihu.com/p/33122909?from_voters_page=true
+
+
+## 学习 scrapy 如何使用
+scrapy startproject mySpider
+
+
+
+
