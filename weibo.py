@@ -169,7 +169,7 @@ def post_sleep_weibo():
     sys = platform.system()
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\weibo.pkl"
         liunx_weibo_login = "https://weibo.com/newlogin"
         liunx_weibo = "https://weibo.com/"
     else:
@@ -197,9 +197,6 @@ def post_sleep_weibo():
 
 
 def send_msg_to_weibo(msg):
-    sleeptime = random.randint(0, 5)
-    print(1)
-    time.sleep(sleeptime)
     sys = platform.system()
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
@@ -208,7 +205,7 @@ def send_msg_to_weibo(msg):
         liunx_weibo = "https://weibo.com/"
     else:
         weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/cookies.pkl"
+        weibo_coook_path = r"/root/bin/weibo.pkl"
         liunx_weibo_login = "https://weibo.com/newlogin"
         liunx_weibo = "https://weibo.com/"
 
