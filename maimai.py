@@ -20,6 +20,7 @@ import datetime
 import time
 import random
 import myblog
+import mail_msg
 
 
 # 获取发表内容
@@ -221,6 +222,7 @@ def send_msg_to_maimai(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
+        mail_msg.sendEmail("maimai")
     finally:
         driver.quit()
 

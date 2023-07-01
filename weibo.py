@@ -18,6 +18,7 @@ import traceback
 import datetime
 import time
 import random
+import mail_msg
 
 # 获取发表内容
 def query_sleep_content():
@@ -194,6 +195,7 @@ def post_sleep_weibo():
         print(e)
         traceback.print_exc()
         driver.quit()
+        mail_msg.sendEmail("weibo")
 
 
 def send_msg_to_weibo(msg):

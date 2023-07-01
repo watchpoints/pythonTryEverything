@@ -19,7 +19,7 @@ import traceback
 import datetime
 import time
 import random
-
+import mail_msg
 
 # 获取发表内容
 def query_sleep_content():
@@ -218,6 +218,7 @@ def post_sleep_toutiao():
         print(e)
         driver.quit()
         traceback.print_exc()
+        mail_msg.sendEmail("toutiao")
 
 def send_msg_to_toutiao(msg):
     sleeptime = random.randint(0, 5)
