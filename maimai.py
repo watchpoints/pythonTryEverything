@@ -229,22 +229,4 @@ def send_msg_to_maimai(msg):
 
 if __name__ == '__main__':
     send_msg_to_maimai(query_sleep_content())
-    # init_log()
-    # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-    # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
-    # weibo_login = "https://weibo.com/newlogin"
-    # weibo = "https://weibo.com/"
-    #
-    # msg = query_sleep_content()
-    #
-    # try:
-    #     webdriver = init_browser(driver_path)
-    #     gen_url_Cookies(webdriver, coook_path, weibo_login)
-    #     loginWithCookies(webdriver, coook_path, weibo)
-    #     post_weibo(webdriver, msg)
-    #     webdriver.close()
-    #
-    #     logging.info(msg)
-    # except Exception as e:
-    #     print(e)
-    #     traceback.print_exc()
+
