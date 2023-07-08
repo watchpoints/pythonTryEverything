@@ -21,6 +21,8 @@ import time
 import random
 import myblog
 import mail_msg
+from kernel import interface_db
+import pyperclip
 
 
 # 获取发表内容
@@ -137,55 +139,43 @@ def loginWithCookies(browser, cookpath, url):
 
 # 今日头条：格言提醒
 def post_maimai_msg(browser, content):
-    print("post_maimai_msg begin")
-    # load
     browser.get("https://maimai.cn/web/feed_explore")
-    time.sleep(8)
-
-    # selenium控制鼠标下滑
-    # 一共下滑十次，下滑一次停顿0.5s
-    # for i in range(3):
-    #     browser.execute_script('window.scrollTo(0,-document.body.scrollHeight)')
-    #     time.sleep(0.5)
-
-    # 填写内容
-    # <div >class ="inputPanel" den auto;" > < / div >
+    time.sleep(6)
 
     weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, ".inputPanel")))
     time.sleep(2)
-    # weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
-    #     (By.CSS_SELECTOR, ".ProseMirror")))
-    # CSS选择器 https://www.w3school.com.cn/cssref/css_selectors.asp
-    # https://github.com/seleniumhq/selenium/issues/1480
-    # div CLASS .intro id .
-    weitoutiao_content.send_keys(content)
-    time.sleep(2)
-    # https://blog.csdn.net/weixin_44065501/article/details/89314538
-    weitoutiao_content.send_keys(Keys.ENTER)
-    time.sleep(2)
+    print("weitoutiao_content.send_keys")
+    # weitoutiao_content.send_keys(content)
+    # weitoutiao_content.send_keys(Keys.ENTER)
+    # JS_ADD_TEXT_TO_INPUT = """
+    #   var elm = arguments[0], txt = arguments[1];
+    #   elm.value += txt;
+    #   elm.dispatchEvent(new Event('change'));
+    #   """
+    # browser.execute_script(JS_ADD_TEXT_TO_INPUT, weitoutiao_content, content)
+
     # selenium——鼠标操作ActionChains：点击、滑动、拖动
-    # # 第一步：创建一个鼠标操作的对象
-    # action = ActionChains(browser)
-    # # 第二步：进行点击动作（事实上不会进行操作，只是添加一个点击的动作）
-    # action.click(weitoutiao_content)
-    # # 第三步：执行动作
-    # action.perform()
-    # time.sleep(2)
-    # https://blog.csdn.net/MarkAdc/article/details/107204126
-    # https://www.cnblogs.com/jasmine0627/p/13094288.html
+    # create action chain object
+    # https://www.lambdatest.com/blog/handling-keyboard-actions-in-selenium-webdriver/
+    pyperclip.copy(content)
+    action = ActionChains(browser)
+    # click the item
+    action.click(on_element=weitoutiao_content)
+    # send keys
+    action.send_keys(Keys.CONTROL, pyperclip.paste())
+    # perform the operation
+    action.perform()
 
-    # 模拟发布按钮
-    # https://selenium-python.readthedocs.io/locating-elements.html
-
-    # <div class="sendBtn" style="opacity: 1;">发布</div>
+    time.sleep(2)
+    print("maimai  write content is ok")
+    time.sleep(1)
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, ".sendBtn")
     time.sleep(2)
     if weitoutiao_send_btn is None:
         print("submit is miss")
+
     # 模拟鼠标点击动作
-    # https://juejin.cn/post/7119756252850159647
-    # weitoutiao_send_btn.send_keys(Keys.SPACE)
     weitoutiao_send_btn.click()
     time.sleep(3)
     print("push toutiao")
@@ -222,11 +212,12 @@ def send_msg_to_maimai(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
-        mail_msg.sendEmail("maimai")
+        mail_msg.sendEmail("post DailyGetUpEvent to maimai failed")
     finally:
         driver.quit()
 
 
 if __name__ == '__main__':
-    send_msg_to_maimai(query_sleep_content())
-
+    msg = interface_db.DailyGetUpEvent()
+    if len(msg) > 0:
+        send_msg_to_maimai(msg)

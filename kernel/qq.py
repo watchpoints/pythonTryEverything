@@ -5,13 +5,12 @@ import sys
 from email.utils import encode_rfc2231
 
 # 第三方 SMTP 服务
-mail_host = "smtp.163.com"      # SMTP服务器
-mail_user = "13552136585@163.com"         # 用户名
-mail_pass = "CQOVOIJPBSCYVOBQ" # 授权密码，非登录密码
-# mail_pass = "eyjhsujpzogibhaj"         # 授权密码，非登录密码
+mail_host = "smtp.qq.com"      # SMTP服务器
+mail_user = "@qq.com"         # 用户名
+mail_pass = "eyjhsujpzogibhaj"         # 授权密码，非登录密码
  
-sender ="13552136585@163.com"   # 发件人邮箱(最好写全, 不然会失败)
-receivers = ['13552136585@163.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
+sender ="@qq.com"   # 发件人邮箱(最好写全, 不然会失败)
+receivers = ['@qq.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
 
 
 title = 'tell'  # 邮件主题

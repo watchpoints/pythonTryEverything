@@ -21,7 +21,7 @@ def sendEmail(content):
     message = MIMEText(urllib.parse.quote(content), 'plain', 'utf-8')  # 内容, 格式, 编码
     message['From'] = "{}".format(sender)
     message['To'] = ",".join(receivers)
-    message['Subject'] = urllib.parse.quote(title)
+    message['Subject'] = title
  
     try:
         # https://docs.python.org/3/library/smtplib.html
