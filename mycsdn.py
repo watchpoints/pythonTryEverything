@@ -14,6 +14,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 import myblog
 import mail_msg
+from kernel import interface_db
 
 
 # 格言提醒
@@ -29,14 +30,14 @@ def post_send_msg_to_csdn(browser, content):
     time.sleep(2)
     weitoutiao_content.send_keys(content)
     weitoutiao_content.send_keys(Keys.ENTER)
-    time.sleep(3)
+    time.sleep(2)
 
     # css class 填写内容 和不填写内容会发生变化。
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR,
                                                ".reply-btn.send-btn-b.clearTpaErr.active")  # 双击按钮
     time.sleep(2)
     weitoutiao_send_btn.click()
-    time.sleep(10)
+    time.sleep(4)
     print(r'push {content} succed')
 
 
@@ -76,4 +77,4 @@ def send_msg_to_csdn(msg):
 
 
 if __name__ == '__main__':
-    send_msg_to_csdn(myblog.query_sleep_content())
+    send_msg_to_csdn(interface_db.DailyGetUpEvent())

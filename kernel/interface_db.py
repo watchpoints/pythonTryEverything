@@ -17,6 +17,17 @@ def DailyGetUpEvent():
     return task
 
 
+def DailyGetUpEventForToutiao():
+    task = ''
+    try:
+        task = get_up_everyday()
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
+        mymonitor.sendEmail("DailyGetUpEvent failed")
+    return task
+
+
 def get_every_word():
     # 获取金山词霸每日一句
     url = "http://open.iciba.com/dsapi/"
@@ -166,6 +177,29 @@ def get_up_everyday():
 
     return myday
 
+
+def get_up_everydayForTouTiao():
+    sys = platform.system()
+    if sys == "Windows":
+        path = r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt"
+    else:
+        path = '/root/code/python/config/01_get_up.txt'
+    # https://www.emojiall.com/zh-hans
+    myday = '🍐日期:'
+    myday += datetime.datetime.now().strftime('%Y-%m-%d') + "\r\n"
+    myday += "🍐坐标：北京 "
+    myday += "\r\n"
+    weather = get_weather()
+    myday += weather + "\r\n"
+    myday += "🍐 早安提醒："
+    saying = get_every_word()
+    myday += saying + "\r"
+    myday += "✅ 日课:" + "\r"
+    task = read_get_up_from_txt(path)
+    myday += str(task)
+    print(myday)
+
+    return myday
 
 if __name__ == '__main__':
     get_up_everyday()

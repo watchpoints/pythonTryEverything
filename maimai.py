@@ -23,7 +23,7 @@ import myblog
 import mail_msg
 from kernel import interface_db
 import pyperclip
-
+from kernel import mymonitor
 
 # 获取发表内容
 def query_sleep_content():
@@ -55,20 +55,8 @@ def init_browser(chromedriver_path: str):
     print(sys)
     if sys == "Windows":
         print("sys=OS is Windows!!!")
-        # if len(chromedriver_path) == 0:
-        #     path = r"D:\local\Python\tool\chromedriver.exe"
-        # else:
-        #     path = chromedriver_path
     elif sys == "Linux":
         print("sys=OS is centos!!!")
-        # if len(chromedriver_path) == 0:
-        #     path = r"/root/local/python/chromedriver/chromedriver"
-        # else:
-        #     path = chromedriver_path
-        # chrome_options.add_argument("--headless")  # 参数是不用打开图形界面
-        # chrome_options.add_argument('--no-sandbox')
-        # chrome_options.add_argument('--disable-gpu')
-        # chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('headless')
         chrome_options.add_argument('no-sandbox')
         chrome_options.add_argument('disable-dev-shm-usage')
@@ -229,7 +217,7 @@ def send_msg_to_maimai(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
-        mail_msg.sendEmail("post DailyGetUpEvent to maimai failed")
+        mymonitor.sendEmail("post DailyGetUpEvent to maimai failed")
     finally:
         driver.quit()
 

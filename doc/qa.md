@@ -1,4 +1,33 @@
+
+### 提问11
+
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.ElementClickInterceptedException: 
+Message: element click intercepted: 
+Element <span class="submit iget-common-c9  iget-common-b10 activeSubmit pointer">...</span> is not clickable at point (1089, 462). Other element would receive the click: <div class="yidun_popup__mask" style="opacity: 0.3;"></div>
+
+selenium.common.exceptions.ElementClickInterceptedException: Message: element click intercepted: Element <span class="submit iget-common-c9  iget-common-b10 activeSubmit pointer">...</span> is not clickable at point (1089, 462). Other element would receive the click: <div class="yidun_popup__mask" style="opacity: 0.3;"></div>
+
+
+https://blog.csdn.net/qq_43572758/article/details/104077186
+
+解决方法：
+ a = browser.find_element(By.CSS_SELECTOR, '.submit.iget-common-c9.iget-common-b10.activeSubmit.pointer')
+browser.execute_script("arguments[0].click();", a)
+
+### 提问10：
+为什么python在urlencode空格的时候会被编码成“20”而不是“+”？
+
+
+### css 知识 wanc 
+
+<button type="button" data-disab="0" class="common-editorPostBtn-EDyd1">发布</button>
+
+<button type="button" data-disab="0" class="common-editorPostBtn-EDyd1">发布</button>
+
 ### 了解想打包
+
+
 三、安装依赖文件命令
 pip install -r requirements.txt
 pip freeze > requirements.txt
