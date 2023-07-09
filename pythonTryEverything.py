@@ -155,7 +155,7 @@ if __name__ == "__main__":
         'max_instances': 1
     }
     backsched = BackgroundScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("0 22 * * *"), id="do_show_sleep_job")
+    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("0 6 * * *"), id="do_show_sleep_job")
     # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("10 15 * * *"), id="do_show_sleep_job")
     backsched.start()
 

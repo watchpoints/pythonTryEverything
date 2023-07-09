@@ -139,6 +139,8 @@ def loginWithCookies(browser, cookpath, url):
 
 # 今日头条：格言提醒
 def post_maimai_msg(browser, content):
+    isEmoji = False
+    isPaste = False
     browser.get("https://maimai.cn/web/feed_explore")
     time.sleep(6)
 
@@ -146,8 +148,6 @@ def post_maimai_msg(browser, content):
         (By.CSS_SELECTOR, ".inputPanel")))
     time.sleep(2)
     print("weitoutiao_content.send_keys")
-    # weitoutiao_content.send_keys(content)
-    # weitoutiao_content.send_keys(Keys.ENTER)
     # JS_ADD_TEXT_TO_INPUT = """
     #   var elm = arguments[0], txt = arguments[1];
     #   elm.value += txt;
@@ -158,18 +158,34 @@ def post_maimai_msg(browser, content):
     # selenium——鼠标操作ActionChains：点击、滑动、拖动
     # create action chain object
     # https://www.lambdatest.com/blog/handling-keyboard-actions-in-selenium-webdriver/
-    pyperclip.copy(content)
-    action = ActionChains(browser)
-    # click the item
-    action.click(on_element=weitoutiao_content)
-    # send keys
-    action.send_keys(Keys.CONTROL, pyperclip.paste())
-    # perform the operation
-    action.perform()
+    # 不支持emoji表情
+    if isEmoji:
+        weitoutiao_content.send_keys(content)
+        weitoutiao_content.send_keys(Keys.ENTER)
+    elif isPaste:
+        print("this is windows ")
+        pyperclip.copy(content)
+        action = ActionChains(browser)
+        # click the item
+        action.click(on_element=weitoutiao_content)
+        # send keys
+        action.send_keys(Keys.CONTROL, pyperclip.paste())
+        # perform the operation
+        action.perform()
+        time.sleep(2)
+    else:
+        print("this is centos ")
+        JS_ADD_TEXT_TO_INPUT = """
+          var elm = arguments[0], txt = arguments[1];
+          elm.value = txt;
+        """
+        elem = browser.find_element(By.CSS_SELECTOR, ".inputPanel")
+        # browser.execute_script(JS_ADD_TEXT_TO_INPUT, elem, content)
+        # https://blog.csdn.net/weixin_44596902/article/details/116796508
+        ActionChains(browser).send_keys_to_element(elem, content).perform()
 
-    time.sleep(2)
     print("maimai  write content is ok")
-    time.sleep(1)
+    time.sleep(2)
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, ".sendBtn")
     time.sleep(2)
     if weitoutiao_send_btn is None:
@@ -183,7 +199,9 @@ def post_maimai_msg(browser, content):
 
 
 def post_sleep_maimai():
-    send_msg_to_maimai(myblog.query_sleep_content())
+    geup = interface_db.DailyGetUpEvent()
+    if len(geup) > 0:
+        send_msg_to_maimai(geup)
 
 
 def send_msg_to_maimai(msg):
@@ -199,7 +217,6 @@ def send_msg_to_maimai(msg):
     else:
         weibo_driver_path = r"/root/bin/chromedriver"
         weibo_coook_path = r"/root/bin/maimai.pkl"
-        # weibo_coook_txt = r"/root/bin/toutiao.txt"
         liunx_weibo_login = "https://maimai.cn/"
         liunx_weibo = "https://maimai.cn/"
 

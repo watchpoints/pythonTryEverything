@@ -1,5 +1,77 @@
+### 了解想打包
+三、安装依赖文件命令
+pip install -r requirements.txt
+pip freeze > requirements.txt
+
+what：
+Exception: You must install either cryptography or pycryptodome
+
+pip install pycryptodome
+
+https://pypi.org/project/pycryptodome/
+
+### 掌握Selenium ActionChains用法 DONE
+- https://www.cnblogs.com/yoyoketang/p/14124336.html
+- js
+- jquery
+How Can We Type In Selenium Without Using sendKeys?
+Using Javascript Executor
+
+### done
+
+what：
+ Pyperclip could not find a copy/paste mechanism for your system.
+ For more information, please visit https://pyperclip.readthedocs.io/en/latest/index.html#not-implemented-error
+ Connection unexpectedly closed: timed out
+
+how：
+from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+
+driver = webdriver.Chrome('D:\\chromedriver.exe')
+driver.get("http://www.example.com")
+elem = driver.find_element_by_name('email')
+ActionChains(driver).send_keys_to_element(elem, "abc@xyz.com").perform()
+
+
+why
+https://github.com/mandeep/Travis-Encrypt/issues/16
+
+centos:
+In order to work equally well on Windows, Mac, and Linux, Pyperclip uses various mechanisms to do this. Currently, this error should only appear on Linux (not Windows or Mac). You can fix this by installing one of the copy/paste mechanisms:
+sudo apt-get install xsel to install the xsel utility.
+sudo apt-get install xclip to install the xclip utility.
+pip install gtk to install the gtk Python module.
+pip install pyqt5 to install the PyQt4 Python modul
+pip3 install pygtk
+dnf install python3-gobject gtk3 
+xclip
+pip3 install pycairo
+pip3 install PyGObject
+
+python下有两个库可以实现这个功能：pyperclip 和 clipboard。
+两个库都是跨平台的剪贴板操作库，目前都可用（2022年4月10日）。
+只不过，clipboard库年久失修，只提供了两个函数：copy()、paste()
+
+pyperclip 这个方式在centos 平台不行，换个方式\
+yum install gtk3-devel
+https://stackoverflow.com/questions/34106832/error-when-install-gtk-3-0-5-on-centos
+上面方式也不行
+
+https://www.testim.io/blog/selenium-sendkeys/
+
+解决该问题了
+how
+
+
 
 ### ChromeDriver was unable to send the emoji signal through send_keys() method
+
+https://www.youtube.com/watch?v=FS4xa7z2fDI
+https://stackoverflow.com/questions/25583641/set-value-of-input-instead-of-sendkeys-selenium-webdriver-nodejs
+
+https://qavalidation.com/2021/01/execute-javascript-using-selenium-webdriver-in-python.html/
+
 
 https://www.emojiall.com/zh-hans/code/1F917
 

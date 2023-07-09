@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM事件处理示例</title>
+</head>
+<body>
+    <button id="myButton">点击我</button>
+
+    <script>
+        // 获取按钮元素
+        var button = document.getElementById("myButton");
+
+        // 添加点击事件处理程序
+        button.addEventListener("click", function() {
+            // 在控制台输出消息
+            console.log("按钮被点击了！");
+
+            // 修改按钮文本
+            button.innerHTML = "点击次数：" + (++clickCount);
+        });
+
+        // 初始化点击次数
+        var clickCount = 0;
+    </script>
+</body>
+</html>

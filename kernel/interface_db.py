@@ -1,8 +1,7 @@
 import datetime
 import requests
 import traceback
-import emoji
-
+import platform
 # 获取发表内容
 from kernel import mymonitor
 
@@ -144,20 +143,24 @@ def get_up_everyday():
     |风力：3级
     
     """
-    # saying =  read_get_up_from_txt(r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt")
-    myday = '✅ 日期:'
+    path = ''
+    sys = platform.system()
+    if sys == "Windows":
+        path = r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt"
+    else:
+        path = '/root/code/python/config/01_get_up.txt'
+    # https://www.emojiall.com/zh-hans
+    myday = '✅日期:'
     myday += datetime.datetime.now().strftime('%Y-%m-%d') + "\r\n"
-    myday += "✅ 坐标：北京 "
-    # myday += emoji.emojize(':round_pushpin:坐标：北京: ')
+    myday += "✅坐标：北京 "
     myday += "\r\n"
     weather = get_weather()
     myday += weather + "\r\n"
     myday += "✅ 早安提醒："
-
     saying = get_every_word()
     myday += saying + "\r"
     myday += "✅ 日课:" + "\r"
-    task = read_get_up_from_txt(r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt")
+    task = read_get_up_from_txt(path)
     myday += str(task)
     print(myday)
 
