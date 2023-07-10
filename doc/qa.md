@@ -1,4 +1,9 @@
 
+
+### 提问12
+https://github.com/littlecodersh/ItChat/issues/943
+现在永的是Windows下的hook机制
+
 ### 提问11
 
     raise exception_class(message, screen, stacktrace)

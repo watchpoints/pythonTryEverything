@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 import myblog
+from kernel import mymonitor
 
 
 # 格言提醒
@@ -77,6 +78,7 @@ def send_msg_to_zhishi(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
+        mymonitor.sendEmail("zhishxingqiu")
         return False
     finally:
         driver.quit()

@@ -245,6 +245,7 @@ def send_msg_to_toutiao(msg):
         print(e)
         driver.quit()
         traceback.print_exc()
+        mymonitor.sendEmail("csdn")
         return False
     return True
 

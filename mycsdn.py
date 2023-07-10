@@ -13,9 +13,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 import myblog
-import mail_msg
 from kernel import interface_db
-
+from kernel import mymonitor
 
 # 格言提醒
 def post_send_msg_to_csdn(browser, content):
@@ -69,7 +68,7 @@ def send_msg_to_csdn(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
-        mail_msg.sendEmail("csdn")
+        mymonitor.sendEmail("csdn")
         return False
     finally:
         driver.quit()

@@ -51,6 +51,14 @@ def show_sleep():
         print("end")
 
 
+# 起床打卡
+def show_sleepForTest():
+    msgGetUp = interface_db.DailyGetUpEvent()
+    # 知识星球定时提醒
+    myblog.KillChromebeta()
+    zhishi.send_msg_to_zhishi(msgGetUp)
+
+
 def send_msg_to_blog(wechat_txt: str):
     try:
         logging.debug("send_msg_to_blog:" + wechat_txt)

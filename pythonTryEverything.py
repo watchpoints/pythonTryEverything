@@ -122,10 +122,20 @@ def timeout_handler(signum, frame):
 
 
 def EeasyHabitSleep():
-    # 设置超时时间 10分钟
-    signal.alarm(600)
+    # 设置超时时间
+    signal.alarm(3600)
     try:
         sleep.show_sleep()
+    finally:
+        # 取消超时设置
+        signal.alarm(0)
+
+
+def StartForTest():
+    # 设置超时时间
+    signal.alarm(3600)
+    try:
+        sleep.show_sleepForTest()
     finally:
         # 取消超时设置
         signal.alarm(0)
@@ -154,9 +164,10 @@ if __name__ == "__main__":
         'coalesce': False,
         'max_instances': 1
     }
+    # StartForTest()
     backsched = BackgroundScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("0 6 * * *"), id="do_show_sleep_job")
-    # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("10 15 * * *"), id="do_show_sleep_job")
+    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("1 6 * * *"), id="do_show_sleep_job")
+    # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("0 6 * * *"), id="do_show_sleep_job")
     backsched.start()
 
     t2 = Consumer()
