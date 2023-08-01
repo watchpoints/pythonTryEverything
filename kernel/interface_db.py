@@ -173,7 +173,7 @@ def get_up_everyday():
     myday += "✅ 日课:" + "\r"
     task = read_get_up_from_txt(path)
     myday += str(task)
-    print(myday)
+    #print(myday)
 
     return myday
 
@@ -200,6 +200,7 @@ def get_up_everydayForTouTiao():
     print(myday)
 
     return myday
+
 
 if __name__ == '__main__':
     get_up_everyday()

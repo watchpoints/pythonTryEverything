@@ -1,0 +1,16 @@
+
+代理问题：
+
+set http_proxy=http://127.0.0.1:60710
+set https_proxy=http://127.0.0.1:60710
+
+from math import pi
+print(pi)
+
+https://note.nkmk.me/en/python-import-usage/
+
+Python：import、from...improt、from...import *三者的区别
+https://note.nkmk.me/en/python-import-usage/
+————————————————
+版权声明：本文为CSDN博主「宁静致远*」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weixin_40522801/article/details/106488070

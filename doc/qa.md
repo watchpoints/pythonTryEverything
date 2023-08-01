@@ -1,4 +1,19 @@
 
+### 提问13：Python实现将爱词霸每日一句定时推送至微信
+
+https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
+
+https://www.cnblogs.com/connect/p/python-wechat-iciba.html
+https://github.com/varlemon/wechat-iciba-everyday
+https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html
+
+{{content.DATA}}
+{{note.DATA}}
+{{translation.DATA}}
+
+sys.path.append("../kernel")
+from kernel import interface_db
+
 
 ### 提问12
 https://github.com/littlecodersh/ItChat/issues/943

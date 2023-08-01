@@ -22,7 +22,7 @@ def show_sleep():
 
         # 微博发表完成
         myblog.KillChromebeta()
-        weibo.send_msg_to_weibo(msgGetUp)
+        # weibo.send_msg_to_weibo(msgGetUp)
 
         # 今日头条发表完成
         myblog.KillChromebeta()
@@ -32,7 +32,7 @@ def show_sleep():
         myblog.KillChromebeta()
         douyu.send_msg_to_douyu(msgGetUp)
 
-        # 脉脉定时提醒 发表完成
+        # 脉脉提醒 发表完成
         myblog.KillChromebeta()
         maimai.post_sleep_maimai()
 
@@ -45,7 +45,7 @@ def show_sleep():
         dedao.send_msg_to_dedao(msgGetUp)
 
         # 知识星球定时提醒
-        myblog.KillChromebeta()
+        # myblog.KillChromebeta()
         zhishi.send_msg_to_zhishi(msgGetUp)
     finally:
         print("end")
@@ -53,10 +53,7 @@ def show_sleep():
 
 # 起床打卡
 def show_sleepForTest():
-    msgGetUp = interface_db.DailyGetUpEvent()
-    # 知识星球定时提醒
-    myblog.KillChromebeta()
-    zhishi.send_msg_to_zhishi(msgGetUp)
+    show_sleep()
 
 
 def send_msg_to_blog(wechat_txt: str):
@@ -69,9 +66,9 @@ def send_msg_to_blog(wechat_txt: str):
 
         print("post send_msg_to_toutiao")
         myblog.KillChromebeta()
-        if not toutiao.send_msg_to_toutiao(wechat_txt):
-            logging.error("post toutiao failed")
-        print("post send_msg_to_douyu")
+        # if not toutiao.send_msg_to_toutiao(wechat_txt):
+        #     logging.error("post toutiao failed")
+        # print("post send_msg_to_douyu")
         myblog.KillChromebeta()
         if not douyu.send_msg_to_douyu(wechat_txt):
             logging.error("post douyu failed")
@@ -100,5 +97,4 @@ def send_msg_to_blog(wechat_txt: str):
 if __name__ == '__main__':
     # send_msg_to_blog("this is a test")
     myblog.KillChromebeta()
-    if not zhishi.send_msg_to_zhishi("testtest"):
-        logging.error("post send_msg_to_zhishi failed")
+    show_sleepForTest()
