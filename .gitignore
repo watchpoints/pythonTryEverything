@@ -8,7 +8,7 @@ Makefile.in
 /ylwrap
 .deps/
 .dirstamp
-
+__pycache__
 # http://www.gnu.org/software/autoconf
 
 autom4te.cache
@@ -155,4 +155,5 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
+.pyc
+venv

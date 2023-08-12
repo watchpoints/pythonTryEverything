@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 import myblog
+from kernel import mymonitor
 
 
 # 格言提醒
@@ -29,9 +30,8 @@ def post_send_msg_to_zhishi(browser, coook_path, content, post_url):
     time.sleep(3)
 
     # 点击--弹出一筐
-    # https://blog.csdn.net/AI_Green/article/details/120911847
     client_post = browser.find_element(By.CSS_SELECTOR, ".post-topic-head")
-    print("client_post: ", client_post)
+    print("post-topic-head ...........................")
 
     # selenium  模拟鼠标操作
     actions = ActionChains(browser)
@@ -41,32 +41,29 @@ def post_send_msg_to_zhishi(browser, coook_path, content, post_url):
     # 双击鼠标左键
     actions.double_click(client_post)
     actions.perform()
-    # selenium中的三种切换：Windows窗口，iframe，alert弹窗
-    # https://blog.csdn.net/c_xiazai12345/article/details/120654809
-    # 切换到alert
-    # 原生CSS，实现点击按钮出现交互弹窗【新手扫盲】
-    # https://blog.csdn.net/xia_yanbing/article/details/104508019
-    # WebDriverWait(browser, 5).until(EC.alert_is_present())  # 等待弹出窗口出现
-    # alert = browser.switch_to.alert
-    # print(alert.text)
 
     time.sleep(2)
+    print("double_click ...........................")
     weitoutiao_content = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, ".ql-editor")))
     time.sleep(1)
     weitoutiao_content.send_keys(content)
     weitoutiao_content.send_keys(Keys.ENTER)
 
+    print("send_keys finish ...........................")
+
+    time.sleep(5)
     btn = browser.find_element(By.CSS_SELECTOR, ".submit-btn")
     time.sleep(1)
     btn.click()
     time.sleep(4)
+    print("click finish ...........................")
 
 
 def send_msg_to_zhishi(msg):
     sys = platform.system()
-    log_url = "https://wx.zsxq.com/dweb2/index/group/552812528214"
-    post_url = "https://wx.zsxq.com/dweb2/index/group/552812528214"
+    log_url = "https://wx.zsxq.com/dweb2/index/group/88885424152212"
+    post_url = "https://wx.zsxq.com/dweb2/index/group/88885424152212"
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
         weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\zhishi.pkl"
@@ -81,6 +78,7 @@ def send_msg_to_zhishi(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
+        mymonitor.sendEmail("zhishxingqiu")
         return False
     finally:
         driver.quit()

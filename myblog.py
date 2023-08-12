@@ -17,19 +17,12 @@ import logging
 import traceback
 import datetime
 import time
-import random
+from kernel import interface_db
 
 
 # 获取发表内容
 def query_sleep_content():
-    current_date = datetime.date.today()
-    sleep_money = "来自未来的你提醒"
-    sleep_money += "\r\n"
-    sleep_money += "22点放下手机去睡觉"
-    sleep_money += "\r\n"
-    sleep_money += str(current_date)
-
-    return sleep_money
+    return interface_db.DailyGetUpEvent()
 
 
 # 初始化浏览器 打开微博登录页面
@@ -78,19 +71,17 @@ def init_browser(chromedriver_path: str):
 #         return False
 
 def gen_url_Cookies(driver, cook_path: str, url: str):
-    print("gen_url_Cookies begin")
     is_gen_cook = False
     if not os.path.exists(cook_path):
         print("cook_path not exists，please login")
         is_gen_cook = True  # 过期
     if not is_gen_cook:
-        print(r"cool is is right")
         logging.debug(r"cool is is right")
         return  # 没有过期
 
     # 用法：https://selenium-python.readthedocs.io/getting-started.html
     driver.get(url)
-    time.sleep(60)  # 留时间进行扫码
+    time.sleep(30)  # 留时间进行扫码
     # 在Python中，Pickle模块就用来实现数据序列化和反序列化。
     print("login succe")
     cookies = driver.get_cookies()

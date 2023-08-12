@@ -16,21 +16,15 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import logging
 import traceback
-import datetime
 import time
 import random
+from kernel import interface_db
+from kernel import mymonitor
 
 
 # 获取发表内容
 def query_sleep_content():
-    current_date = datetime.date.today()
-    sleep_money = "来自未来的你提醒"
-    sleep_money += "\r\n"
-    sleep_money += "22点放下手机去睡觉"
-    sleep_money += "\r\n"
-    sleep_money += str(current_date)
-
-    return sleep_money
+    return interface_db.DailyGetUpEvent()
 
 
 def init_browser(chromedriver_path: str):
@@ -102,7 +96,7 @@ def gen_url_Cookies(driver, cook_path: str, url: str):
 
     # 用法：https://selenium-python.readthedocs.io/getting-started.html
     driver.get(url)
-    time.sleep(80)  # 留时间进行扫码
+    time.sleep(30)  # 留时间进行扫码
     # 在Python中，Pickle模块就用来实现数据序列化和反序列化。
     print("login succe")
     cookies = driver.get_cookies()
@@ -131,56 +125,58 @@ def loginWithCookies(browser, cookpath, url):
 
 # 今日头条：格言提醒
 def postWeiToutiao(browser, content):
-    print("postWeiToutiao begin")
+    isEmoji = False
+
     # load
     browser.get("https://mp.toutiao.com/profile_v4/weitoutiao/publish")
-    time.sleep(8)
+    time.sleep(3)
 
     # selenium控制鼠标下滑
     # 一共下滑十次，下滑一次停顿0.5s
     for i in range(3):
         browser.execute_script('window.scrollTo(0,-document.body.scrollHeight)')
         time.sleep(0.5)
+    time.sleep(2)
+    if not isEmoji:
+        # 填写内容
+        weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, ".ProseMirror")))
+        weitoutiao_content.send_keys(content)
+        weitoutiao_content.send_keys(Keys.ENTER)
+        time.sleep(2)
+        # selenium——鼠标操作ActionChains：点击、滑动、拖动
+        # 第一步：创建一个鼠标操作的对象
+        action = ActionChains(browser)
+        # 第二步：进行点击动作（事实上不会进行操作，只是添加一个点击的动作）
+        action.click(weitoutiao_content)
 
-    # 填写内容
-    weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
-        (By.CSS_SELECTOR, ".ProseMirror")))
+        # 第三步：执行动作
+        action.perform()
+    else:
+        time.sleep(3)
+        elem = browser.find_element(By.CSS_SELECTOR, ".ProseMirror")
+        ActionChains(browser).send_keys_to_element(elem, content).perform()
+        # JS_ADD_TEXT_TO_INPUT = """
+        #          var elm = arguments[0], txt = arguments[1];
+        #          elm.value = txt;
+        #        """
+        # browser.execute_script("return document.querySelector('.ProseMirror').value='qavbox'")
+        # browser.execute_script("arguments[0].value=arguments[0]", elem, content)
+        print("................................................")
+    #########################################################################
+
     time.sleep(2)
-    # weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
-    #     (By.CSS_SELECTOR, ".ProseMirror")))
-    # CSS选择器 https://www.w3school.com.cn/cssref/css_selectors.asp
-    # https://github.com/seleniumhq/selenium/issues/1480
-    # div CLASS .intro id .
-    weitoutiao_content.send_keys(content)
-    time.sleep(2)
-    # https://blog.csdn.net/weixin_44065501/article/details/89314538
-    weitoutiao_content.send_keys(Keys.ENTER)
-    time.sleep(2)
-    # selenium——鼠标操作ActionChains：点击、滑动、拖动
-    # 第一步：创建一个鼠标操作的对象
-    action = ActionChains(browser)
-    # 第二步：进行点击动作（事实上不会进行操作，只是添加一个点击的动作）
-    action.click(weitoutiao_content)
-    # 第三步：执行动作
-    action.perform()
-    time.sleep(2)
-    # https://blog.csdn.net/MarkAdc/article/details/107204126
-    # https://www.cnblogs.com/jasmine0627/p/13094288.html
 
     # 模拟发布按钮
     # https://selenium-python.readthedocs.io/locating-elements.html
-
     # class ="byte-btn byte-btn-primary byte-btn-size-default byte-btn-shape-square publish-content" type="button" > < span > 发布 < / span > < / button >
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR,
                                                ".byte-btn.byte-btn-primary.byte-btn-size-default.byte-btn-shape-square.publish-content")
     time.sleep(2)
     if weitoutiao_send_btn is None:
         print("submit is miss")
-    # 模拟鼠标点击动作
-    # https://juejin.cn/post/7119756252850159647
-    # weitoutiao_send_btn.send_keys(Keys.SPACE)
     weitoutiao_send_btn.click()
-    time.sleep(3)
+    time.sleep(5)
     print("push toutiao")
     logging.info("push toutiao")
 
@@ -218,6 +214,8 @@ def post_sleep_toutiao():
         print(e)
         driver.quit()
         traceback.print_exc()
+        mymonitor.sendEmail("toutiao")
+
 
 def send_msg_to_toutiao(msg):
     sleeptime = random.randint(0, 5)
@@ -241,34 +239,18 @@ def send_msg_to_toutiao(msg):
         gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
         loginWithCookies(driver, weibo_coook_path, liunx_weibo)
         postWeiToutiao(driver, msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
+
         driver.quit()
     except Exception as e:
         print(e)
         driver.quit()
         traceback.print_exc()
+        mymonitor.sendEmail("csdn")
         return False
     return True
 
+
 if __name__ == '__main__':
-    send_msg_to_toutiao(query_sleep_content())
-    # init_log()
-    # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-    # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
-    # weibo_login = "https://weibo.com/newlogin"
-    # weibo = "https://weibo.com/"
-    #
-    # msg = query_sleep_content()
-    #
-    # try:
-    #     webdriver = init_browser(driver_path)
-    #     gen_url_Cookies(webdriver, coook_path, weibo_login)
-    #     loginWithCookies(webdriver, coook_path, weibo)
-    #     post_weibo(webdriver, msg)
-    #     webdriver.close()
-    #
-    #     logging.info(msg)
-    # except Exception as e:
-    #     print(e)
-    #     traceback.print_exc()
+    msg = interface_db.DailyGetUpEventForToutiao()
+    if len(msg) > 0:
+        send_msg_to_toutiao(msg)

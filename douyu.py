@@ -19,6 +19,8 @@ import traceback
 import datetime
 import time
 import random
+from kernel import interface_db
+from kernel import mymonitor
 
 
 # 获取发表内容
@@ -135,7 +137,6 @@ def post_douyu_msg(browser, coook_path, content):
 
     browser.get("https://yuba.douyu.com")  # 这句话必须添加
     cookies = pickle.load(open(coook_path, "rb"))
-    print(cookies)
 
     for cookie in cookies:
         if 'expiry' in cookie:
@@ -148,31 +149,42 @@ def post_douyu_msg(browser, coook_path, content):
 
     browser.get("https://yuba.douyu.com/homepage/main")
     browser.refresh()
-    time.sleep(2)
+    time.sleep(5)
     print(browser.current_url)
+    last = len(content)
+    if len(content) - 100 > 0:
+        last = len(content) - 125
 
+    sendContent = content[0:last]  # 长度有限制
+    print(sendContent)
     weitoutiao_content = WebDriverWait(browser, 15).until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, ".common-editorText-ZGMmg")))
-    time.sleep(2)
-    weitoutiao_content.send_keys(content)
+    time.sleep(1)
+    weitoutiao_content.send_keys(sendContent)
     time.sleep(2)
     # https://blog.csdn.net/weixin_44065501/article/details/89314538
     weitoutiao_content.send_keys(Keys.ENTER)
-    time.sleep(2)
+
+    # elem = browser.find_element(By.CSS_SELECTOR, "common-editorText-ZGMmg")
+    # ActionChains(browser).send_keys_to_element(elem, content).perform()
+
+    time.sleep(15)
 
     # 模拟发布按钮
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, ".common-editorPostBtn-EDyd1")
     time.sleep(3)
-    weitoutiao_send_btn.click()
+    ActionChains(browser).move_to_element(weitoutiao_send_btn).perform()
+    time.sleep(1)
+    ActionChains(browser).click(weitoutiao_send_btn).perform()
+    # https://blog.csdn.net/a12355556/article/details/111772547
+
+    # https://blog.csdn.net/a12355556/article/details/111772547
     time.sleep(3)
     print("push  douyu")
     logging.info(r"push douyu{content}")
 
 
 def send_msg_to_douyu(msg):
-    sleeptime = random.randint(0, 5)
-    print(sleeptime)
-    time.sleep(sleeptime)
     sys = platform.system()
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
@@ -190,8 +202,7 @@ def send_msg_to_douyu(msg):
         gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
         # loginWithCookies(driver, weibo_coook_path, liunx_weibo)
         post_douyu_msg(driver, weibo_coook_path, msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
+
         driver.quit()
 
         logging.info(msg)
@@ -199,59 +210,12 @@ def send_msg_to_douyu(msg):
         print(e)
         driver.quit()
         traceback.print_exc()
+        mymonitor.sendEmail("post DailyGetUpEvent to douyu failed")
         return False
     return True
 
-def post_sleep_douyu():
-    sleeptime = random.randint(0, 10)
-    print(sleeptime)
-    time.sleep(sleeptime)
-    sys = platform.system()
-    if sys == "Windows":
-        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\douyu.pkl"
-        liunx_weibo_login = "https://yuba.douyu.com"
-        liunx_weibo = "https://yuba.douyu.com"
-    else:
-        weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/douyu.pkl"
-        liunx_weibo_login = "https://yuba.douyu.com"
-        liunx_weibo = "https://yuba.douyu.com"
 
-    liunx_msg = query_sleep_content()
-
-    try:
-        driver = init_browser(weibo_driver_path)
-        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
-        # loginWithCookies(driver, weibo_coook_path, liunx_weibo)
-        post_douyu_msg(driver, weibo_coook_path, liunx_msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
-        driver.quit()
-
-        logging.info(liunx_msg)
-    except Exception as e:
-        print(e)
-        driver.quit()
-        traceback.print_exc()
 if __name__ == '__main__':
-    post_sleep_douyu()
-    # init_log()
-    # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-    # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
-    # weibo_login = "https://weibo.com/newlogin"
-    # weibo = "https://weibo.com/"
-    #
-    # msg = query_sleep_content()
-    #
-    # try:
-    #     webdriver = init_browser(driver_path)
-    #     gen_url_Cookies(webdriver, coook_path, weibo_login)
-    #     loginWithCookies(webdriver, coook_path, weibo)
-    #     post_weibo(webdriver, msg)
-    #     webdriver.close()
-    #
-    #     logging.info(msg)
-    # except Exception as e:
-    #     print(e)
-    #     traceback.print_exc()
+    msgGetUp = interface_db.DailyGetUpEvent()
+    if len(msgGetUp) > 0:
+        send_msg_to_douyu(msgGetUp)

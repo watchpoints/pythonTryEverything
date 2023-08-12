@@ -9,38 +9,51 @@ import myblog
 import mycsdn
 import dedao
 import zhishi
+from kernel import interface_db
 
 
-# easy sleep
+# 起床打卡
 def show_sleep():
     try:
+        msgGetUp = interface_db.DailyGetUpEvent()
+        if len(msgGetUp) == 0:
+            logging.error("the DailyGetUpEvent is null")
+            return
+
+        # 微博发表完成
         myblog.KillChromebeta()
-        logging.info("22点打卡，关机睡觉，手机一定要放客厅")
-        # weibo.post_sleep_weibo()
-        # 微博定时提醒
+        # weibo.send_msg_to_weibo(msgGetUp)
+
+        # 今日头条发表完成
         myblog.KillChromebeta()
         toutiao.post_sleep_toutiao()  # easy sleep
 
-        # 斗鱼时提醒
+        # 斗鱼发表完成
         myblog.KillChromebeta()
-        douyu.post_sleep_douyu()
-        # 脉脉定时提醒
+        douyu.send_msg_to_douyu(msgGetUp)
+
+        # 脉脉提醒 发表完成
         myblog.KillChromebeta()
         maimai.post_sleep_maimai()
 
-        # 脉脉定时提醒
+        # csdn is ok
         myblog.KillChromebeta()
-        mycsdn.send_msg_to_csdn(myblog.query_sleep_content())
+        mycsdn.send_msg_to_csdn(msgGetUp)
 
         # 得到定时提醒
         myblog.KillChromebeta()
-        dedao.send_msg_to_dedao(myblog.query_sleep_content())
+        dedao.send_msg_to_dedao(msgGetUp)
 
         # 知识星球定时提醒
-        myblog.KillChromebeta()
-        zhishi.send_msg_to_zhishi(myblog.query_sleep_content())
+        # myblog.KillChromebeta()
+        zhishi.send_msg_to_zhishi(msgGetUp)
     finally:
         print("end")
+
+
+# 起床打卡
+def show_sleepForTest():
+    show_sleep()
 
 
 def send_msg_to_blog(wechat_txt: str):
@@ -53,9 +66,9 @@ def send_msg_to_blog(wechat_txt: str):
 
         print("post send_msg_to_toutiao")
         myblog.KillChromebeta()
-        if not toutiao.send_msg_to_toutiao(wechat_txt):
-            logging.error("post toutiao failed")
-        print("post send_msg_to_douyu")
+        # if not toutiao.send_msg_to_toutiao(wechat_txt):
+        #     logging.error("post toutiao failed")
+        # print("post send_msg_to_douyu")
         myblog.KillChromebeta()
         if not douyu.send_msg_to_douyu(wechat_txt):
             logging.error("post douyu failed")
@@ -84,5 +97,4 @@ def send_msg_to_blog(wechat_txt: str):
 if __name__ == '__main__':
     # send_msg_to_blog("this is a test")
     myblog.KillChromebeta()
-    if not zhishi.send_msg_to_zhishi("testtest"):
-        logging.error("post send_msg_to_zhishi failed")
+    show_sleepForTest()

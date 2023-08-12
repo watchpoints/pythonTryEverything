@@ -17,7 +17,9 @@ import logging
 import traceback
 import datetime
 import time
-import random
+from kernel import interface_db
+from kernel import mymonitor
+
 
 # 获取发表内容
 def query_sleep_content():
@@ -41,28 +43,15 @@ def init_browser(chromedriver_path: str):
     chrome_options.add_argument('disable-infobars')
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('blink-settings=imagesEnabled=false')
+    chrome_options.add_argument('window-size=1920x1480')
     sys = platform.system()
-    print(sys)
     if sys == "Windows":
         print("sys=OS is Windows!!!")
-        chrome_options.add_argument('--headless')
     elif sys == "Linux":
         print("sys=OS is centos!!!")
-        # if len(chromedriver_path) == 0:
-        #     path = r"/root/local/python/chromedriver/chromedriver"
-        # else:
-        #     path = chromedriver_path
-        # chrome_options.add_argument("--headless")  # 参数是不用打开图形界面
-        # chrome_options.add_argument('--no-sandbox')
-        # chrome_options.add_argument('--disable-gpu')
-        # chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--no-sandbox')
-
-        # headless将在无头模式下启动Chrome浏览上下文
-    # chrome_options.binary_location = chromedriver_path  Chrome has crashed. 不能这样写
-    # 创建Chrome浏览器对象
+        chrome_options.add_argument('headless')
+        chrome_options.add_argument('no-sandbox')
+        chrome_options.add_argument('disable-dev-shm-usage')
     service_path = Service(chromedriver_path)  # 将文件路径作为参数传入Service对象
     driver = webdriver.Chrome(service=service_path, options=chrome_options)
     return driver
@@ -128,13 +117,14 @@ def loginWithCookies(browser, cookpath, url):
 # 格言提醒
 def post_weibo(browser, content):
     print("post_weibo begin")
+
     # load
     browser.get("https://weibo.com/")
     browser.refresh()
-    browser.implicitly_wait(60)
+    browser.implicitly_wait(10)
     print(r"get https://weibo.com is ok")
     logging.debug(r"get https://weibo.com is ok")
-    
+
     # 微头条内容框
     # presence_of_element_located（locator）：判断某个元素是否存在DOM中
     # 如果判断条件成立，就执行下一步，否则继续等待，直到超过设定的最长等待时间，然后抛出TimeOutEcpection的异常信息。
@@ -149,57 +139,18 @@ def post_weibo(browser, content):
     logging.debug(r"write msg")
     # https://blog.csdn.net/weixin_44065501/article/details/89314538
     weitoutiao_content.send_keys(Keys.ENTER)
-    print("step1-------------")
+    print("send_keys")
 
     # 点击发布
-    # 鼠标动作模拟操作：https://my.oschina.net/u/4273790/blog/3807807
-    # actions = ActionChains(browser)
     weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR,
                                                ".woo-button-main.woo-button-flat.woo-button-primary.woo-button-m.woo-button-round.Tool_btn_2Eane")  # 双击按钮
-    time.sleep(2)
-    weitoutiao_send_btn.send_keys(Keys.SPACE)
     time.sleep(3)
+    weitoutiao_send_btn.send_keys(Keys.SPACE)
+    time.sleep(5)
     print(r"push {content} succed")
 
 
-def post_sleep_weibo():
-    sleeptime = random.randint(0, 10)
-    print(sleeptime)
-    time.sleep(sleeptime)
-    sys = platform.system()
-    if sys == "Windows":
-        weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
-        liunx_weibo_login = "https://weibo.com/newlogin"
-        liunx_weibo = "https://weibo.com/"
-    else:
-        weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/cookies.pkl"
-        liunx_weibo_login = "https://weibo.com/newlogin"
-        liunx_weibo = "https://weibo.com/"
-
-    liunx_msg = query_sleep_content()
-
-    try:
-        driver = init_browser(weibo_driver_path)
-        gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
-        loginWithCookies(driver, weibo_coook_path, liunx_weibo)
-        post_weibo(driver, liunx_msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
-        driver.quit()
-
-        logging.info(liunx_msg)
-    except Exception as e:
-        print(e)
-        traceback.print_exc()
-        driver.quit()
-
-
 def send_msg_to_weibo(msg):
-    sleeptime = random.randint(0, 5)
-    print(1)
-    time.sleep(sleeptime)
     sys = platform.system()
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
@@ -208,7 +159,7 @@ def send_msg_to_weibo(msg):
         liunx_weibo = "https://weibo.com/"
     else:
         weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/cookies.pkl"
+        weibo_coook_path = r"/root/bin/weibo.pkl"
         liunx_weibo_login = "https://weibo.com/newlogin"
         liunx_weibo = "https://weibo.com/"
 
@@ -217,35 +168,17 @@ def send_msg_to_weibo(msg):
         gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
         loginWithCookies(driver, weibo_coook_path, liunx_weibo)
         post_weibo(driver, msg)
-        # 脚本退出时，一定要主动调用 driver.quit !!!
-        # https://cloud.tencent.com/developer/article/1404558
         driver.quit()
     except Exception as e:
+        mymonitor.sendEmail("post DailyGetUpEvent to weibo failed")
         print(e)
         traceback.print_exc()
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         driver.quit()
         return False
     return True
 
+
 if __name__ == '__main__':
-    send_msg_to_weibo(query_sleep_content())
-    # init_log()
-    # driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-    # coook_path = r"D:\doc\2023\05-third\chromedriver_win32\cookies.pkl"
-    # weibo_login = "https://weibo.com/newlogin"
-    # weibo = "https://weibo.com/"
-    #
-    # msg = query_sleep_content()
-    #
-    # try:
-    #     webdriver = init_browser(driver_path)
-    #     gen_url_Cookies(webdriver, coook_path, weibo_login)
-    #     loginWithCookies(webdriver, coook_path, weibo)
-    #     post_weibo(webdriver, msg)
-    #     webdriver.close()
-    #
-    #     logging.info(msg)
-    # except Exception as e:
-    #     print(e)
-    #     traceback.print_exc()
+    msgGetUp = interface_db.DailyGetUpEvent()
+    if len(msgGetUp) > 0:
+        send_msg_to_weibo(msgGetUp)
