@@ -10,6 +10,7 @@ import mycsdn
 import dedao
 import zhishi
 from kernel import interface_db
+from third import mainWechatDaily
 
 
 # 起床打卡
@@ -47,6 +48,8 @@ def show_sleep():
         # 知识星球定时提醒
         # myblog.KillChromebeta()
         zhishi.send_msg_to_zhishi(msgGetUp)
+        # whchat 
+        mainWechatDaily.wechat_every_daily()
     finally:
         print("end")
 
@@ -95,6 +98,6 @@ def send_msg_to_blog(wechat_txt: str):
 
 
 if __name__ == '__main__':
-    # send_msg_to_blog("this is a test")
-    myblog.KillChromebeta()
-    show_sleepForTest()
+    
+    mainWechatDaily.wechat_every_daily()
+    

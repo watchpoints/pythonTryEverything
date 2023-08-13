@@ -7,8 +7,8 @@ import os
 
 import requests
 
-sys.path.append("../kernel")
-from kernel import interface_db
+#sys.path.append("../kernel")
+#from kernel import interface_db
 
 
 class iciba:
@@ -68,21 +68,21 @@ class iciba:
 
     # 发送消息
     def send_msg(self, openid, template_id, iciba_everyday):
-        getup = interface_db.get_up_everyday()
+        #getup = interface_db.get_up_everyday()
         msg = {
             'touser': openid,
             'template_id': template_id,
             'url': iciba_everyday['fenxiang_img'],
             'data': {
                 'content': {
-                    'value': getup,
+                    'value': iciba_everyday['content'],
                     'color': '#0000CD'
-                },
+                    },
                 'note': {
-                    'value': getup,
+                    'value': iciba_everyday['note'],
                 },
                 'translation': {
-                    'value': getup,
+                    'value': iciba_everyday['translation'],
                 }
             }
         }

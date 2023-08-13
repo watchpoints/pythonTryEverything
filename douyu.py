@@ -18,7 +18,6 @@ import logging
 import traceback
 import datetime
 import time
-import random
 from kernel import interface_db
 from kernel import mymonitor
 
