@@ -99,5 +99,5 @@ def send_msg_to_blog(wechat_txt: str):
 
 if __name__ == '__main__':
     
-    mainWechatDaily.wechat_every_daily()
+   msg= mainWechatDaily.wechat_every_daily()
     
