@@ -1,3 +1,15 @@
+### mac如何下载：
+
+chrome://version/
+Google Chrome	114.0.5735.198 (正式版本) (x86_64)
+
+https://chromedriver.chromium.org/downloads
+
+mac 非arm架构的
+
+无法打开“chromedriver”，因为无法验证开发者。
+
+
 
 ### 提问13：Python实现将爱词霸每日一句定时推送至微信
 

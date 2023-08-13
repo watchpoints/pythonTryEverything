@@ -10,7 +10,11 @@ import mycsdn
 import dedao
 import zhishi
 from kernel import interface_db
+<<<<<<< HEAD
 from third import mainWechatDaily
+=======
+from blog import baidubaijia
+>>>>>>> f126c4aa10fed6a83c3a99340078b7f956e8da33
 
 
 # 起床打卡
@@ -48,8 +52,13 @@ def show_sleep():
         # 知识星球定时提醒
         # myblog.KillChromebeta()
         zhishi.send_msg_to_zhishi(msgGetUp)
+<<<<<<< HEAD
         # whchat 
         mainWechatDaily.wechat_every_daily()
+=======
+        baidubaijia.post_baijia(msgGetUp)
+
+>>>>>>> f126c4aa10fed6a83c3a99340078b7f956e8da33
     finally:
         print("end")
 
@@ -98,6 +107,10 @@ def send_msg_to_blog(wechat_txt: str):
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     
    msg= mainWechatDaily.wechat_every_daily()
     
+=======
+    show_sleepForTest()
+>>>>>>> f126c4aa10fed6a83c3a99340078b7f956e8da33
