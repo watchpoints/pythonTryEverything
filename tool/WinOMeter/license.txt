@@ -1,0 +1,20 @@
+Software License Agreement for WinOMeter, Version 1.x
+
+This is a legal agreement between you, the end user, and Tomas Jelinek which governs your use of the WinOMeter product. 
+
+IF YOU DO NOT AGREE TO THE TERMS OF THIS AGREEMENT, DO NOT USE THIS SOFTWARE. PROMPTLY REMOVE IT FROM YOUR COMPUTER.
+
+Copyright (c) by Tomas Jelinek 2004-2010 <http://www.tjelinek.com/main.php?section=w>. All rights reserved.
+
+This software is FREEWARE.
+
+Restrictions of use: 	
+
+1. You agree not to decompile, disassemble or reverse engineer the product.
+
+2. You acknowledge that you obtain no ownership rights in the product under the terms of this Agreement. All rights in the product including but not limited to trade secrets, trademarks, service marks, patents, and copyrights are, shall be and will remain the property of Tomas Jelinek or any third party from whom Tomas Jelinek has licensed software or technology. All copies of the product delivered to you or made by you remain the property of Tomas Jelinek.
+
+3. You may not remove any proprietary notices, labels, trademarks on the product or documentation.
+
+
+THIS SOFTWARE IS PROVIDED BY TOMAS JELINEK "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL TOMAS JELINEK BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 

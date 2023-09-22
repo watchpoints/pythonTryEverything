@@ -89,16 +89,16 @@ def gen_url_Cookies(driver, cook_path: str, url: str):
     print("gen_url_Cookies begin")
     is_gen_cook = False
     if not os.path.exists(cook_path):
-        print("cook_path not exists，please login")
+        print("cook_path not exists，please login >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         is_gen_cook = True  # 过期
     if not is_gen_cook:
-        print(r"cool is is right")
+        print(r"the cooks is ok >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         logging.debug(r"cool is is right")
         return  # 没有过期
 
     # 用法：https://selenium-python.readthedocs.io/getting-started.html
     driver.get(url)
-    time.sleep(80)  # 留时间进行扫码
+    time.sleep(120)  # 留时间进行扫码
     # 在Python中，Pickle模块就用来实现数据序列化和反序列化。
     print("login succe")
     cookies = driver.get_cookies()
@@ -108,8 +108,6 @@ def gen_url_Cookies(driver, cook_path: str, url: str):
     pickle.dump(cookies, open(cook_path, "wb"))
 
     jsCookies = json.dumps(cookies)  # 转换成字符串保存
-    # with open(r"/root/bin/cookies.txt", 'w') as f:
-    #     f.write(jsCookies)
     print("dump cookies succed" + jsCookies)
 
 
@@ -118,7 +116,7 @@ def loginWithCookies(browser, cookpath, url):
     cookies = pickle.load(open(cookpath, "rb"))
     for cookie in cookies:
         if 'expiry' in cookie:
-            cookie['expiry'] = int(cookie['expiry'])
+            del cookie['expiry']
         browser.add_cookie(cookie)
     time.sleep(1)
     browser.refresh()
@@ -217,7 +215,7 @@ def send_msg_to_maimai(msg):
     except Exception as e:
         print(e)
         traceback.print_exc()
-        mymonitor.sendEmail("post DailyGetUpEvent to maimai failed")
+        mymonitor.sendEmail("maimai")
     finally:
         driver.quit()
 

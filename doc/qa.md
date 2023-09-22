@@ -1,3 +1,29 @@
+### 002 
+python+Selenium模拟登录报错:`InvalidCookieDomainException`
+
+
+
+ selenium ertV- ERROR: Time is after notAfter
+https://blog.csdn.net/qq_42236551/article/details/129050032
+
+
+### 001 
+Message: session not created: This version of ChromeDriver only supports Chrome version 114
+
+chrome://version/
+Google Chrome	116.0.5845.188 (正式版本)
+
+https://chromedriver.chromium.org/downloads(no)
+
+https://googlechromelabs.github.io/chrome-for-testing/#stable
+
+### 0813
+
+1. 测试整个项目 是否运行成功。如果 ok 说明ok了，如果不行 看看是是单独测试是可以 如果可以的。需要调整整个项目了 ok
+2， main启动测试
+
+
+
 ### mac如何下载：
 
 chrome://version/
