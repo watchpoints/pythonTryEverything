@@ -6,8 +6,8 @@ import pickle
 from selenium import webdriver
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.by import By
 # from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import platform
@@ -36,6 +36,7 @@ def query_sleep_content():
 def init_browser(chromedriver_path: str):
     # 采用谷歌浏览器
     chrome_options = Options()
+    chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     chrome_options.add_argument('--no-sandbox')  # 参数是让Chrome在root权限下跑
     chrome_options.add_argument('--disable-gpu')
     # chrome_opt.add_argument('start-maximized')
@@ -91,7 +92,7 @@ def init_browser(chromedriver_path: str):
 
 def gen_url_Cookies(driver, cook_path: str, url: str):
     print("gen_url_Cookies begin")
-    
+
     is_gen_cook = False
     if not os.path.exists(cook_path):
         print("cook_path not exists，please login")
@@ -131,56 +132,60 @@ def loginWithCookies(browser, cookpath, url):
 
 
 # https://yuba.douyu.com/homepage/main 新鲜事
-def post_danmu_douyu(browser, coook_path, content, run_count, url):
+def post_danmu_douyu(browser, coook_path, content, run_count, url, run_times):
     print("post_danmu_douyu begin")
 
     browser.get(url)  # 这句话必须添加
     print("post_danmu_douyu browser.get")
-    
+
     cookies = pickle.load(open(coook_path, "rb"))
     print(cookies)
     for cookie in cookies:
         if 'expiry' in cookie:
             cookie['expiry'] = int(cookie['expiry'])
         browser.add_cookie(cookie)
-    
+
     browser.refresh()  # 刷新网页,cookies才成功
     time.sleep(5)
     print(browser.current_url)
-    
-    my_content = WebDriverWait(browser, 15).until(EC.presence_of_element_located(
-        (By.CSS_SELECTOR, "ChatSend-txt  ")))
-    time.sleep(1)
-    my_content.send_keys(content)
-    time.sleep(2)
-    my_content.send_keys(Keys.ENTER)
-    
-    
+
+    time.sleep(8)
+
+    # send_barrage(20)
+
     for i in range(run_count):
+        my_content = WebDriverWait(browser, 30).until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, ".ChatSend-txt  ")))
+        time.sleep(1)
+        my_content.send_keys(content)
+        time.sleep(2)
+        my_content.send_keys(Keys.ENTER)
+
         # 模拟发布按钮
-        weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, "ChatSend-button ")
+        weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, ".ChatSend-button ")
         ActionChains(browser).move_to_element(weitoutiao_send_btn).perform()
         time.sleep(1)
         ActionChains(browser).click(weitoutiao_send_btn).perform()
-        
+
         # 生成0到100范围内的随机整数
-        random_number = 60 + random.randint(0, 60)
+        random_number = run_times + random.randint(0, 55)
+        print(" send:" + str(i) + " next：" + str(random_number))
         time.sleep(random_number)
 
 
-def send_danmu_to_douyu(msg, run_count,url):
+def send_danmu_to_douyu(msg, run_count, url, times):
     sys = platform.system()
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\douyu.pkl"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\danmu_douyu.pkl"
     else:
         weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/douyu.pkl"
+        weibo_coook_path = r"/root/bin/danmu_douyu.pkl"
 
     try:
         driver = init_browser(weibo_driver_path)
         gen_url_Cookies(driver, weibo_coook_path, url)
-        post_danmu_douyu(driver, weibo_coook_path, msg, run_count,url)
+        post_danmu_douyu(driver, weibo_coook_path, msg, run_count, url, times)
 
         driver.quit()
 
@@ -194,7 +199,12 @@ def send_danmu_to_douyu(msg, run_count,url):
 
 
 if __name__ == '__main__':
-    msg = "彻底践行番茄工作法：25分钟专注，5分钟休息"
+    # msg = "彻底践行番茄工作法：25分钟专注，5分钟休息"
+    # 练习成为演讲者:第一天
+    msg = "欢迎来到番茄专注自习室 \n"
+    msg += "书单：每天最重要的2小时,富人的逻辑,有钱人和你想的不一样\n"
     run_count = 1000
-    url="https://www.douyu.com/1480416"
-    send_danmu_to_douyu(msg, run_count,url)
+    # times = 40
+    times = 70
+    room_id = "https://www.douyu.com/1480416"
+    send_danmu_to_douyu(msg, run_count, room_id, times)
