@@ -17,6 +17,10 @@ from wechatpy.exceptions import (
 )
 import signal
 
+from wechat import push_get_up
+
+# import wechat.push_get_up
+
 q = Queue(100)  # 创建一个先进先出的队列
 
 
@@ -121,6 +125,11 @@ def timeout_handler(signum, frame):
     raise TimeoutException("Function execution timed out.")
 
 
+def markdown_to_wechat():
+    # 微信公共号文章发布
+    push_get_up.markdown_to_wechat()
+
+
 def EeasyHabitSleep():
     # 设置超时时间
     signal.alarm(3600)
@@ -166,7 +175,8 @@ if __name__ == "__main__":
     }
     StartForTest()
     backsched = BackgroundScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("1 6 * * *"), id="do_show_sleep_job")
+    backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("30 6 * * *"), id="do_show_sleep_job")
+    backsched.add_job(markdown_to_wechat, CronTrigger.from_crontab("10 6 * * *"), id="markdown_to_wechat")
     # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("0 6 * * *"), id="do_show_sleep_job")
     backsched.start()
 
