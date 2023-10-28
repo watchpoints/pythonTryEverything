@@ -151,8 +151,8 @@ def post_douyu_msg(browser, coook_path, content):
     print("post_douyu_msg begin44444")
     for cookie in cookies:
         print(cookie)
-        if 'domain' in cookie:
-           cookie['domain']='www.douyu.com'
+        # if 'domain' in cookie:
+        #    cookie['domain']='www.douyu.com'
             
         browser.add_cookie(cookie)
         

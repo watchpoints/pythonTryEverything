@@ -157,7 +157,7 @@ def get_up_everyday():
     path = ''
     sys = platform.system()
     if sys == "Windows":
-        path = r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt"
+        path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
     else:
         path = '/root/code/python/config/01_get_up.txt'
     # https://www.emojiall.com/zh-hans
@@ -181,7 +181,7 @@ def get_up_everyday():
 def get_up_everydayForTouTiao():
     sys = platform.system()
     if sys == "Windows":
-        path = r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt"
+        path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
     else:
         path = '/root/code/python/config/01_get_up.txt'
     # https://www.emojiall.com/zh-hans

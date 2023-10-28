@@ -1,4 +1,22 @@
 
+2. 【Vscode踩坑】vscode调试python提示由于目标计算机积极拒绝，无法连接。原来是代理问题
+- what 
+vscode python timeout waiting for launcher to connect
+
+- how
+把windows设置里的网络代理取消就好了：把自动检测设置关掉就好了。
+
+1.
+- what
+
+ModuleNotFoundError: No module named 'selenium'
+
+- how
+
+pip3 install selenium
+
+
+
 代理问题：
 
 set http_proxy=http://127.0.0.1:60710

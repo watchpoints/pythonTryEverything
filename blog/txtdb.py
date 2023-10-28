@@ -153,7 +153,7 @@ def get_up_everyday():
     path = ''
     sys = platform.system()
     if sys == "Windows":
-        path = r"D:\golang\money\src\github.com\watchpoints\pythonTryEverything\config\01_get_up.txt"
+        path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
     elif sys == 'Darwin':
          path = '/Users/wangchuanyi/code/src/github.com/watchpoints/pythonTryEverything/config/01_get_up.txt'
     else:
