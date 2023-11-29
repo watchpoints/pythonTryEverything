@@ -18,9 +18,12 @@ import logging
 import traceback
 import datetime
 import time
+import random
+import myblog
+import mail_msg
 from kernel import interface_db
+import pyperclip
 from kernel import mymonitor
-
 
 # 获取发表内容
 def query_sleep_content():
@@ -44,24 +47,16 @@ def init_browser(chromedriver_path: str):
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('window-size=1920x1480')
+    # 忽略无用的日志
+    # https://www.cnblogs.com/pinkhurley/p/15584505.html
+    chrome_options.add_experimental_option("excludeSwitches", ['enable-automation', 'enable-logging'])
+
     sys = platform.system()
     print(sys)
     if sys == "Windows":
         print("sys=OS is Windows!!!")
-        # if len(chromedriver_path) == 0:
-        #     path = r"D:\local\Python\tool\chromedriver.exe"
-        # else:
-        #     path = chromedriver_path
     elif sys == "Linux":
         print("sys=OS is centos!!!")
-        # if len(chromedriver_path) == 0:
-        #     path = r"/root/local/python/chromedriver/chromedriver"
-        # else:
-        #     path = chromedriver_path
-        # chrome_options.add_argument("--headless")  # 参数是不用打开图形界面
-        # chrome_options.add_argument('--no-sandbox')
-        # chrome_options.add_argument('--disable-gpu')
-        # chrome_options.add_argument('--disable-dev-shm-usage')
         chrome_options.add_argument('headless')
         chrome_options.add_argument('no-sandbox')
         chrome_options.add_argument('disable-dev-shm-usage')
@@ -94,16 +89,16 @@ def gen_url_Cookies(driver, cook_path: str, url: str):
     print("gen_url_Cookies begin")
     is_gen_cook = False
     if not os.path.exists(cook_path):
-        print("cook_path not exists，please login")
+        print("cook_path not exists，please login >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         is_gen_cook = True  # 过期
     if not is_gen_cook:
-        print(r"cool is is right")
+        print(r"the cooks is ok >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         logging.debug(r"cool is is right")
         return  # 没有过期
 
     # 用法：https://selenium-python.readthedocs.io/getting-started.html
     driver.get(url)
-    time.sleep(50)  # 留时间进行扫码
+    time.sleep(120)  # 留时间进行扫码
     # 在Python中，Pickle模块就用来实现数据序列化和反序列化。
     print("login succe")
     cookies = driver.get_cookies()
@@ -113,120 +108,119 @@ def gen_url_Cookies(driver, cook_path: str, url: str):
     pickle.dump(cookies, open(cook_path, "wb"))
 
     jsCookies = json.dumps(cookies)  # 转换成字符串保存
-    # with open(r"/root/bin/cookies.txt", 'w') as f:
-    #     f.write(jsCookies)
     print("dump cookies succed" + jsCookies)
 
 
 def loginWithCookies(browser, cookpath, url):
     browser.get(url)
     cookies = pickle.load(open(cookpath, "rb"))
-    try:
-        for cookie in cookies:
-            print(cookie)
-            if 'expiry' in cookie:
-                cookie['expiry'] = int(cookie['expiry'])
-            browser.add_cookie(cookie)
-    except Exception as e:
-     print(e)
-
-    
-    time.sleep(3)
+    for cookie in cookies:
+        if 'expiry' in cookie:
+            del cookie['expiry']
+        browser.add_cookie(cookie)
+    time.sleep(1)
     browser.refresh()
     print("toutiao loginWithCookies")
 
 
-# https://yuba.douyu.com/homepage/main 新鲜事
-def post_douyu_msg(browser, coook_path, content):
+# 今日头条：格言提醒
+def post_maimai_msg(browser, content):
+    isEmoji = False
+    isPaste = False
+    browser.get("https://maimai.cn/web/feed_explore")
+    time.sleep(6)
 
-    print("post_douyu_msg begin 1111111111111111111")
-
-    browser.get("https://yuba.douyu.com")  # # Add driver.get() before set cookie 
-    print("post_douyu_msg begin222222222222222222")
-    time.sleep(6) 
-    print("post_douyu_msg begin333333333333")
-    
-    cookies = pickle.load(open(coook_path, "rb"))
-    print(cookies)
-    print("post_douyu_msg begin44444")
-    for cookie in cookies:
-        print(cookie)
-        # if 'domain' in cookie:
-        #    cookie['domain']='www.douyu.com'
-            
-        browser.add_cookie(cookie)
-        
-    browser.refresh()
-    browser.get("https://yuba.douyu.com/homepage/main")
-    browser.refresh()
-    time.sleep(5)
-    
-    
-    
-    last = len(content)
-    if len(content) - 100 > 0:
-        last = len(content) - 125
-
-    sendContent = content[0:last]  # 长度有限制
-    print(sendContent)
-    weitoutiao_content = WebDriverWait(browser, 15).until(EC.presence_of_element_located(
-        (By.CSS_SELECTOR, ".common-editorText-ZGMmg")))
-    time.sleep(1)
-    weitoutiao_content.send_keys(sendContent)
+    weitoutiao_content = WebDriverWait(browser, 10).until(EC.presence_of_element_located(
+        (By.CSS_SELECTOR, ".inputPanel")))
     time.sleep(2)
-    # https://blog.csdn.net/weixin_44065501/article/details/89314538
-    weitoutiao_content.send_keys(Keys.ENTER)
+    print("weitoutiao_content.send_keys")
+    # JS_ADD_TEXT_TO_INPUT = """
+    #   var elm = arguments[0], txt = arguments[1];
+    #   elm.value += txt;
+    #   elm.dispatchEvent(new Event('change'));
+    #   """
+    # browser.execute_script(JS_ADD_TEXT_TO_INPUT, weitoutiao_content, content)
 
-    # elem = browser.find_element(By.CSS_SELECTOR, "common-editorText-ZGMmg")
-    # ActionChains(browser).send_keys_to_element(elem, content).perform()
+    # selenium——鼠标操作ActionChains：点击、滑动、拖动
+    # create action chain object
+    # https://www.lambdatest.com/blog/handling-keyboard-actions-in-selenium-webdriver/
+    # 不支持emoji表情
+    if isEmoji:
+        weitoutiao_content.send_keys(content)
+        weitoutiao_content.send_keys(Keys.ENTER)
+    elif isPaste:
+        print("this is windows ")
+        pyperclip.copy(content)
+        action = ActionChains(browser)
+        # click the item
+        action.click(on_element=weitoutiao_content)
+        # send keys
+        action.send_keys(Keys.CONTROL, pyperclip.paste())
+        # perform the operation
+        action.perform()
+        time.sleep(2)
+    else:
+        print("this is centos ")
+        JS_ADD_TEXT_TO_INPUT = """
+          var elm = arguments[0], txt = arguments[1];
+          elm.value = txt;
+        """
+        elem = browser.find_element(By.CSS_SELECTOR, ".inputPanel")
+        # browser.execute_script(JS_ADD_TEXT_TO_INPUT, elem, content)
+        # https://blog.csdn.net/weixin_44596902/article/details/116796508
+        ActionChains(browser).send_keys_to_element(elem, content).perform()
 
-    time.sleep(5)
+    print("maimai  write content is ok")
+    time.sleep(2)
+    weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, ".sendBtn")
+    time.sleep(2)
+    if weitoutiao_send_btn is None:
+        print("submit is miss")
 
-    # 模拟发布按钮
-    weitoutiao_send_btn = browser.find_element(By.CSS_SELECTOR, ".common-editorPostBtn-EDyd1")
+    # 模拟鼠标点击动作
+    weitoutiao_send_btn.click()
     time.sleep(3)
-    ActionChains(browser).move_to_element(weitoutiao_send_btn).perform()
-    time.sleep(1)
-    ActionChains(browser).click(weitoutiao_send_btn).perform()
-    # https://blog.csdn.net/a12355556/article/details/111772547
-
-    # https://blog.csdn.net/a12355556/article/details/111772547
-    time.sleep(3)
-    print("push  douyu")
-    logging.info(r"push douyu{content}")
+    print("push toutiao")
+    logging.info("push toutiao")
 
 
-def post_mp4_to_shipinhao(mp4_path):
+def post_sleep_maimai():
+    geup = interface_db.DailyGetUpEvent()
+    if len(geup) > 0:
+        send_msg_to_maimai(geup)
+
+
+def send_msg_to_maimai(msg):
+    sleeptime = random.randint(0, 5)
+    print(sleeptime)
+    time.sleep(sleeptime)
     sys = platform.system()
     if sys == "Windows":
         weibo_driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
-        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\douyu.pkl"
-        liunx_weibo_login = "https://channels.weixin.qq.com/platform/post/create"
-        liunx_weibo = "https://channels.weixin.qq.com/platform/post/create"
+        weibo_coook_path = r"D:\doc\2023\05-third\chromedriver_win32\maimai.pkl"
+        liunx_weibo_login = "https://maimai.cn/"
+        liunx_weibo = "https://maimai.cn/"
     else:
         weibo_driver_path = r"/root/bin/chromedriver"
-        weibo_coook_path = r"/root/bin/douyu.pkl"
-        liunx_weibo_login = "https://channels.weixin.qq.com/platform/post/create"
-        liunx_weibo = "https://channels.weixin.qq.com/platform/post/create"
+        weibo_coook_path = r"/root/bin/maimai.pkl"
+        liunx_weibo_login = "https://maimai.cn/"
+        liunx_weibo = "https://maimai.cn/"
 
     try:
         driver = init_browser(weibo_driver_path)
         gen_url_Cookies(driver, weibo_coook_path, liunx_weibo_login)
-        # loginWithCookies(driver, weibo_coook_path, liunx_weibo)
-        post_douyu_msg(driver, weibo_coook_path, msg)
-
-        driver.quit()
-
+        loginWithCookies(driver, weibo_coook_path, liunx_weibo)
+        post_maimai_msg(driver, msg)
         logging.info(msg)
     except Exception as e:
         print(e)
-        driver.quit()
         traceback.print_exc()
-        mymonitor.sendEmail("post DailyGetUpEvent to douyu failed")
-        return False
-    return True
+        mymonitor.sendEmail("maimai")
+    finally:
+        driver.quit()
 
 
 if __name__ == '__main__':
-    mp4_path = ""
-    post_mp4_to_shipinhao(mp4_path)
+    msg = interface_db.DailyGetUpEvent()
+    if len(msg) > 0:
+        send_msg_to_maimai(msg)
