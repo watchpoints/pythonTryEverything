@@ -12,7 +12,7 @@ import zhishi
 from kernel import interface_db
 from third import mainWechatDaily
 from blog import baidubaijia
-
+from putdonwphone import mykuaishou
 
 
 # 起床打卡
@@ -105,5 +105,5 @@ if __name__ == '__main__':
     
   #msg = interface_db.DailyGetUpEvent()
   #baidubaijia.send_msg_to_baidubaijia(msg)
-  show_sleepForTest()
+   mykuaishou.interface_auo_upload_kuaishou()
     

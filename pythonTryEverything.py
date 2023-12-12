@@ -18,6 +18,7 @@ from wechatpy.exceptions import (
 import signal
 
 from wechat import push_get_up
+from putdonwphone import mykuaishou
 
 # import wechat.push_get_up
 
@@ -135,6 +136,7 @@ def EeasyHabitSleep():
     signal.alarm(3600)
     try:
         sleep.show_sleep()
+        mykuaishou.interface_auo_upload_kuaishou()
     finally:
         # 取消超时设置
         signal.alarm(0)

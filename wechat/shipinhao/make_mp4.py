@@ -54,15 +54,17 @@ def get_info(input_path):
   # ffmpeg -i test.mp4 -ss 1 -f image2 -vframes 1 out.jpg
 if __name__ == '__main__':
    
-    input_path = r"D:\mp4\db\万国志\[P11]11 兵无常势水无常形.mp4"  # 输入视频文件路径
-    output_path = r"D:\mp4\db\万国志\P11.mp4"  # 输出视频文件路径
+    input_path = r"D:\mp4\凡人修仙传\[P11]11 凡人风起天南11重制版.mp4"  # 输入视频文件路径
+    output_path = r"D:\mp4\凡人修仙传\11.mp4"  # 输出视频文件路径
     pic_path =r"D:\mp4\db\万国志\p01.jpg"
-    start_time = "00:03:18"  # 开始剪辑的时间点，格式为 HH:MM:SS
-    end_time = "00:18:22"  # 结束剪辑的时间点，格式为 HH:MM:SS
-    move_water_path = r"D:\mp4\db\万国志\noP01.mp4"
+    start_time = "00:01:55"  # 开始剪辑的时间点，格式为 HH:MM:SS
+    end_time = "00:18:15"  # 结束剪辑的时间点，格式为 HH:MM:SS
+    #move_water_path = r"D:\mp4\db\万国志\noP01.mp4"
     cut_video(input_path,output_path,start_time,end_time)
     #find_water(output_path,600,300,384,300)
     #get_pic(output_path,pic_path)
     #get_info(output_path)
     #move_water(output_path,move_water_path)
+ 
+ # 不同平台数据相互搬运
  

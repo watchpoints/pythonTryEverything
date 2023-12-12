@@ -182,6 +182,9 @@ def post_maimai_msg(browser, content):
     time.sleep(3)
     print("push toutiao")
     logging.info("push toutiao")
+    
+   # 基于python的selenium两种文件上传操作 https://www.cnblogs.com/xiaogongjin/p/11546518.html
+   
 
 
 def post_sleep_maimai():
