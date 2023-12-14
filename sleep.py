@@ -12,12 +12,16 @@ import zhishi
 from kernel import interface_db
 from third import mainWechatDaily
 from blog import baidubaijia
-from putdonwphone import mykuaishou
+from putdonwphone import mykuaishou2
 
-
+# 早睡早起图文模式
+def get_up_tuwen():
+    mykuaishou2.interface_auo_upload_kuaishou2()
+    
 # 起床打卡
 def show_sleep():
     try:
+        get_up_tuwen()
         msgGetUp = interface_db.DailyGetUpEvent()
         if len(msgGetUp) == 0:
             logging.error("the DailyGetUpEvent is null")
@@ -105,5 +109,5 @@ if __name__ == '__main__':
     
   #msg = interface_db.DailyGetUpEvent()
   #baidubaijia.send_msg_to_baidubaijia(msg)
-   mykuaishou.interface_auo_upload_kuaishou()
+  mykuaishou2.interface_auo_upload_kuaishou2()
     

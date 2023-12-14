@@ -19,7 +19,9 @@ playwright -V
 Version 1.31.1
 python -m playwright install
 playwright 默认会下载 chromium,firefox 和 webkit 三个浏览器
-playwright install --force chrome
+
+- playwright install --force chrome
+ERROR: cannot install on centos distribution - only Ubuntu is supported
 
 
 

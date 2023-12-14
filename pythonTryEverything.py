@@ -18,7 +18,6 @@ from wechatpy.exceptions import (
 import signal
 
 from wechat import push_get_up
-from putdonwphone import mykuaishou
 
 # import wechat.push_get_up
 
@@ -136,21 +135,9 @@ def EeasyHabitSleep():
     signal.alarm(3600)
     try:
         sleep.show_sleep()
-        mykuaishou.interface_auo_upload_kuaishou()
     finally:
         # 取消超时设置
         signal.alarm(0)
-
-
-def StartForTest():
-    # 设置超时时间
-    signal.alarm(3600)
-    try:
-        sleep.show_sleepForTest()
-    finally:
-        # 取消超时设置
-        signal.alarm(0)
-
 
 if __name__ == "__main__":
     # 设置超时时间为20分钟
@@ -175,9 +162,10 @@ if __name__ == "__main__":
         'coalesce': False,
         'max_instances': 1
     }
-    StartForTest()
     backsched = BackgroundScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # 习惯养成--早睡早起
     backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("30 6 * * *"), id="do_show_sleep_job")
+    
     backsched.add_job(markdown_to_wechat, CronTrigger.from_crontab("10 6 * * *"), id="markdown_to_wechat")
     # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("0 6 * * *"), id="do_show_sleep_job")
     backsched.start()
