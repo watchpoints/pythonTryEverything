@@ -141,7 +141,7 @@ class MyKuaishou:
         if self.driver:
             self.driver.close()
         print("is being destroyed")
-         
+    
     def init_browser(self):
         # 采用谷歌浏览器
         chrome_options = Options()
@@ -156,7 +156,6 @@ class MyKuaishou:
 
         sys = platform.system()
         print(sys)
-        chrome_options.add_argument('--headless')  
         if sys == "Windows":
             print("sys=OS is Windows!!!")
         elif sys == "Linux":
@@ -218,10 +217,6 @@ class MyKuaishou:
         time.sleep(5)
         
         # selenium——鼠标操作ActionChains：点击、滑动、拖动
-        # https://selenium-python.readthedocs.io/locating-elements.html
-        # How to find elements by CSS selector in Selenium
-        # https://scrapfly.io/blog/how-to-find-elements-by-css-selectors-in-selenium/
-        # https://selenium-python-zh.readthedocs.io/en/latest/locating-elements.html
         # 通过XPath查找包含特定文本的<div>元素
         element = self.driver.find_element(By.XPATH, '//div[contains(text(), "上传图文")]')
         action = ActionChains(self.driver)
@@ -235,18 +230,16 @@ class MyKuaishou:
 
         # 找到按钮并执行相应操作
         upload_button = self.driver.find_element(By.XPATH, '//button[contains(text(), "上传图片")]')
-        #upload_button.click()
+        upload_button.click()
         # 等待一些时间，确保文件上传对话框弹出
         time.sleep(5)
         
         # 使用 pyautogui 模拟键盘输入文件路径
-        # pyautogui.write(picture_path)
+        pyautogui.write(picture_path)
         # # 模拟按下回车键
-        # pyautogui.press("enter")
-        # upload_button.send_keys(picture_path)
-        # 使用JavaScript设置文件路径
-        self.driver.execute_script(f"arguments[0].value='{picture_path}';", upload_button)
+        pyautogui.press("enter")
 
+    
         
         time.sleep(10)
         print(f"{picture_path} >>>>>>>>>>>>> upload pic ok")
@@ -294,15 +287,9 @@ class MyKuaishou:
         time.sleep(5)
         logging.info("commit")
         print("commit")
-    
-    def login_and_save_cookies():
-        
-        
-#################################################################################
-       
 
-def interface_auo_upload_kuaishou():
-    
+#################################################################################
+def interface_auo_upload_kuaishou():    
     sys = platform.system()
     if sys == "Windows":
         driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
@@ -330,12 +317,7 @@ def interface_auo_upload_kuaishou():
     autoupload.usr_login()
     autoupload.cookieslogin()
     autoupload.upload_picture(file_path,msg)
-    
-    
-    
-    
 
-        
 if __name__ == '__main__':
     
     interface_auo_upload_kuaishou()

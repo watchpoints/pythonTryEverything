@@ -134,12 +134,14 @@ class MyKuaishou:
          self.cook_path = cook_path
          self.login_url = login_url
          self.upload_url = upload_url
+         # playwright 部分
+         self.browser = None
          print("creae MyKuaishou")
     def __del__(self):
         if self.driver:
             self.driver.close()
         print("is being destroyed")
-         
+    
     def init_browser(self):
         # 采用谷歌浏览器
         chrome_options = Options()
@@ -215,10 +217,6 @@ class MyKuaishou:
         time.sleep(5)
         
         # selenium——鼠标操作ActionChains：点击、滑动、拖动
-        # https://selenium-python.readthedocs.io/locating-elements.html
-        # How to find elements by CSS selector in Selenium
-        # https://scrapfly.io/blog/how-to-find-elements-by-css-selectors-in-selenium/
-        # https://selenium-python-zh.readthedocs.io/en/latest/locating-elements.html
         # 通过XPath查找包含特定文本的<div>元素
         element = self.driver.find_element(By.XPATH, '//div[contains(text(), "上传图文")]')
         action = ActionChains(self.driver)
@@ -233,16 +231,18 @@ class MyKuaishou:
         # 找到按钮并执行相应操作
         upload_button = self.driver.find_element(By.XPATH, '//button[contains(text(), "上传图片")]')
         upload_button.click()
-       # 等待一些时间，确保文件上传对话框弹出
+        # 等待一些时间，确保文件上传对话框弹出
         time.sleep(5)
         
         # 使用 pyautogui 模拟键盘输入文件路径
         pyautogui.write(picture_path)
-        # 模拟按下回车键
+        # # 模拟按下回车键
         pyautogui.press("enter")
+
+    
         
-        time.sleep(5)
-        print(f"{picture_path} upload pic ok")
+        time.sleep(10)
+        print(f"{picture_path} >>>>>>>>>>>>> upload pic ok")
         # 编辑封面 【无法解决，但是不编辑封面也可以，主要按钮获取不对】
         # https://www.cnblogs.com/miki-peng/p/14509946.html
         # xpath_expression = "//button[./span[text()='编辑封面']]"
@@ -270,6 +270,7 @@ class MyKuaishou:
         # print(new_page_source)
         # 需要人工编译封面
         
+        self.driver.execute_script('window.scrollTo(0,document.body.scrollHeight)')   #滑到底部 
                 
         #填写描述
         msg_button = self.driver.find_element(By.CSS_SELECTOR,".iGOvMbhp8tU-")
@@ -286,12 +287,9 @@ class MyKuaishou:
         time.sleep(5)
         logging.info("commit")
         print("commit")
-        
-#################################################################################
-       
 
-def interface_auo_upload_kuaishou():
-    
+#################################################################################
+def interface_auo_upload_kuaishou():    
     sys = platform.system()
     if sys == "Windows":
         driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
@@ -319,16 +317,13 @@ def interface_auo_upload_kuaishou():
     autoupload.usr_login()
     autoupload.cookieslogin()
     autoupload.upload_picture(file_path,msg)
-    
-    
-    
-    
 
-        
 if __name__ == '__main__':
     
-    # interface_auo_upload_kuaishou()
-    scheduler = BlockingScheduler()
-    scheduler.add_job(interface_auo_upload_kuaishou, CronTrigger.from_crontab("30 10 * * *"), id="interface_auo_upload_kuaishou")
-    scheduler.start()
+    interface_auo_upload_kuaishou()
+    # scheduler = BlockingScheduler()
+    # scheduler.add_job(interface_auo_upload_kuaishou, CronTrigger.from_crontab("26 20 * * *"), id="interface_auo_upload_kuaishou")
+    # scheduler.start()
     
+# https://www.reddit.com/r/learnpython/comments/kh34f7/selenium_pyautogui_in_background/
+# https://github.com/asweigart/pyautogui/issues/87

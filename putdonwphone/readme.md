@@ -13,9 +13,17 @@
 - playwright
 
 ## 安装依赖
- 
- pip3 install pyautogui
--
+
+
+playwright -V
+Version 1.31.1
+python -m playwright install
+playwright 默认会下载 chromium,firefox 和 webkit 三个浏览器
+playwright install --force chrome
+
+
+
+
 
 ## 可能遇到问题
 
@@ -65,3 +73,16 @@ Is it possible to run PyAutoGUI in headless mode?
 
 Unable to run pyautogui scripts from remote headless server
 https://github.com/asweigart/pyautogui/issues/87
+
+
+5 
+
+<input type="file" accept="image/png, image/jpg, image/jpeg, image/webp" multiple="" style="display: none; opacity: 0; width: 0px; height: 0px;">
+
+
+<div>
+<p class="qqqJeGi8th8-" data-immersive-translate-effect="1" data-immersive_translate_walked="817a3518-84d8-4eb3-9f82-3123ec648450">拖拽图片到此或点击上传</p>
+</div>
+<button class="hZ8r8rmXIRM-" data-immersive-translate-effect="1" data-immersive_translate_walked="817a3518-84d8-4eb3-9f82-3123ec648450">上传图片</button>
+
+<input type="file" accept="image/png, image/jpg, image/jpeg, image/webp" multiple="" style="display: none; opacity: 0; width: 0px; height: 0px;">
