@@ -1,7 +1,7 @@
+"""This module provides 统一调度模块"""
 import logging
 import signal
 
-import weibo
 import toutiao
 import maimai
 import douyu
@@ -13,13 +13,21 @@ from kernel import interface_db
 from third import mainWechatDaily
 from blog import baidubaijia
 from putdonwphone import mykuaishou2
+from putdonwphone import myxiaohongshu
+from putdonwphone import mydouyin
 
-# 早睡早起图文模式
+
 def get_up_tuwen():
+    """
+      早睡早起图文模式
+    """
     mykuaishou2.interface_auo_upload_kuaishou2()
-    
-# 起床打卡
+    myxiaohongshu.interface_auo_upload_myxiaohongshu()
+
 def show_sleep():
+    """
+       起床打卡
+    """
     try:
         get_up_tuwen()
         msgGetUp = interface_db.DailyGetUpEvent()
@@ -106,8 +114,8 @@ def send_msg_to_blog(wechat_txt: str):
 
 
 if __name__ == '__main__':
-    
-  #msg = interface_db.DailyGetUpEvent()
-  #baidubaijia.send_msg_to_baidubaijia(msg)
-  mykuaishou2.interface_auo_upload_kuaishou2()
-    
+    #msg = interface_db.DailyGetUpEvent()
+    #baidubaijia.send_msg_to_baidubaijia(msg)
+    #mykuaishou2.interface_auo_upload_kuaishou2()
+    # myxiaohongshu.interface_auo_upload_myxiaohongshu()
+    mydouyin.interface_auo_upload_mydouyin()

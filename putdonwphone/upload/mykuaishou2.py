@@ -193,14 +193,13 @@ class MyKuaishou:
         time.sleep(3)
         # https://playwright.dev/docs/locators
         # 使用 XPath 表达式定位元素
-        xpath_expression = '//div[contains(text(), "上传图文")]'
         example_element = page.locator("xpath=//div[contains(text(), '上传图文')]")
         example_element.click()
         print("进入图文页面")
-        time.sleep(2)
+        time.sleep(5)
         # https://github.com/Superheroff/douyin_uplod/blob/main/main.py
     
-        #  # 找到拖拽区域  
+        #  # 找到拖拽区域
         upload_button  = page.locator("xpath=//button[contains(text(), '上传图片')]")
         # # 模拟拖拽文件到拖拽区域
         upload_button.click()

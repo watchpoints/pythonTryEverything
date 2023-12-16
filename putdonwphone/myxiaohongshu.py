@@ -1,24 +1,22 @@
-"""This module provides mydouyn"""
 import time
 import json
 import os
 import platform
-from datetime import datetime
 import requests
+from datetime import datetime
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
 
 
 class GetupHabit:
-    """This class provides a way to do something."""
     def __init__(self, save_picture_path: str, default_picture_path: str, get_up_path:str):
         self.save_picture_path = save_picture_path
         self.default_picture_path = default_picture_path
         self.get_up_path = get_up_path
         print("create GetupHabit")
 
+    # 定义通过城市获取天气信息的函数
     def get_weather(self):
-        """定义通过城市获取天气信息的函数."""
         print(self.save_picture_path)
         url: str = 'https://restapi.amap.com/v3/weather/weatherInfo?parameters'
         params_estimate1 = {
@@ -30,17 +28,22 @@ class GetupHabit:
         res = requests.get(url=url, params=params_estimate1)  # 预报天气
         # res2 = requests.get(url=url,params=params_realtime) # 实时天气
         data_json = res.json()
-        # date = data_json.get('forecasts')[0].get("casts")[0].get('date')  # 获取日期
+        province = data_json['forecasts'][0]["province"]  # 获取省份
+        city = data_json.get('forecasts')[0].get("city")  # 获取城市
+        adcode = data_json.get('forecasts')[0].get("adcode")  # 获取城市编码
+        reporttime = data_json.get('forecasts')[0].get("reporttime")  # 获取发布数据时间
+        date = data_json.get('forecasts')[0].get("casts")[0].get('date')  # 获取日期
         week = data_json.get('forecasts')[0].get("casts")[0].get('week')  # 获取星期几
         dayweather = data_json.get('forecasts')[0].get("casts")[0].get('dayweather')  # 白天天气现象
-        #nightweather = data_json.get('forecasts')[0].get("casts")[0].get('nightweather')  # 晚上天气现象
+        nightweather = data_json.get('forecasts')[0].get("casts")[0].get('nightweather')  # 晚上天气现象
         daytemp = data_json.get('forecasts')[0].get("casts")[0].get('daytemp')  # 白天温度
         nighttemp = data_json.get('forecasts')[0].get("casts")[0].get('nighttemp')  # 晚上温度
-        #daywind = data_json.get('forecasts')[0].get("casts")[0].get('daywind')  # 白天风向
+        daywind = data_json.get('forecasts')[0].get("casts")[0].get('daywind')  # 白天风向
+        nightwind = data_json.get('forecasts')[0].get("casts")[0].get('nightwind')  # 晚上风向
         daypower = data_json.get('forecasts')[0].get("casts")[0].get('daypower')  # 白天风力
+        nightpower = data_json.get('forecasts')[0].get("casts")[0].get('nightpower')  # 晚上风力
 
         weather = ''
-        weather +='星期：' + week + "\r\n"
         weather += '✅ 天气:' + dayweather + "\r\n"
         weather += '✅  温度:' + "低温 " + nighttemp + "℃ ~高温 " + daytemp + " ℃\r\n"
         weather += '✅ 风力:' + daypower + "级\r"
@@ -103,7 +106,7 @@ class GetupHabit:
         # Calculate the difference in days
         difference_in_days = (current_date - target_date).days
 
-        temp_habit_name = "挑战早睡早起100天" + "第" + str(difference_in_days) + "天"
+        habit_name = "挑战早睡早起100天" + "第" + str(difference_in_days) + "天"
         data = self.get_every_word()
         title = "#挑战早睡早起100天" + "\r\n"
         title += data['content'] + "\r\n"
@@ -115,35 +118,11 @@ class GetupHabit:
         title += weather + "\r\n"
         title += "\r\n"
         title += self.read_get_up_from_txt(self.get_up_path)
-        return temp_habit_name,title
+        return habit_name,title
 
- 
-def interface_get_daily_englis_word():
-    """
-    获取每日英语单词
-
-    Returns:
-        tuple[str, str, Any]: 包含单词、释义和相关图片路径的元组
-    Python Return Multiple Values  How to Return a Tuple, List, or Dictionary
-    https://www.freecodecamp.org/news/python-returns-multiple-values-how-to-return-a-tuple-list-dictionary/
-    """
-    sys = platform.system()
-    sys = platform.system()  
-    if sys == "Windows":
-        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
-        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
-    else:
-        save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
-        default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
-        get_up_path = '/root/code/python/config/01_get_up.txt'
-
-    getup = GetupHabit(save_picture_path, default_picture_path, get_up_path) 
-    temp_habit_name,temp_habit_detail = getup.interface_get_up()
-    return getup.save_picture_path, temp_habit_name,temp_habit_detail
 
 ########################################################################
-class CMyDouyin:
+class CMyRedBook:
     """
     This class represents a GetupHabit.
 
@@ -163,7 +142,7 @@ class CMyDouyin:
     def __del__(self):
         print("CMyDouyin is being destroyed")
 
-    def upload_picture(self, picture_path: str, habit_name:str, habit_detail:str):
+    def upload_picture(self, picture_path: str, habit_name: str, habit_detail:str):
         """
           upload_picture
         """
@@ -176,23 +155,9 @@ class CMyDouyin:
             #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             self.browser = playwright.chromium.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
-            self.msg_up_load(login_page, picture_path, habit_name,habit_detail)
+            self.msg_up_load(login_page, picture_path, habit_name, habit_detail)
             self.browser.close()
     
-    def upload_mp4(self, mp4_path: str, msg: str):
-        """
-          upload_mp4
-        """
-        with sync_playwright() as playwright:
-            display_headless = False
-            # display_headless = True
-            sys = platform.system()
-            if sys == "Linux":
-                display_headless = True
-            self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-            login_page = self.login_or_restore_cookies()
-            self.msg_up_load_mp4(login_page, mp4_path, msg)
-            self.browser.close()
         
     def login_or_restore_cookies(self) -> Page:
         """
@@ -221,119 +186,84 @@ class CMyDouyin:
         print("login_or_restore_cookies")
         return page
 
-    def msg_up_load(self, page: Page, picture_path: str,habit_name:str, habit_detail:str):
+    def msg_up_load(self, page: Page, picture_path: str, habit_name: str, habit_detail:str):
         """
-        msg_up_load
+        上传图文
         """
         page.goto(self.upload_picture_url)
         time.sleep(3)
         print(f"open  {self.upload_picture_url}")
         # 使用文本内容定位元素
-        example_element = page.locator("xpath=//div[contains(text(), '发布图文')]")
+        example_element = page.locator("xpath=//span[contains(text(), '上传图文')]")
         example_element.click()
         print("点击 发布图文")
-        time.sleep(3)
-        
-        # page.locator(":has-text(\"点击上传 或直接将图片文件拖入此区域最多支持上传35张图片, 图片格式不支持gif格式\")").click()
-        # page.locator(":has-text(\"最多支持上传35张图片\")").click()
-        # page.locator("css=.upload--nCmEF").click()
-        #page.locator("css=.container--157qa").click()
-    
-        # page.locator(
-        #     ":has-text(\"点击上传 或直接将图片文件拖入此区域最多支持上传35张图片，图片格式不支持gif格式\")").set_input_files(
-        #     picture_path)
-        # page.locator("css=.container--157qa").set_input_files(picture_path)
-
-        # 等待文件选择器出现，并将返回的`FileChooser`对象存储在变量`fc_info`中。
-        # https://playwright.dev/python/docs/api/class-filechooser
-        with page.expect_file_chooser() as fc_info:
-            page.locator("css=.container--157qa").click()
-        file_chooser = fc_info.value
-        file_chooser.set_files(picture_path)
-            
-        print("上传图片")
-        time.sleep(30)
-        page.mouse.down()
-
-        # 添加作品标题
-        page.locator("css=.input--1Wznq.placeholder--xLD8h").fill(habit_name)
-        time.sleep(2)
-        ## css calls 动态变化的
-        page.locator('xpath=//*[@id="root"]/div/div/div/div[2]/div[1]/div/div[1]/div/div/div[2]/div/div/div/div[2]/div').fill(habit_detail)
-        
         time.sleep(4)
-        page.locator("xpath=//button[contains(text(), '发布')]").click()
+        
+        
+        # # page.locator('.drag-over').locator('nth=0').click()
+        # page.locator('.drag-over').locator('nth=0').set_input_files()
+        # # page.locator(
+        # #     ":has-text(\"最多支持上传18张\")").locator('nth=1').set_input_files(
+        # #     picture_path)
+            
+    
+        # 点击选择文件，输入文件
+        with page.expect_file_chooser() as fc_info:
+            # 找到拖拽区域  
+            page.locator('.drag-over').locator('nth=0').click()
+            # 问题 文件弹框后 不自动退出 无法后续自动化操作
+            file_chooser = fc_info.value
+            file_chooser.set_files(picture_path)
+
+        time.sleep(4)
+        print("上传图片")
+        #填写标题，可能会有更多赞哦～
+        page.locator("css=.c-input_inner").fill(habit_name)
+        time.sleep(3)
+        #填写更全面的描述信息，让更多的人看到你吧！
+        page.locator("css=.post-content").fill(habit_detail)
+        time.sleep(3)
+        page.mouse.down()
+        page.mouse.down()
+        time.sleep(1)
+        # 发布
+        page.locator("xpath=//button[./span[text()='发布']]").click()
         print("发布")
         time.sleep(5)
-
-    def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
-        """
-        msg_up_load_mp4
-        """
-        page.goto(self.upload_mp4_url)
-        time.sleep(3)
-        print(f"open  {self.upload_mp4_url}")
-        
-        # 使用文本内容定位元素
-        example_element = page.locator("xpath=//div[contains(text(), '发布视频')]")
-        example_element.click()
-        print("点击 发布视频")
-        time.sleep(3)
-
-        # 使用文本内容定位元素
-        
-        page.locator(
-            "label:has-text(\"点击上传 或直接将视频文件拖入此区域为了更好的观看体验和平台安全，平台将对上传的视频预审。超过40秒的视频建议上传横版视频\")").set_input_files(
-            mp4_path)
-            
-        print("视频文件拖入此区域")
-        time.sleep(20)
-        # # 点击选择文件，输入文件
-        # with page.expect_file_chooser() as fc_info:
-        #     # 找到拖拽区域  
-        #     page.click("xpath=//button[contains(text(), '上传图片')]")
-        #     # 问题 文件弹框后 不自动退出 无法后续自动化操作
-        #     file_chooser = fc_info.value
-        #     file_chooser.set_files(picture_path)
-
-        # time.sleep(3)
-        # page.mouse.down()
-        # page.mouse.down()
-
-        # # 填写描述
-        # page.locator("css=.iGOvMbhp8tU-").fill(msg)
-        # time.sleep(3)
-        # # 发布
-        # page.locator("xpath=//button[./span[text()='发布']]").click()
-        # time.sleep(5)
-        print("发布")
-        time.sleep(600)
     #################################################################################
 
 
-def interface_auo_upload_mydouyin():
+def interface_auo_upload_myxiaohongshu():
     """
       对外调用接口
     """
     sys = platform.system()
-    login_url = "https://creator.douyin.com"
-    upload_picture_url = "https://creator.douyin.com/creator-micro/content/upload"
-    upload_mp4_url = "https://creator.douyin.com/creator-micro/content/upload"
+    login_url = "https://creator.xiaohongshu.com/login?source=official"
+    upload_picture_url = "https://creator.xiaohongshu.com/publish/publish?source=official"
+    upload_mp4_url = "https://creator.xiaohongshu.com/publish/publish?source=official"
+    sys = platform.system()  
     if sys == "Windows":
-        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\mydouyin_xiaohao.json"
+        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\xiaohongshu.json"
+        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
+        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
     else:
-        cookies_path = r"/root/bin/mydouyin_xiaohao.json"
+        cookies_path = r"/root/bin/xiaohongshu.json"
+        save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
+        default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
+        get_up_path = '/root/code/python/config/01_get_up.txt'
 
-    file_path, habit_name,habit_detail = interface_get_daily_englis_word()
-    print(file_path)
+    getup = GetupHabit(save_picture_path, default_picture_path, get_up_path)
+    habit_name,habit_detail = getup.interface_get_up()
     print(habit_name)
     print(habit_detail)
-    
-    autoupload = CMyDouyin(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-    autoupload.upload_picture(file_path, habit_name,habit_detail)
-    # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
-    # autoupload.upload_mp4(mp4_path, msg)
+    file_path = getup.save_picture_path
+    time.sleep(1)
+
+    autoupload = CMyRedBook(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    autoupload.upload_picture(file_path, habit_name, habit_detail)
+
 
 
 if __name__ == '__main__':
-    interface_auo_upload_mydouyin()
+    interface_auo_upload_myxiaohongshu()
