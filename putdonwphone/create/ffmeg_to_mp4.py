@@ -54,7 +54,7 @@ def get_info(input_path):
      print(cmd)
      os.system(cmd)
 
-def create_big_to_small(input_dir:str,output_dir:str):
+def create_big_to_small(input_dir:str,output_dir:str,bak_dir:str):
     """
         功能：
         输出：
@@ -64,14 +64,24 @@ def create_big_to_small(input_dir:str,output_dir:str):
         for file in files:
             # 拼接路径
             file_path = os.path.join(root,file)
-            if file.endswith('.mp4'):
-                print(file_path)
-                duration, file_size = get_video_properties(file_path)
-                if  duration > 30*60 or  file_size /1024/1024  > 250:
-                    if split_video(file_path,output_dir,60*12):
-                        print("done split_video")
-                else:
-                    shutil.move(file_path, output_dir)
+            try:
+                if file.endswith('.mp4'):
+                    print(file_path)
+                    bak_file_name = os.path.basename(file_path)
+                    bak_file_name_path =os.path.join(bak_dir, bak_file_name)
+                    duration, file_size = get_video_properties(file_path)
+                    if  duration > 30*60 or  file_size /1024/1024  > 250:
+                        if split_video(file_path,output_dir,60*12):
+                            print(file_path)
+                            print("done split_video")
+                            if not os.path.exists(bak_file_name_path):
+                                shutil.move(file_path, bak_dir)
+                    else:
+                        print("less")
+                        if not os.path.exists(bak_file_name_path):
+                            shutil.move(file_path, output_dir)
+            except Exception as myunkonw:
+                print(f"处理视频文件时出错: {str(myunkonw)}")
     
     return True
                     
@@ -269,23 +279,20 @@ def interface_mp4_to_post():
         输出：
     """
     if platform.system() == "Windows":
+        print("Windows")
         input_dir = r'D:\mp4\input'
         output_dir = r'D:\mp4\output'
+        bak_dir = r"D:\mp4\bak"
     else:
         input_dir = r'/root/mp4/input'
         output_dir = r'/root/mp4/output'
+        bak_dir = r'/root/mp4/bak'
         
-    #water_output_dir = r'D:\mp4\water'
-    #bak_dir = r'D:\mp4\bak'
-    # 避免重复转化
-    if not check_file_exist(output_dir):
-        ret = create_big_to_small(input_dir,output_dir)
-        if ret :
-            print("create_big_to_small done")
-        else:
-            print("create_big_to_small failed")
-            
-    #bath_add_water_to_mp4(output_dir, water_output_dir)
+    ret = create_big_to_small(input_dir,output_dir,bak_dir)
+    if ret :
+        print("create_big_to_small done")
+    else:
+        print("create_big_to_small failed")
     
     
     

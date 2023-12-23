@@ -195,7 +195,7 @@ class CMyShipinhao:
         logging.info("upload_mp4 %s",mp4_path)
         with sync_playwright() as playwright:
             display_headless = False
-            display_headless = True
+            #display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
@@ -302,28 +302,28 @@ class CMyShipinhao:
         page.wait_for_url(self.upload_mp4_url)
         
        # 请上传2小时以内的视频
-       
         print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
         # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
             page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
-        print("event expect_file_chooser")
+        print("upload file begin")
         file_chooser = fc_info.value
         file_chooser.set_files(mp4_path)
         # 预备文件上传时间
-        time.sleep(120)
+        time.sleep(300)
         print(mp4_path)
         page.mouse.down()
         
         # <div contenteditable="" data-placeholder="添加描述" class="input-editor"></div>
         page.locator(".input-editor").fill(habit_detail)
-        time.sleep(1)
+        time.sleep(2)
         
         # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
         page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
-        time.sleep(1)
-
+        time.sleep(2)
+        print(habit_name)
         page.get_by_role("button", name="发表").click()
+        print("发表")
         time.sleep(5)
        
     #################################################################################
@@ -355,13 +355,13 @@ def interface_auo_upload_shipinhao(out_path:str, bak_path:str):
                 # 拼接路径
                 mp4_file_path = os.path.join(root,file)
                 if file.endswith('.mp4'):
-                    if autoupload.upload_mp4(mp4_file_path,habit_name,habit_detail):
+                    file_name = os.path.basename(mp4_file_path)
+                    file_name = file_name.split('.')[0]
+                    msg = "#" + file_name + "\r\n"
+                    msg += habit_detail
+                    print(msg)
+                    if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
                         logging.info("upload_mp4 %s", mp4_file_path)
-                        # move file
-                        shutil.move(mp4_file_path, bak_path)
-
-                    
-                    
         
     except ValueError:
         print("Could not convert data to an integer.")
