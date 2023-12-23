@@ -26,7 +26,7 @@ def get_up_tuwen():
       早睡早起图文模式
     """
     try:
-        mykuaishou2.interface_auo_upload_kuaishou2()
+        mykuaishou2.interface_auo_upload_kuaishou2("pic")
         myxiaohongshu.interface_auo_upload_myxiaohongshu()
         myxiaohongshu.interface_auo_upload_myxiaohongshu()
         mydouyin.interface_auo_upload_mydouyin()
@@ -87,14 +87,12 @@ def show_sleepForTest():
 
 
 def send_msg_to_blog(wechat_txt: str):
-    try:
-        logging.debug("send_msg_to_blog:" + wechat_txt)
-        myblog.KillChromebeta()
-        # if not weibo.send_msg_to_weibo(wechat_txt):
-        #     print("post weibo failed")
-        #     logging.error("post weibo failed")
+    """_summary_
 
-        print("post send_msg_to_toutiao")
+    Args:
+        wechat_txt (str): _description_
+    """
+    try:
         myblog.KillChromebeta()
         # if not toutiao.send_msg_to_toutiao(wechat_txt):
         #     logging.error("post toutiao failed")
@@ -133,6 +131,7 @@ def auto_upload_mp4():
         BACK_PATH = r"/root/mp4/bak"
 
     myshipinhao.interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
+    mykuaishou2.interface_auo_upload_kuaishou2("mp4")
 
     # 上传完毕 移动到临时目录
     for root,_,files in os.walk(OUT_PATH):

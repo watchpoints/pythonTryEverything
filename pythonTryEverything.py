@@ -146,7 +146,7 @@ def ai_to_mp4():
         print("end")
 
 def EeasyHabitSleep():
-     """ 自定上传视频内容到不同的平台"""
+    """ 自定上传视频内容到不同的平台"""
     signal.alarm(3600)
     try:
         sleep.show_sleep()

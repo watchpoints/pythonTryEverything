@@ -4,7 +4,7 @@
 vscode python timeout waiting for launcher to connect
 
 - how
-把windows设置里的网络代理取消就好了：把自动检测设置关掉就好了。
+把windows设置里的网络代理取消就好了：把自动检测设置关掉就好了
 
 1.
 - what

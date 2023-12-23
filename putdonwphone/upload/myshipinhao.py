@@ -238,8 +238,8 @@ class CMyShipinhao:
             # 扫名二维码登录 需要人工处理
             time.sleep(60)
             cookies = page.context.cookies()
-            with open(self.cookies_path, 'w',encoding='utf-8') as f:
-                f.write(json.dumps(cookies))
+            with open(self.cookies_path, 'w',encoding='utf-8') as myfile:
+                myfile.write(json.dumps(cookies))
         print("restore_cookies >>>>>>>>>>> ")
         return page
 
@@ -374,8 +374,8 @@ if __name__ == '__main__':
     # 避免熬夜21点到凌晨3点不工作   每周节省3小时时间
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
-        BACK_PATH = r"D:\mp4\back"
+        BACK_PATH = r"D:\mp4\bak"
     else:
-        OUT_PATH = r"/root/mp4/input"
+        OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
