@@ -1,7 +1,9 @@
 """This module provides 统一调度模块"""
+import os
 import logging
 import signal
-
+import platform
+import shutil
 import toutiao
 import maimai
 import douyu
@@ -15,14 +17,23 @@ from blog import baidubaijia
 from putdonwphone import mykuaishou2
 from putdonwphone import myxiaohongshu
 from putdonwphone import mydouyin
-
+from putdonwphone import mytoutiao
+from putdonwphone import myzhihu
+from putdonwphone import  myshipinhao
 
 def get_up_tuwen():
     """
       早睡早起图文模式
     """
-    mykuaishou2.interface_auo_upload_kuaishou2()
-    myxiaohongshu.interface_auo_upload_myxiaohongshu()
+    try:
+        mykuaishou2.interface_auo_upload_kuaishou2()
+        myxiaohongshu.interface_auo_upload_myxiaohongshu()
+        myxiaohongshu.interface_auo_upload_myxiaohongshu()
+        mydouyin.interface_auo_upload_mydouyin()
+        mytoutiao.interface_auo_upload_weitoutiao()
+        myzhihu.interface_auo_upload_zhihu()
+    finally:
+        print("end")
 
 def show_sleep():
     """
@@ -112,10 +123,32 @@ def send_msg_to_blog(wechat_txt: str):
         signal.alarm(0)  # 成功完成任务，取消超时信号
         print("end")
 
+def auto_upload_mp4():
+    """ call """
+    if platform.system() == "Windows":
+        OUT_PATH = r"D:\mp4\output"
+        BACK_PATH = r"D:\mp4\bak"
+    else:
+        OUT_PATH = r"/root/mp4/output"
+        BACK_PATH = r"/root/mp4/bak"
+
+    myshipinhao.interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
+
+    # 上传完毕 移动到临时目录
+    for root,_,files in os.walk(OUT_PATH):
+        for file in files:
+            file_path = os.path.join(root,file)
+            if file.endswith('.mp4'):
+                print(file_path)
+                shutil.move(file_path, BACK_PATH)
 
 if __name__ == '__main__':
+    auto_upload_mp4()
+    #get_up_tuwen()
     #msg = interface_db.DailyGetUpEvent()
     #baidubaijia.send_msg_to_baidubaijia(msg)
     #mykuaishou2.interface_auo_upload_kuaishou2()
     # myxiaohongshu.interface_auo_upload_myxiaohongshu()
-    mydouyin.interface_auo_upload_mydouyin()
+    # mydouyin.interface_auo_upload_mydouyin()
+    # mytoutiao.interface_auo_upload_weitoutiao()
+    # myzhihu.interface_auo_upload_zhihu()

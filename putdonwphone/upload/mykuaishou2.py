@@ -1,6 +1,7 @@
+"""This module provides 远离手机"""
 import time
 import json
-import pickle
+import logging
 import os
 import platform
 import requests
@@ -157,8 +158,13 @@ class MyKuaishou:
             
     # 登录
     def login_or_restore_cookies(self)-> Page:
-        # 创建一个新的页面
-        context = self.browser.new_context()
+        """登录"""
+        user_agent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
+        sys = platform.system()
+        if sys == "Linux":
+            user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+        
+        context = self.browser.new_context(user_agent=user_agent)
         context.clear_cookies()
         page = context.new_page()
         page.goto(self.login_url) 
@@ -167,8 +173,8 @@ class MyKuaishou:
         if os.path.exists(self.cookies_path):
             print("cookies is exited load")
             # 从文件中加载 cookies
-            with open(self.cookies_path, 'r') as f:
-                cookies = json.load(f)
+            with open(self.cookies_path, 'r',encoding='utf-8') as myfile:
+                cookies = json.load(myfile)
             # 将 cookies 加载到页面中
             context.add_cookies(cookies)
             time.sleep(3)
@@ -183,23 +189,73 @@ class MyKuaishou:
             cookies = page.context.cookies()
             print(cookies)
             # 保存 cookies 到文件
-            with open(self.cookies_path, 'w') as f:
-                f.write(json.dumps(cookies))
+            with open(self.cookies_path, 'w',encoding='utf-8') as myfile:
+                myfile.write(json.dumps(cookies))
         return page
 
      # 登录
-    def msg_up_load(self,page: Page,picture_path:str,msg:str):
+    def msg_up_load(self,page: Page,mp4_path:str,habit_name:str,habit_detail:str):
+        """_summary_
+
+        Args:
+            page (Page): _description_
+            mp4_path (str): _description_
+            habit_name (str): _description_
+            habit_detail (str): _description_
+        """
         page.goto(self.upload_url)
         time.sleep(3)
         # https://playwright.dev/docs/locators
         # 使用 XPath 表达式定位元素
+        xpath_expression = '//div[contains(text(), "上传图文")]'
         example_element = page.locator("xpath=//div[contains(text(), '上传图文')]")
         example_element.click()
         print("进入图文页面")
-        time.sleep(5)
+        time.sleep(2)
         # https://github.com/Superheroff/douyin_uplod/blob/main/main.py
     
-        #  # 找到拖拽区域
+        #  # 找到拖拽区域  
+        upload_button  = page.locator("xpath=//button[contains(text(), '上传图片')]")
+        # # 模拟拖拽文件到拖拽区域
+        upload_button.click()
+        print("上传图片")
+        time.sleep(3)
+        # 点击选择文件，输入文件
+        with page.expect_file_chooser() as fc_info:
+            # 找到拖拽区域  
+            page.click("xpath=//button[contains(text(), '上传图片')]") 
+            # 问题 文件弹框后 不自动退出 无法后续自动化操作
+            file_chooser = fc_info.value
+            file_chooser.set_files(mp4_path)
+        
+        time.sleep(3)
+        page.mouse.down()
+        page.mouse.down()
+        
+        #填写描述
+        page.locator("css=.iGOvMbhp8tU-").fill(habit_name)
+        time.sleep(3)
+        print("write {}".format(habit_detail))
+        
+        #发布
+        page.locator("xpath=//button[./span[text()='发布']]").click()
+        time.sleep(5)
+        print("发布") 
+    
+    def auto_upload_mp4_to_kuaisou(self,page: Page,picture_path:str,msg:str):
+        """ 不看手机"""
+        page.goto(self.upload_url)
+        time.sleep(3)
+        # https://playwright.dev/docs/locators
+        # 使用 XPath 表达式定位元素
+        xpath_expression = '//div[contains(text(), "上传图文")]'
+        example_element = page.locator("xpath=//div[contains(text(), '上传图文')]")
+        example_element.click()
+        print("进入图文页面")
+        time.sleep(2)
+        # https://github.com/Superheroff/douyin_uplod/blob/main/main.py
+    
+        #  # 找到拖拽区域  
         upload_button  = page.locator("xpath=//button[contains(text(), '上传图片')]")
         # # 模拟拖拽文件到拖拽区域
         upload_button.click()
@@ -220,18 +276,31 @@ class MyKuaishou:
         #填写描述
         page.locator("css=.iGOvMbhp8tU-").fill(msg)
         time.sleep(3)
-        print("write {}".format(msg))
+        print("write {}".format(habit_detail))
         
         #发布
         page.locator("xpath=//button[./span[text()='发布']]").click()
         time.sleep(5)
         print("发布") 
         
-#################################################################################
-       
-
-def interface_auo_upload_kuaishou2():
+    def auto_upload_mp4(self,mp4_path:str,habit_name:str,habit_detail:str):
+        """ 自动分发"""
+        print(habit_name)
+        print(habit_detail)
+        with sync_playwright() as playwright:
+            display_headless = False
+            #display_headless = True
+            if platform.system() == "Linux":
+                display_headless = True
+            self.browser = playwright.chromium.launch(headless=display_headless)
+            
+            login_page = self.login_or_restore_cookies()
+            self.auto_upload_mp4_to_kuaisou(login_page,mp4_path,habit_name,habit_detail)
+            self.browser.close()
     
+#################################################################################
+def interface_auo_upload_kuaishou2(file_type:str):
+    """ 不看短视频"""
     sys = platform.system()
     if sys == "Windows":
         driver_path = r"D:\doc\2023\05-third\chromedriver_win32\chromedriver.exe"
@@ -240,6 +309,8 @@ def interface_auo_upload_kuaishou2():
         upload_url = "https://cp.kuaishou.com/article/publish/video"
         save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
         default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
+        out_path = r"D:\mp4\output"
+        # bak_path = r"D:\mp4\bak"
     else:
         driver_path = r"/root/bin/chromedriver"
         coook_path = r"/root/bin/mykuaishou.json"
@@ -247,21 +318,34 @@ def interface_auo_upload_kuaishou2():
         upload_url = "https://cp.kuaishou.com/article/publish/video"
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
         default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
+        out_path = r"/root/mp4/output"
+        # bak_path = r"/root/mp4/bak"
     
-    getupHaibt = GetupHaibt(save_picture_path,default_picture_path)
-    msg = getupHaibt.interface_get_up()
+    getup_haibt = GetupHaibt(save_picture_path,default_picture_path)
+    msg = getup_haibt.interface_get_up()
     print(msg)
-    file_path = getupHaibt.save_picture_path
+    file_path = getup_haibt.save_picture_path
     time.sleep(1)
         
     autoupload = MyKuaishou(driver_path,coook_path,login_url,upload_url)
-    autoupload.upload_picture(file_path,msg)
+    if "mp4" == file_type:
+         for root,_,files in os.walk(out_path):
+            for file in files:
+                # 拼接路径
+                mp4_file_path = os.path.join(root,file)
+                if file.endswith('.mp4'):
+                    habit_name = "精彩回放"
+                    habit_detail= "精彩回放"
+                    if autoupload.auto_upload_mp4(mp4_file_path,habit_name,habit_detail):
+                        logging.info("upload_mp4 %s", mp4_file_path)
+       
+    else:
+        autoupload.upload_picture(file_path,msg)
     
     
     
     
 
-        
 if __name__ == '__main__':
     
-    interface_auo_upload_kuaishou2()
+    interface_auo_upload_kuaishou2("mp4")

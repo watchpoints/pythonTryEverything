@@ -143,7 +143,7 @@ def interface_get_daily_englis_word():
     return getup.save_picture_path, temp_habit_name,temp_habit_detail
 
 ########################################################################
-class CMyDouyin:
+class CToutiao:
     """
     This class represents a GetupHabit.
 
@@ -223,46 +223,62 @@ class CMyDouyin:
 
     def msg_up_load(self, page: Page, picture_path: str,habit_name:str, habit_detail:str):
         """
-        msg_up_load
+         微头条
         """
         page.goto(self.upload_picture_url)
-        time.sleep(3)
-        print(f"open  {self.upload_picture_url}")
-        # 使用文本内容定位元素
-        example_element = page.locator("xpath=//div[contains(text(), '发布图文')]")
-        example_element.click()
-        print("点击 发布图文")
-        time.sleep(3)
-        
-        # page.locator(":has-text(\"点击上传 或直接将图片文件拖入此区域最多支持上传35张图片, 图片格式不支持gif格式\")").click()
-        # page.locator(":has-text(\"最多支持上传35张图片\")").click()
-        # page.locator("css=.upload--nCmEF").click()
-        #page.locator("css=.container--157qa").click()
-    
-        # page.locator(
-        #     ":has-text(\"点击上传 或直接将图片文件拖入此区域最多支持上传35张图片，图片格式不支持gif格式\")").set_input_files(
-        #     picture_path)
-        # page.locator("css=.container--157qa").set_input_files(picture_path)
-
-        # 等待文件选择器出现，并将返回的`FileChooser`对象存储在变量`fc_info`中。
-        # https://playwright.dev/python/docs/api/class-filechooser
-        with page.expect_file_chooser() as fc_info:
-            page.locator("css=.container--157qa").click()
-        file_chooser = fc_info.value
-        file_chooser.set_files(picture_path)
-            
-        print("上传图片")
-        time.sleep(30)
-        page.mouse.down()
-
-        # 添加作品标题
-        page.locator("css=.input--1Wznq.placeholder--xLD8h").fill(habit_name)
         time.sleep(2)
-        ## css calls 动态变化的
-        page.locator('xpath=//*[@id="root"]/div/div/div/div[2]/div[1]/div/div[1]/div/div/div[2]/div/div/div/div[2]/div').fill(habit_detail)
+        print(f"open  {self.upload_picture_url}")
+        page.mouse.down()
+        page.evaluate("() => window.scrollTo(0,document.body.scrollHeight)")
+        page.mouse.click(100,200)
+
+        msg = habit_name + "\r\n"
+        msg += habit_detail
+        # 使用文本内容定位元素
+        page.locator("css=.ProseMirror").fill(msg)
+        print("填写标题")
+        time.sleep(2)
+        page.mouse.down()
+        page.evaluate("() => window.scrollTo(0,document.body.scrollHeight)")
         
-        time.sleep(4)
-        page.locator("xpath=//button[contains(text(), '发布')]").click()
+        
+        page.locator("label").filter(has_text="个人观点，仅供参考").locator("div").click()
+        print("个人观点，仅供参考")
+        
+    
+        # page.locator("//input[@type='checkbox' and @value='5']").click()
+        # page.locator('text="个人观点，仅供参考"').click()
+        # page.get_by_label('.byte-checkbox.checkbot-ite').check();
+        # page.locator("//label[text()='个人观点，仅供参考']").check();
+        # page.locator('css=.syl-toolbar-button').locator('nth=1').click()
+        # page.get_by_role("button", name="图片").click()
+        # page.getByRole('button', { name: '图片' })
+        # page.locator('.byte-checkbox.checkbot-item').locator('nth=1').click()
+        # page.get_by_role('checkbox').check()
+        
+        # with page.expect_file_chooser() as fc_info:
+        #     page.locator('//button[contains(text(), "图片")]').click()
+        # file_chooser = fc_info.value
+        # file_chooser.set_files(picture_path)
+         # 使用 page.locator 选择 checkbox
+        # checkbox_locator = page.locator('label.byte-checkbox input[type="checkbox"][value="5"]')
+        # # 点击 checkbox
+        # checkbox_locator.click()
+        time.sleep(2)
+        print("开始上传图片")
+        # page.locator("css=.syl-toolbar-tool.weitoutiao-image-plugin.static").click()
+        page.locator("css=.syl-toolbar-tool.weitoutiao-image-plugin.static").click()
+        # https://playwright.dev/python/docs/api/class-page#page-get-by-role
+        page.get_by_role("button", name="本地上传").get_by_role("textbox").set_input_files(picture_path)
+        time.sleep(2)
+        page.get_by_role("button", name="确定").click()
+
+
+        print("结束上传图片")
+        
+        time.sleep(3)
+        print("上传图片")
+        page.locator("xpath=//button[./span[text()='发布']]").click()
         print("发布")
         time.sleep(5)
 
@@ -311,29 +327,29 @@ class CMyDouyin:
     #################################################################################
 
 
-def interface_auo_upload_mydouyin():
+def interface_auo_upload_weitoutiao():
     """
       对外调用接口
     """
     sys = platform.system()
-    login_url = "https://creator.douyin.com"
-    upload_picture_url = "https://creator.douyin.com/creator-micro/content/upload"
-    upload_mp4_url = "https://creator.douyin.com/creator-micro/content/upload"
+    login_url = "https://mp.toutiao.com/profile_v4/weitoutiao/publish"
+    upload_picture_url = "https://mp.toutiao.com/profile_v4/weitoutiao/publish"
+    upload_mp4_url = "https://mp.toutiao.com/profile_v4/weitoutiao/publish"
     if sys == "Windows":
-        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\mydouyin_xiaohao.json"
+        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\toutiao_xiaohao.json"
     else:
-        cookies_path = r"/root/bin/mydouyin_xiaohao.json"
+        cookies_path = r"/root/bin/toutiao_xiaohao.json"
 
     file_path, habit_name,habit_detail = interface_get_daily_englis_word()
     print(file_path)
     print(habit_name)
     print(habit_detail)
     
-    autoupload = CMyDouyin(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    autoupload = CToutiao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
     autoupload.upload_picture(file_path, habit_name,habit_detail)
     # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
     # autoupload.upload_mp4(mp4_path, msg)
 
 
 if __name__ == '__main__':
-    interface_auo_upload_mydouyin()
+    interface_auo_upload_weitoutiao()

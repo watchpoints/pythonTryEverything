@@ -1,5 +1,6 @@
 import os
 import logging
+import platform
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -130,8 +131,22 @@ def markdown_to_wechat():
     push_get_up.markdown_to_wechat()
 
 
+def ai_to_mp4():
+    """ 自定上传视频内容到不同的平台"""
+    try:
+        # 避免熬夜21点到凌晨3点不工作   每周节省3小时时间
+        if platform.system() == "Windows":
+            OUT_PATH = r"D:\mp4\output"
+            BACK_PATH = r"D:\mp4\back"
+        else:
+            OUT_PATH = r"/root/mp4/input"
+            BACK_PATH = r"/root/mp4/bak"
+        sleep.auto_upload_mp4()
+    finally:
+        print("end")
+
 def EeasyHabitSleep():
-    # 设置超时时间
+     """ 自定上传视频内容到不同的平台"""
     signal.alarm(3600)
     try:
         sleep.show_sleep()
@@ -167,6 +182,8 @@ if __name__ == "__main__":
     backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("30 6 * * *"), id="do_show_sleep_job")
     
     backsched.add_job(markdown_to_wechat, CronTrigger.from_crontab("10 6 * * *"), id="markdown_to_wechat")
+    
+    backsched.add_job(ai_to_mp4, CronTrigger.from_crontab("30 7 * * *"), id="auto mp4")
     # backsched.add_job(sleep.show_sleep, CronTrigger.from_crontab("0 6 * * *"), id="do_show_sleep_job")
     backsched.start()
 

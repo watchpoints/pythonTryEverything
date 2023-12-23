@@ -1,9 +1,12 @@
-"""This module provides mydouyn"""
+"""This module provides 视频号助手"""
 import time
 import json
 import os
+import logging
 import platform
 from datetime import datetime
+import traceback
+import shutil
 import requests
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
@@ -103,9 +106,14 @@ class GetupHabit:
         # Calculate the difference in days
         difference_in_days = (current_date - target_date).days
 
-        temp_habit_name = "挑战早睡早起100天" + "第" + str(difference_in_days) + "天"
+        temp_habit_name = "专注学习100天" + "第" + str(difference_in_days) + "天"
         data = self.get_every_word()
-        title = "#挑战早睡早起100天" + "\r\n"
+        
+        title = "#专注学习100天 仅个人学习使用" + "\r\n"
+        title = "本视频大纲内容:todo" + "\r\n"
+        title = "视频关键时间线：todo" + "\r\n"
+        title = "视频核心观点:todo" + "\r\n"
+        title = "☔每日一句：" + "\r\n"
         title += data['content'] + "\r\n"
         title += data['note'] + "\r\n"
         print(str(data['fenxiang_img']))
@@ -113,12 +121,12 @@ class GetupHabit:
         title += datetime.now().strftime('%Y-%m-%d') + "\r\n"
         weather = self.get_weather()
         title += weather + "\r\n"
-        title += "\r\n"
-        title += self.read_get_up_from_txt(self.get_up_path)
+        # title += "\r\n"
+        # title += self.read_get_up_from_txt(self.get_up_path)
         return temp_habit_name,title
 
  
-def interface_get_daily_englis_word():
+def interface_get_daily_note():
     """
     获取每日英语单词
 
@@ -143,7 +151,7 @@ def interface_get_daily_englis_word():
     return getup.save_picture_path, temp_habit_name,temp_habit_detail
 
 ########################################################################
-class CMyDouyin:
+class CMyShipinhao:
     """
     This class represents a GetupHabit.
 
@@ -169,45 +177,59 @@ class CMyDouyin:
         """
         with sync_playwright() as playwright:
             display_headless = False
-            #display_headless = True
+            display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
             #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             self.browser = playwright.chromium.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
+            print("login_or_restore_cookies")
             self.msg_up_load(login_page, picture_path, habit_name,habit_detail)
             self.browser.close()
     
-    def upload_mp4(self, mp4_path: str, msg: str):
+    def upload_mp4(self, mp4_path: str,habit_name: str,habit_detail: str):
         """
           upload_mp4
         """
+        logging.info("upload_mp4 %s",mp4_path)
         with sync_playwright() as playwright:
             display_headless = False
-            # display_headless = True
+            display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
-            self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            self.browser = playwright.chromium.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
-            self.msg_up_load_mp4(login_page, mp4_path, msg)
+            try:
+                self.msg_up_load_mp4(login_page, mp4_path, habit_name, habit_detail)
+            except Exception :
+                print(traceback.format_exc())
+                self.browser.close()
+                return False
+                
             self.browser.close()
+        return True
         
     def login_or_restore_cookies(self) -> Page:
         """
           登录
         """
-        context = self.browser.new_context()
+        userAgent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
+        sys = platform.system()
+        if sys == "Linux":
+            userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+        
+        context = self.browser.new_context(user_agent=userAgent)
         context.clear_cookies()
         page = context.new_page()
         page.goto(self.login_url)
 
         if os.path.exists(self.cookies_path):
-            print("load cookies")
+            print("load cookies >>>>>>>>>>>>>>>>")
             # 从文件中加载 cookies
-            with open(self.cookies_path, 'r',encoding='utf-8') as f:
-                cookies = json.load(f)
+            with open(self.cookies_path, 'r',encoding='utf-8') as myfile:
+                cookies = json.load(myfile)
             context.add_cookies(cookies)
             time.sleep(3)
         else:
@@ -218,7 +240,7 @@ class CMyDouyin:
             cookies = page.context.cookies()
             with open(self.cookies_path, 'w',encoding='utf-8') as f:
                 f.write(json.dumps(cookies))
-        print("login_or_restore_cookies")
+        print("restore_cookies >>>>>>>>>>> ")
         return page
 
     def msg_up_load(self, page: Page, picture_path: str,habit_name:str, habit_detail:str):
@@ -226,114 +248,134 @@ class CMyDouyin:
         msg_up_load
         """
         page.goto(self.upload_picture_url)
-        time.sleep(3)
+        time.sleep(6)
         print(f"open  {self.upload_picture_url}")
-        # 使用文本内容定位元素
-        example_element = page.locator("xpath=//div[contains(text(), '发布图文')]")
-        example_element.click()
+        # 从主页进入 headless不行
+        page.locator("xpath=//div[contains(text(), '写想法')]").click()
         print("点击 发布图文")
+        # time.sleep(3)
+        # print(page.content)
+        
+        # # https://www.zhihu.com/creator
+        # page.mouse.click(200,200)
+        # dropdown = page.get_by_text("内容创作")
+        # dropdown.hover()
+        # # dropdown.locator('.dropdown__link >> text=python').click()
+        # #dropdown.get_by_role("listitem").filter(has_text="python").click()
+        # # 对于ul-li的元素，可以用listitem 的角色定位方式
+        # page.locator("a").filter(has_text="发布想法").click()
+        
+        
+        time.sleep(2)
+        
+        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
+        # page.locator(".InputLike").fill(habit_detail)
         time.sleep(3)
         
-        # page.locator(":has-text(\"点击上传 或直接将图片文件拖入此区域最多支持上传35张图片, 图片格式不支持gif格式\")").click()
-        # page.locator(":has-text(\"最多支持上传35张图片\")").click()
-        # page.locator("css=.upload--nCmEF").click()
-        #page.locator("css=.container--157qa").click()
-    
-        # page.locator(
-        #     ":has-text(\"点击上传 或直接将图片文件拖入此区域最多支持上传35张图片，图片格式不支持gif格式\")").set_input_files(
-        #     picture_path)
-        # page.locator("css=.container--157qa").set_input_files(picture_path)
-
-        # 等待文件选择器出现，并将返回的`FileChooser`对象存储在变量`fc_info`中。
-        # https://playwright.dev/python/docs/api/class-filechooser
+        print("开始上传图片")
+        page.locator(".css-88f71l > button:nth-child(2)").click()
+        time.sleep(2)
+        print("本地上传")
         with page.expect_file_chooser() as fc_info:
-            page.locator("css=.container--157qa").click()
+            page.locator(".css-n71hcb").click()
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path)
-            
-        print("上传图片")
-        time.sleep(30)
-        page.mouse.down()
-
-        # 添加作品标题
-        page.locator("css=.input--1Wznq.placeholder--xLD8h").fill(habit_name)
-        time.sleep(2)
-        ## css calls 动态变化的
-        page.locator('xpath=//*[@id="root"]/div/div/div/div[2]/div[1]/div/div[1]/div/div/div[2]/div/div/div/div[2]/div').fill(habit_detail)
+        time.sleep(5)
         
-        time.sleep(4)
-        page.locator("xpath=//button[contains(text(), '发布')]").click()
+        page.get_by_role("button", name="插入图片").click()
+        time.sleep(5)
+        
+        print("结束上传图片")
+        
+        page.get_by_role("button", name="发布").click()
         print("发布")
         time.sleep(5)
 
-    def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
+    def msg_up_load_mp4(self, page: Page, mp4_path: str,habit_name: str,habit_detail: str):
         """
         msg_up_load_mp4
         """
         page.goto(self.upload_mp4_url)
-        time.sleep(3)
-        print(f"open  {self.upload_mp4_url}")
+        print(f"open load {self.upload_mp4_url}")
+        time.sleep(15)
+        page.wait_for_url(self.upload_mp4_url)
         
-        # 使用文本内容定位元素
-        example_element = page.locator("xpath=//div[contains(text(), '发布视频')]")
-        example_element.click()
-        print("点击 发布视频")
-        time.sleep(3)
-
-        # 使用文本内容定位元素
+       # 请上传2小时以内的视频
+       
+        print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
+        # performs action and waits for a new `FileChooser` to be created
+        with page.expect_file_chooser() as fc_info:
+            page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
+        print("event expect_file_chooser")
+        file_chooser = fc_info.value
+        file_chooser.set_files(mp4_path)
+        # 预备文件上传时间
+        time.sleep(120)
+        print(mp4_path)
+        page.mouse.down()
         
-        page.locator(
-            "label:has-text(\"点击上传 或直接将视频文件拖入此区域为了更好的观看体验和平台安全，平台将对上传的视频预审。超过40秒的视频建议上传横版视频\")").set_input_files(
-            mp4_path)
-            
-        print("视频文件拖入此区域")
-        time.sleep(20)
-        # # 点击选择文件，输入文件
-        # with page.expect_file_chooser() as fc_info:
-        #     # 找到拖拽区域  
-        #     page.click("xpath=//button[contains(text(), '上传图片')]")
-        #     # 问题 文件弹框后 不自动退出 无法后续自动化操作
-        #     file_chooser = fc_info.value
-        #     file_chooser.set_files(picture_path)
+        # <div contenteditable="" data-placeholder="添加描述" class="input-editor"></div>
+        page.locator(".input-editor").fill(habit_detail)
+        time.sleep(1)
+        
+        # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
+        page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
+        time.sleep(1)
 
-        # time.sleep(3)
-        # page.mouse.down()
-        # page.mouse.down()
-
-        # # 填写描述
-        # page.locator("css=.iGOvMbhp8tU-").fill(msg)
-        # time.sleep(3)
-        # # 发布
-        # page.locator("xpath=//button[./span[text()='发布']]").click()
-        # time.sleep(5)
-        print("发布")
-        time.sleep(600)
+        page.get_by_role("button", name="发表").click()
+        time.sleep(5)
+       
     #################################################################################
 
 
-def interface_auo_upload_mydouyin():
+def interface_auo_upload_shipinhao(out_path:str, bak_path:str):
+    
     """
       对外调用接口
     """
-    sys = platform.system()
-    login_url = "https://creator.douyin.com"
-    upload_picture_url = "https://creator.douyin.com/creator-micro/content/upload"
-    upload_mp4_url = "https://creator.douyin.com/creator-micro/content/upload"
-    if sys == "Windows":
-        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\mydouyin_xiaohao.json"
-    else:
-        cookies_path = r"/root/bin/mydouyin_xiaohao.json"
+    try:
+        sys = platform.system()
+        login_url = "https://channels.weixin.qq.com/"
+        upload_picture_url = "https://channels.weixin.qq.com/platform/post/create"
+        upload_mp4_url = "https://channels.weixin.qq.com/platform/post/create"
+        if sys == "Windows":
+            cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\shipinhao_xiaohao.json"
+        else:
+            cookies_path = r"/root/bin/shipinhao_xiaohao.json"
 
-    file_path, habit_name,habit_detail = interface_get_daily_englis_word()
-    print(file_path)
-    print(habit_name)
-    print(habit_detail)
-    
-    autoupload = CMyDouyin(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-    autoupload.upload_picture(file_path, habit_name,habit_detail)
-    # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
-    # autoupload.upload_mp4(mp4_path, msg)
+        file_path, habit_name,habit_detail = interface_get_daily_note()
+        print(file_path)
+        print(habit_name)
+        print(habit_detail)
+        
+        autoupload = CMyShipinhao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+        for root,_,files in os.walk(out_path):
+            for file in files:
+                # 拼接路径
+                mp4_file_path = os.path.join(root,file)
+                if file.endswith('.mp4'):
+                    if autoupload.upload_mp4(mp4_file_path,habit_name,habit_detail):
+                        logging.info("upload_mp4 %s", mp4_file_path)
+                        # move file
+                        shutil.move(mp4_file_path, bak_path)
+
+                    
+                    
+        
+    except ValueError:
+        print("Could not convert data to an integer.")
+    except Exception as err:
+        print(f"Unexpected {err=}, {type(err)=}")
+        print(traceback.format_exc())
 
 
 if __name__ == '__main__':
-    interface_auo_upload_mydouyin()
+    # 避免熬夜21点到凌晨3点不工作   每周节省3小时时间
+    if platform.system() == "Windows":
+        OUT_PATH = r"D:\mp4\output"
+        BACK_PATH = r"D:\mp4\back"
+    else:
+        OUT_PATH = r"/root/mp4/input"
+        BACK_PATH = r"/root/mp4/bak"
+    interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
