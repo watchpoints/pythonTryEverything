@@ -27,8 +27,7 @@ def get_up_tuwen():
     """
     try:
         mykuaishou2.interface_auo_upload_kuaishou2("pic")
-        myxiaohongshu.interface_auo_upload_myxiaohongshu()
-        myxiaohongshu.interface_auo_upload_myxiaohongshu()
+        myxiaohongshu.interface_auo_upload_myxiaohongshu("pic")
         mydouyin.interface_auo_upload_mydouyin()
         mytoutiao.interface_auo_upload_weitoutiao()
         myzhihu.interface_auo_upload_zhihu()
@@ -129,9 +128,18 @@ def auto_upload_mp4():
     else:
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
-
-    myshipinhao.interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
-    mykuaishou2.interface_auo_upload_kuaishou2("mp4")
+    try:
+        myshipinhao.interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
+    finally:
+        print("interface_auo_upload_shipinhao")
+    try:
+        mykuaishou2.interface_auo_upload_kuaishou2("mp4")
+    finally:
+        print("interface_auo_upload_kuaishou2")
+    try:
+        myxiaohongshu.interface_auo_upload_myxiaohongshu("mp4")
+    finally:
+        print("interface_auo_upload_myxiaohongshu")
 
     # 上传完毕 移动到临时目录
     for root,_,files in os.walk(OUT_PATH):

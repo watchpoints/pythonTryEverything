@@ -1,7 +1,9 @@
+"""This module provides mydouyn"""
 import time
 import json
 import os
 import platform
+import logging
 import requests
 from datetime import datetime
 from playwright.sync_api import sync_playwright
@@ -148,7 +150,7 @@ class CMyRedBook:
         """
         with sync_playwright() as playwright:
             display_headless = False
-            display_headless = True
+            #display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
@@ -163,7 +165,12 @@ class CMyRedBook:
         """
           登录
         """
-        context = self.browser.new_context()
+        user_agent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
+        sys = platform.system()
+        if sys == "Linux":
+            user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+        
+        context = self.browser.new_context(user_agent=user_agent)
         context.clear_cookies()
         page = context.new_page()
         page.goto(self.login_url)
@@ -230,10 +237,61 @@ class CMyRedBook:
         page.locator("xpath=//button[./span[text()='发布']]").click()
         print("发布")
         time.sleep(5)
+    
+    def upload_mp4(self, mp4_file_path: str, habit_name: str, habit_detail:str):
+        """
+          upload_picture
+        """
+        with sync_playwright() as playwright:
+            display_headless = False
+            #display_headless = True
+            sys = platform.system()
+            if sys == "Linux":
+                display_headless = True
+            #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            self.browser = playwright.chromium.launch(headless=display_headless)
+            login_page = self.login_or_restore_cookies()
+            self.auto_up_mp4(login_page, mp4_file_path, habit_name, habit_detail)
+            self.browser.close()
+
+    def auto_up_mp4(self, page: Page, mp4_file_path: str, habit_name: str, habit_detail:str):
+        """
+        上传视频
+        """
+        page.goto(self.upload_picture_url)
+        time.sleep(3)
+        print(f"open  {self.upload_picture_url}")
+        # 使用文本内容定位元素
+        example_element = page.locator("xpath=//span[contains(text(), '上传视频')]")
+        example_element.click()
+        print("点击 上传视频")
+        time.sleep(4)
+        
+        # 点击选择文件，输入文件
+        with page.expect_file_chooser() as fc_info:
+            page.locator('.drag-over').locator('nth=0').click()
+        file_chooser = fc_info.value
+        file_chooser.set_files(mp4_file_path)
+
+        time.sleep(300)
+        print("上传视频")
+        #填写标题，可能会有更多赞哦～
+        page.locator("css=.c-input_inner").fill(habit_name)
+        time.sleep(3)
+        #填写更全面的描述信息，让更多的人看到你吧！
+        page.locator("css=.post-content").fill(habit_detail)
+        time.sleep(3)
+        page.mouse.down()
+        page.mouse.down()
+        time.sleep(1)
+        # 发布
+        page.locator("xpath=//button[./span[text()='发布']]").click()
+        print("发布")
+        time.sleep(5)
     #################################################################################
 
 
-def interface_auo_upload_myxiaohongshu():
+def interface_auo_upload_myxiaohongshu(file_type="pic"):
     """
       对外调用接口
     """
@@ -241,17 +299,21 @@ def interface_auo_upload_myxiaohongshu():
     login_url = "https://creator.xiaohongshu.com/login?source=official"
     upload_picture_url = "https://creator.xiaohongshu.com/publish/publish?source=official"
     upload_mp4_url = "https://creator.xiaohongshu.com/publish/publish?source=official"
-    sys = platform.system()  
+    sys = platform.system()
     if sys == "Windows":
         cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\xiaohongshu.json"
         save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
         default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
         get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
+        out_path = r"D:\mp4\output"
+        # BACK_PATH = r"D:\mp4\bak"
     else:
         cookies_path = r"/root/bin/xiaohongshu.json"
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
         default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
         get_up_path = '/root/code/python/config/01_get_up.txt'
+        out_path = r"/root/mp4/output"
+        # BACK_PATH = r"/root/mp4/bak"
 
     getup = GetupHabit(save_picture_path, default_picture_path, get_up_path)
     habit_name,habit_detail = getup.interface_get_up()
@@ -261,9 +323,23 @@ def interface_auo_upload_myxiaohongshu():
     time.sleep(1)
 
     autoupload = CMyRedBook(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-    autoupload.upload_picture(file_path, habit_name, habit_detail)
+    if file_type == "pic":
+        autoupload.upload_picture(file_path, habit_name, habit_detail)
+    else:
+        for root,_,files in os.walk(out_path):
+            for file in files:
+                # 拼接路径
+                mp4_file_path = os.path.join(root,file)
+                if file.endswith('.mp4'):
+                    file_name = os.path.basename(mp4_file_path)
+                    file_name = file_name.split('.')[0]
+                    msg = "#" + file_name + "\r\n"
+                    msg += habit_detail
+                    print(habit_name)
+                    if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
+                        logging.info("upload_mp4 %s", mp4_file_path)
 
 
 
 if __name__ == '__main__':
-    interface_auo_upload_myxiaohongshu()
+    interface_auo_upload_myxiaohongshu("mp4")
