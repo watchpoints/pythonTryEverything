@@ -83,8 +83,6 @@ def create_big_to_small(input_dir:str,output_dir:str,bak_dir:str):
                             shutil.move(file_path, output_dir)
             except Exception as myunkonw:
                 print(f"处理视频文件时出错: {str(myunkonw)}")
-                if not os.path.exists(bak_file_name_path):
-                            shutil.move(file_path, output_dir)
     
     return True
                     
