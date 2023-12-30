@@ -50,6 +50,6 @@ if __name__ == "__main__":
     # pip install apscheduler
     #backsched.add_job(EeasyHabitSleep, CronTrigger.from_crontab("30 2 * * *"), id="get_up")
     backsched.add_job(auto_window_task, CronTrigger.from_crontab("30 0 * * *"), id="get_up")
-   
+    print("start pythonTryEverythingWin")
     backsched.start()
     
