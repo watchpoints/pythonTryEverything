@@ -313,7 +313,7 @@ class CMyShipinhao:
         page.wait_for_url(self.upload_mp4_url)
         
        # 请上传2小时以内的视频
-        print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
+        print("msg_up_load_mp4")
         # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
             page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
@@ -321,7 +321,7 @@ class CMyShipinhao:
         file_chooser = fc_info.value
         file_chooser.set_files(mp4_path)
         # 预备文件上传时间
-        time.sleep(300)
+        time.sleep(60)
         print(mp4_path)
         page.mouse.down()
         
@@ -335,7 +335,7 @@ class CMyShipinhao:
         print(habit_name)
         page.get_by_role("button", name="发表").click()
         print("发表")
-        time.sleep(5)
+        time.sleep(6)
        
     #################################################################################
 
@@ -381,9 +381,11 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
                     msg += habit_detail
                     print(msg)
                     if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
+                        print("autoupload.upload_mp4 is ok ")
                         logging.info("upload_mp4 %s", mp4_file_path)
+                        # 用完删除，我是最后一个使用的 我需要删除。
+                        shutil.move(file_path, BACK_PATH)
         print("mp4 done")
-        
     except ValueError:
         print("Could not convert data to an integer.")
     except Exception as err:
