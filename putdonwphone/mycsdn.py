@@ -143,7 +143,7 @@ def interface_get_daily_englis_word():
     return getup.save_picture_path, temp_habit_name,temp_habit_detail
 
 ########################################################################
-class CMyDouyin:
+class CMyCsdn:
     """
     This class represents a GetupHabit.
 
@@ -158,10 +158,10 @@ class CMyDouyin:
         self.upload_mp4_url = upload_mp4_url
         # playwright 部分
         self.browser = None
-        print("create CMyDouyin")
+        print("create CMyCsdn")
 
     def __del__(self):
-        print("CMyDouyin is being destroyed")
+        print("CMyCsdn is being destroyed")
 
     def upload_picture(self, picture_path: str, habit_name:str, habit_detail:str):
         """
@@ -169,14 +169,12 @@ class CMyDouyin:
         """
         with sync_playwright() as playwright:
             display_headless = False
-            display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
             #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             self.browser = playwright.chromium.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
-            print("login_or_restore_cookies")
             self.msg_up_load(login_page, picture_path, habit_name,habit_detail)
             self.browser.close()
     
@@ -199,7 +197,7 @@ class CMyDouyin:
         """
           登录
         """
-        context = self.browser.new_context(locale='zh-CN')
+        context = self.browser.new_context()
         context.clear_cookies()
         page = context.new_page()
         page.goto(self.login_url)
@@ -215,7 +213,7 @@ class CMyDouyin:
             # 扫名二维码登录 需要人工处理
             # 扫名二维码登录 需要人工处理
             # 扫名二维码登录 需要人工处理
-            time.sleep(60)
+            time.sleep(80)
             cookies = page.context.cookies()
             with open(self.cookies_path, 'w',encoding='utf-8') as f:
                 f.write(json.dumps(cookies))
@@ -227,37 +225,27 @@ class CMyDouyin:
         msg_up_load
         """
         page.goto(self.upload_picture_url)
-        time.sleep(6)
+        time.sleep(3)
         print(f"open  {self.upload_picture_url}")
         
-        page.locator("xpath=//div[contains(text(), '写想法')]").click()
-        print("点击 发布图文")
-        time.sleep(3)
-        print(page.content)
-        
-        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
-        page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
-        # page.locator(".InputLike").fill(habit_detail)
+        msg = habit_name + "\r\n"
+        msg += habit_detail
+        # 博客内容
+        ##  Allows locating input elements by the placeholder text.
+        page.get_by_placeholder("有什么新的观点，快来说说看～").fill(msg)
+        print("什么新的观点，快来说说看～")
         time.sleep(3)
         
-        print("开始上传图片")
-        page.locator(".css-88f71l > button:nth-child(2)").click()
-        time.sleep(2)
-        print("本地上传")
         with page.expect_file_chooser() as fc_info:
-            page.locator(".css-n71hcb").click()
+            page.locator('xpath=//*[@id="app"]/div/div[2]/div[2]/div[2]/div/footer/div/div[1]/span[2]').click()
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path)
         time.sleep(5)
+        print("图片")
         
-        page.get_by_role("button", name="插入图片").click()
-        time.sleep(5)
-        
-        print("结束上传图片")
-        
-        page.get_by_role("button", name="发布").click()
+        page.locator('xpath=//*[@id="app"]/div/div[2]/div[2]/div[2]/div/footer/div/div[2]/div').click()
         print("发布")
-        time.sleep(5)
+        time.sleep(3)
 
     def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
         """
@@ -304,29 +292,23 @@ class CMyDouyin:
     #################################################################################
 
 
-def interface_auo_upload_zhihu():
+def interface_auo_upload_mycsdn():
     """
       对外调用接口
     """
     sys = platform.system()
-    login_url = "https://www.zhihu.com/"
-    upload_picture_url = "https://www.zhihu.com/"
-    upload_mp4_url = "https://www.zhihu.com/"
+    login_url = "https://www.csdn.net/"
+    upload_picture_url = "https://blink.csdn.net/?spm=1020.2143.3001.5353"
+    upload_mp4_url = "https://blink.csdn.net/?spm=1020.2143.3001.5353"
     if sys == "Windows":
-        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\zhihu_xiaohao.json"
+        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\mycsdn_xiaohao.json"
     else:
-        cookies_path = r"/root/bin/zhihu_xiaohao.json"
+        cookies_path = r"/root/bin/mycsdn_xiaohao.json"
 
     file_path, habit_name,habit_detail = interface_get_daily_englis_word()
-    print(file_path)
-    print(habit_name)
-    print(habit_detail)
     
-    autoupload = CMyDouyin(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    autoupload = CMyCsdn(cookies_path, login_url, upload_picture_url,upload_mp4_url)
     autoupload.upload_picture(file_path, habit_name,habit_detail)
-    # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
-    # autoupload.upload_mp4(mp4_path, msg)
-
 
 if __name__ == '__main__':
-    interface_auo_upload_zhihu()
+    interface_auo_upload_mycsdn()

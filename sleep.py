@@ -4,6 +4,8 @@ import logging
 import signal
 import platform
 import shutil
+import random
+import time
 import toutiao
 import maimai
 import douyu
@@ -20,17 +22,21 @@ from putdonwphone import mydouyin
 from putdonwphone import mytoutiao
 from putdonwphone import myzhihu
 from putdonwphone import  myshipinhao
+from putdonwphone import  mycsdn
 
 def get_up_tuwen():
     """
       早睡早起图文模式
     """
     try:
+        
+        time.sleep(random.randint(1,10))
         mykuaishou2.interface_auo_upload_kuaishou2("pic")
         myxiaohongshu.interface_auo_upload_myxiaohongshu("pic")
         mydouyin.interface_auo_upload_mydouyin()
         mytoutiao.interface_auo_upload_weitoutiao()
         myzhihu.interface_auo_upload_zhihu()
+        mycsdn.interface_auo_upload_mycsdn()
     finally:
         print("end")
 
@@ -44,44 +50,53 @@ def show_sleep():
         if len(msgGetUp) == 0:
             logging.error("the DailyGetUpEvent is null")
             return
+        try:
+            # 微博发表完成
+            myblog.KillChromebeta()
+            # weibo.send_msg_to_weibo(msgGetUp)
 
-        # 微博发表完成
-        myblog.KillChromebeta()
-        # weibo.send_msg_to_weibo(msgGetUp)
+            # 今日头条发表完成
+            myblog.KillChromebeta()
+            toutiao.post_sleep_toutiao()  # easy sleep
 
-        # 今日头条发表完成
-        myblog.KillChromebeta()
-        toutiao.post_sleep_toutiao()  # easy sleep
+            # 斗鱼发表完成
+            myblog.KillChromebeta()
+            douyu.send_msg_to_douyu(msgGetUp)
 
-        # 斗鱼发表完成
-        myblog.KillChromebeta()
-        douyu.send_msg_to_douyu(msgGetUp)
+            # 脉脉提醒 发表完成
+            myblog.KillChromebeta()
+            maimai.post_sleep_maimai()
+        except Exception as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+            
+        try:
+            # csdn is ok
+            myblog.KillChromebeta()
+            mycsdn.send_msg_to_csdn(msgGetUp)
 
-        # 脉脉提醒 发表完成
-        myblog.KillChromebeta()
-        maimai.post_sleep_maimai()
-
-        # csdn is ok
-        myblog.KillChromebeta()
-        mycsdn.send_msg_to_csdn(msgGetUp)
-
-        # 得到定时提醒
-        myblog.KillChromebeta()
-        dedao.send_msg_to_dedao(msgGetUp)
-
-        # 知识星球定时提醒
-        # myblog.KillChromebeta()
-        zhishi.send_msg_to_zhishi(msgGetUp)
-        # whchat 
-        mainWechatDaily.wechat_every_daily()
+            # 得到定时提醒
+            myblog.KillChromebeta()
+            dedao.send_msg_to_dedao(msgGetUp)
+        except Exception as err:
+            print(f"Unexpected {err=}, {type(err)=}")
+        try:
+            # 知识星球定时提醒
+            # myblog.KillChromebeta()
+            zhishi.send_msg_to_zhishi(msgGetUp)
+            # whchat 
+            mainWechatDaily.wechat_every_daily()
+            baidubaijia.send_msg_to_baidubaijia(msgGetUp)
+        except Exception as err:
+            print(f"Unexpected {err=}, {type(err)=}")
         
-        baidubaijia.send_msg_to_baidubaijia(msgGetUp)
     finally:
         print("end")
 
 
 # 起床打卡
 def show_sleepForTest():
+    """_summary_
+    """
     show_sleep()
 
 
@@ -150,7 +165,7 @@ def auto_upload_mp4():
                 shutil.move(file_path, BACK_PATH)
 
 if __name__ == '__main__':
-    auto_upload_mp4()
+    #auto_upload_mp4()
     #get_up_tuwen()
     #msg = interface_db.DailyGetUpEvent()
     #baidubaijia.send_msg_to_baidubaijia(msg)
@@ -159,3 +174,4 @@ if __name__ == '__main__':
     # mydouyin.interface_auo_upload_mydouyin()
     # mytoutiao.interface_auo_upload_weitoutiao()
     # myzhihu.interface_auo_upload_zhihu()
+    mycsdn.interface_auo_upload_mycsdn()
