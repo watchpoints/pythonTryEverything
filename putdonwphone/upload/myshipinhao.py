@@ -307,20 +307,21 @@ class CMyShipinhao:
         """
         msg_up_load_mp4
         """
+        print("msg_up_load_mp4")
         page.goto(self.upload_mp4_url)
         print(f"open load {self.upload_mp4_url}")
         time.sleep(15)
         page.wait_for_url(self.upload_mp4_url)
         
        # 请上传2小时以内的视频
-        print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
+        print(mp4_path)
         # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
             page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
         print("upload file begin")
         file_chooser = fc_info.value
         file_chooser.set_files(mp4_path)
-        # 预备文件上传时间
+        # 预备文件5分钟上传时间
         time.sleep(300)
         print(mp4_path)
         page.mouse.down()
@@ -331,11 +332,13 @@ class CMyShipinhao:
         
         # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
         page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
-        time.sleep(2)
+        time.sleep(3)
         print(habit_name)
+        page.mouse.down()
+        page.mouse.down()
         page.get_by_role("button", name="发表").click()
         print("发表")
-        time.sleep(5)
+        time.sleep(6)
        
     #################################################################################
 
@@ -361,6 +364,7 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
         print(habit_name)
         print(habit_detail)
         
+        
         autoupload = CMyShipinhao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
         if upload_type == "pic":
             autoupload.upload_picture(file_path,habit_name,habit_detail)
@@ -369,6 +373,7 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
             for file in files:
                 # 拼接路径
                 mp4_file_path = os.path.join(root,file)
+                print(mp4_file_path)
                 duration, file_size = autoupload.get_video_properties(mp4_file_path)
                 if  duration > 60*60 or  file_size /1024/1024  > 1000:
                     print("超过1g和 60分钟")
@@ -378,9 +383,13 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
                     file_name = os.path.basename(mp4_file_path)
                     file_name = file_name.split('.')[0]
                     msg = "#" + file_name + "\r\n"
+                    msg = "#正能量" + "\r\n"
+                    msg += "#关注我,每天持续更新" + "\r\n"
+                    msg += "直播精彩回放" + "\r\n"
                     msg += habit_detail
                     print(msg)
                     if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
+                        print("ok")
                         logging.info("upload_mp4 %s", mp4_file_path)
         print("mp4 done")
         

@@ -72,7 +72,7 @@ def create_big_to_small(input_dir:str,output_dir:str,bak_dir:str):
                     bak_file_name_path =os.path.join(bak_dir, bak_file_name)
                     duration, file_size = get_video_properties(file_path)
                     if  duration > 30*60 or  file_size /1024/1024  > 250:
-                        if split_video(file_path,output_dir,60*20):
+                        if split_video(file_path,output_dir,60*5):
                             print(file_path)
                             print("done split_video")
                             if not os.path.exists(bak_file_name_path):
@@ -113,9 +113,9 @@ def split_video(input_file, output_dir, duration):
         # watermark_clip = watermark_clip.set_position('center').set_duration(duration/2)
         
         # 制作文字，指定文字大小和颜色
-        watermark_clip = ( TextClip("个人学习",fontsize=50,color='red')
-             .set_position('center')#水印内容居中
-             .set_duration(60) )#水印持续时间
+        #watermark_clip = ( TextClip("个人学习",fontsize=50,color='red')
+        #     .set_position('center')#水印内容居中
+        #     .set_duration(60) )#水印持续时间
 
     
         # 对视频进行分割并保存到指定路径
@@ -125,7 +125,7 @@ def split_video(input_file, output_dir, duration):
             print(start)
             print(end)
             segment = clip.subclip(start, end)
-            segment = CompositeVideoClip([segment, watermark_clip])
+            #segment = CompositeVideoClip([segment, watermark_clip])
             # 指定保存的文件名
             filename = f'{file_name_without_ext}_{i + 1}.mp4'
             #ffmepg -codecs

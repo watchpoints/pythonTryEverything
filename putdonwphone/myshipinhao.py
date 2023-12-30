@@ -10,7 +10,8 @@ import shutil
 import requests
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-
+from moviepy.editor import VideoFileClip,TextClip
+from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 class GetupHabit:
     """This class provides a way to do something."""
@@ -196,18 +197,35 @@ class CMyShipinhao:
             self.auto_upload_picture(login_page, picture_path, habit_name,habit_detail)
             self.browser.close()
     
+    def get_video_properties(self,video_path):
+        """
+            功能：
+            输出：
+            输出：
+        """
+        try:
+            clip = VideoFileClip(video_path)
+            duration = clip.duration
+            file_size = os.path.getsize(video_path)
+            print(f"视频文件的时长为 {duration} 秒")
+            print(f"视频文件的大小为 {file_size/1024/1204} M")
+            return duration, file_size
+        except Exception as myunkonw:
+           print(f"发生异常：{myunkonw}")
+     
     def upload_mp4(self, mp4_path: str,habit_name: str,habit_detail: str):
         """
           upload_mp4
         """
         logging.info("upload_mp4 %s",mp4_path)
         with sync_playwright() as playwright:
-            display_headless = False
-            #display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
-            self.browser = playwright.chromium.launch(headless=display_headless)
+                self.browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                display_headless = False
+                self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             login_page = self.login_or_restore_cookies()
             try:
                 self.msg_up_load_mp4(login_page, mp4_path, habit_name, habit_detail)
@@ -289,6 +307,7 @@ class CMyShipinhao:
         """
         msg_up_load_mp4
         """
+        print("msg_up_load_mp4")
         page.goto(self.upload_mp4_url)
         print(f"open load {self.upload_mp4_url}")
         time.sleep(15)
@@ -302,8 +321,8 @@ class CMyShipinhao:
         print("upload file begin")
         file_chooser = fc_info.value
         file_chooser.set_files(mp4_path)
-        # 预备文件上传时间
-        time.sleep(300)
+        # 预备文件4分钟上传时间
+        time.sleep(180)
         print(mp4_path)
         page.mouse.down()
         
@@ -313,11 +332,13 @@ class CMyShipinhao:
         
         # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
         page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
-        time.sleep(2)
+        time.sleep(3)
         print(habit_name)
+        page.mouse.down()
+        page.mouse.down()
         page.get_by_role("button", name="发表").click()
         print("发表")
-        time.sleep(5)
+        time.sleep(6)
        
     #################################################################################
 
@@ -343,6 +364,7 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
         print(habit_name)
         print(habit_detail)
         
+        
         autoupload = CMyShipinhao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
         if upload_type == "pic":
             autoupload.upload_picture(file_path,habit_name,habit_detail)
@@ -351,14 +373,25 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
             for file in files:
                 # 拼接路径
                 mp4_file_path = os.path.join(root,file)
-                if file.endswith('.mp4'):
+                print(mp4_file_path)
+                duration, file_size = autoupload.get_video_properties(mp4_file_path)
+                if  duration > 60*60 or  file_size /1024/1024  > 1000:
+                    print("超过1g和 60分钟")
+                    continue
+                    
+                if file.endswith('.mp4') or file.endswith('.flv'):
                     file_name = os.path.basename(mp4_file_path)
                     file_name = file_name.split('.')[0]
                     msg = "#" + file_name + "\r\n"
+                    msg = "#正能量" + "\r\n"
+                    msg += "#关注我,每天持续更新" + "\r\n"
+                    msg += "直播精彩回放" + "\r\n"
                     msg += habit_detail
                     print(msg)
                     if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
+                        print("ok")
                         logging.info("upload_mp4 %s", mp4_file_path)
+        print("mp4 done")
         
     except ValueError:
         print("Could not convert data to an integer.")
@@ -375,7 +408,8 @@ if __name__ == '__main__':
     else:
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
-    interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
+    #interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
+    interface_auo_upload_shipinhao("mp4", OUT_PATH, BACK_PATH)
 
     
 

@@ -14,7 +14,7 @@ LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d]
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 def auto_window_task():
     
-    time.sleep(random.randint(10,300))
+    time.sleep(random.randint(1,50))
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
         BACK_PATH = r"D:\mp4\bak"
@@ -23,6 +23,20 @@ def auto_window_task():
         BACK_PATH = r"/root/mp4/bak"
     try:
         myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
+    finally:
+        print("interface_auo_upload_shipinhao")
+
+def auto_upload_mp4():
+    
+    time.sleep(random.randint(1,10))
+    if platform.system() == "Windows":
+        OUT_PATH = r"D:\mp4\output"
+        BACK_PATH = r"D:\mp4\bak"
+    else:
+        OUT_PATH = r"/root/mp4/output"
+        BACK_PATH = r"/root/mp4/bak"
+    try:
+        myshipinhao.interface_auo_upload_shipinhao("mp4",OUT_PATH, BACK_PATH)
     finally:
         print("interface_auo_upload_shipinhao")
         
@@ -62,10 +76,11 @@ if __name__ == "__main__":
     # 习惯养成--早睡早起
     # pip install apscheduler
     #12点:发一个图文
-    backsched.add_job(auto_window_task, CronTrigger.from_crontab("30 0 * * *"), id="get_up")
+    backsched.add_job(auto_window_task, CronTrigger.from_crontab("0 0 * * *"), id="get_up")
     #1点:开始切换文件
-    backsched.add_job(change_mp4_to_small, CronTrigger.from_crontab("22 17 * * *"), id="cut_big_file")
+    backsched.add_job(change_mp4_to_small, CronTrigger.from_crontab("0 1 * * *"), id="cut_big_file")
     #4点:开始上传文件
+    backsched.add_job(auto_upload_mp4, CronTrigger.from_crontab("46 17 * * *"), id="put_small_file")
     print("start pythonTryEverythingWin")
     backsched.start()
     
