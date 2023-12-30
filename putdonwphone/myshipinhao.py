@@ -287,7 +287,7 @@ class CMyShipinhao:
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path)
         # 预备文件上传时间
-        time.sleep(15)
+        time.sleep(30)
         print(picture_path)
         page.mouse.down()
         
@@ -314,31 +314,32 @@ class CMyShipinhao:
         page.wait_for_url(self.upload_mp4_url)
         
        # 请上传2小时以内的视频
-        print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
+        print("msg_up_load_mp4")
         # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
             page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
         print("upload file begin")
         file_chooser = fc_info.value
         file_chooser.set_files(mp4_path)
-        # 预备文件4分钟上传时间
+        # 预备文件上传时间
         time.sleep(180)
         print(mp4_path)
         page.mouse.down()
         
         # <div contenteditable="" data-placeholder="添加描述" class="input-editor"></div>
         page.locator(".input-editor").fill(habit_detail)
-        time.sleep(2)
+        time.sleep(8)
         
         # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
         page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
-        time.sleep(3)
+        time.sleep(8)
         print(habit_name)
         page.mouse.down()
         page.mouse.down()
+        time.sleep(3)
         page.get_by_role("button", name="发表").click()
         print("发表")
-        time.sleep(6)
+        time.sleep(5)
        
     #################################################################################
 
@@ -372,27 +373,33 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
         for root,_,files in os.walk(out_path):
             for file in files:
                 # 拼接路径
+                time.sleep(5)
                 mp4_file_path = os.path.join(root,file)
                 print(mp4_file_path)
                 duration, file_size = autoupload.get_video_properties(mp4_file_path)
-                if  duration > 60*60 or  file_size /1024/1024  > 1000:
-                    print("超过1g和 60分钟")
+                if  duration > 60*5 or  file_size /1024/1024  > 80:
+                    print("超过80M和 5分钟")
                     continue
                     
                 if file.endswith('.mp4') or file.endswith('.flv'):
                     file_name = os.path.basename(mp4_file_path)
-                    file_name = file_name.split('.')[0]
+                    bak_file_name_path =os.path.join(bak_path, file_name)
+                    print(file_name)
+                    print(bak_file_name_path)
+                    file_name = os.path.splitext(os.path.basename(mp4_file_path))[0]
                     msg = "#" + file_name + "\r\n"
-                    msg = "#正能量" + "\r\n"
+                    msg += "#正能量" + "\r\n"
                     msg += "#关注我,每天持续更新" + "\r\n"
                     msg += "直播精彩回放" + "\r\n"
                     msg += habit_detail
                     print(msg)
                     if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
-                        print("ok")
+                        print("autoupload.upload_mp4 is ok ")
                         logging.info("upload_mp4 %s", mp4_file_path)
+                        # 用完删除，我是最后一个使用的 我需要删除
+                        if not os.path.exists(bak_file_name_path):
+                            shutil.move(mp4_file_path, bak_path)
         print("mp4 done")
-        
     except ValueError:
         print("Could not convert data to an integer.")
     except Exception as err:

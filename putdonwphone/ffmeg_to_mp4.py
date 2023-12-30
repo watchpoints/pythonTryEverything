@@ -72,7 +72,7 @@ def create_big_to_small(input_dir:str,output_dir:str,bak_dir:str):
                     bak_file_name_path =os.path.join(bak_dir, bak_file_name)
                     duration, file_size = get_video_properties(file_path)
                     if  duration > 30*60 or  file_size /1024/1024  > 250:
-                        if split_video(file_path,output_dir,60*5):
+                        if split_video(file_path,output_dir,60*4):
                             print(file_path)
                             print("done split_video")
                             if not os.path.exists(bak_file_name_path):
