@@ -39,7 +39,6 @@ def post_send_msg_to_csdn(browser, content):
     time.sleep(4)
     print(r'push {content} succed')
 
--
 def send_msg_to_csdn(msg):
     sleeptime = random.randint(0, 8)
     print(sleeptime)

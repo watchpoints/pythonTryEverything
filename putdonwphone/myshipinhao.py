@@ -138,9 +138,13 @@ def interface_get_daily_note():
     sys = platform.system()
     sys = platform.system()  
     if sys == "Windows":
-        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
-        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
+        save_picture_path = r"D:\mp4\etc\temp.png"
+        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\mp4\etc\01_get_up.txt"
+    elif sys == "Darwin":
+        save_picture_path = r"/Users/wangchuanyi/etc/temp.png"
+        default_picture_path = r"/Users/wangchuanyi/etc/ZfCYoSG1BE_small.jpg"
+        get_up_path = '/Users/wangchuanyi/etc/01_get_up.txt'
     else:
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
         default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
@@ -177,15 +181,19 @@ class CMyShipinhao:
         """
         with sync_playwright() as playwright:
             display_headless = False
-            display_headless = True
+            #display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
-            #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-            self.browser = playwright.chromium.launch(headless=display_headless)
+            sys = platform.system()
+            if sys == "Linux":
+              self.browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            #self.browser = playwright.chromium.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
             print("login_or_restore_cookies")
-            self.msg_up_load(login_page, picture_path, habit_name,habit_detail)
+            self.auto_upload_picture(login_page, picture_path, habit_name,habit_detail)
             self.browser.close()
     
     def upload_mp4(self, mp4_path: str,habit_name: str,habit_detail: str):
@@ -243,53 +251,38 @@ class CMyShipinhao:
         print("restore_cookies >>>>>>>>>>> ")
         return page
 
-    def msg_up_load(self, page: Page, picture_path: str,habit_name:str, habit_detail:str):
+    def auto_upload_picture(self, page: Page, picture_path: str,habit_name:str, habit_detail:str):
         """
-        msg_up_load
+        auto_upload_picture
         """
-        page.goto(self.upload_picture_url)
-        time.sleep(6)
-        print(f"open  {self.upload_picture_url}")
-        # 从主页进入 headless不行
-        page.locator("xpath=//div[contains(text(), '写想法')]").click()
-        print("点击 发布图文")
-        # time.sleep(3)
-        # print(page.content)
+        page.goto(self.upload_mp4_url)
+        print(f"open load {self.upload_mp4_url}")
+        time.sleep(15)
+        page.wait_for_url(self.upload_mp4_url)
         
-        # # https://www.zhihu.com/creator
-        # page.mouse.click(200,200)
-        # dropdown = page.get_by_text("内容创作")
-        # dropdown.hover()
-        # # dropdown.locator('.dropdown__link >> text=python').click()
-        # #dropdown.get_by_role("listitem").filter(has_text="python").click()
-        # # 对于ul-li的元素，可以用listitem 的角色定位方式
-        # page.locator("a").filter(has_text="发布想法").click()
-        
-        
-        time.sleep(2)
-        
-        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
-        page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
-        # page.locator(".InputLike").fill(habit_detail)
-        time.sleep(3)
-        
-        print("开始上传图片")
-        page.locator(".css-88f71l > button:nth-child(2)").click()
-        time.sleep(2)
-        print("本地上传")
+       # 请上传2小时以内的视频
+        print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
+        # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
-            page.locator(".css-n71hcb").click()
+            page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
+        print("upload file begin")
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path)
-        time.sleep(5)
+        # 预备文件上传时间
+        time.sleep(15)
+        print(picture_path)
+        page.mouse.down()
         
-        page.get_by_role("button", name="插入图片").click()
-        time.sleep(5)
+        # <div contenteditable="" data-placeholder="添加描述" class="input-editor"></div>
+        page.locator(".input-editor").fill(habit_detail)
+        time.sleep(1)
         
-        print("结束上传图片")
-        
-        page.get_by_role("button", name="发布").click()
-        print("发布")
+        # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
+        page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
+        time.sleep(1)
+        print(habit_name)
+        page.get_by_role("button", name="发表").click()
+        print("发表")
         time.sleep(5)
 
     def msg_up_load_mp4(self, page: Page, mp4_path: str,habit_name: str,habit_detail: str):
@@ -329,8 +322,7 @@ class CMyShipinhao:
     #################################################################################
 
 
-def interface_auo_upload_shipinhao(out_path:str, bak_path:str):
-    
+def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
     """
       对外调用接口
     """
@@ -340,7 +332,9 @@ def interface_auo_upload_shipinhao(out_path:str, bak_path:str):
         upload_picture_url = "https://channels.weixin.qq.com/platform/post/create"
         upload_mp4_url = "https://channels.weixin.qq.com/platform/post/create"
         if sys == "Windows":
-            cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\shipinhao_xiaohao.json"
+            cookies_path = r"D:\mp4\etc\shipinhao_xiaohao.json"
+        elif sys == "Darwin":
+             cookies_path = r"/Users/wangchuanyi/etc/shipinhao_xiaohao.json"
         else:
             cookies_path = r"/root/bin/shipinhao_xiaohao.json"
 
@@ -350,6 +344,9 @@ def interface_auo_upload_shipinhao(out_path:str, bak_path:str):
         print(habit_detail)
         
         autoupload = CMyShipinhao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+        if upload_type == "pic":
+            autoupload.upload_picture(file_path,habit_name,habit_detail)
+            return
         for root,_,files in os.walk(out_path):
             for file in files:
                 # 拼接路径
@@ -374,8 +371,12 @@ if __name__ == '__main__':
     # 避免熬夜21点到凌晨3点不工作   每周节省3小时时间
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
-        BACK_PATH = r"D:\mp4\back"
+        BACK_PATH = r"D:\mp4\bak"
     else:
-        OUT_PATH = r"/root/mp4/input"
+        OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
-    interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
+    interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
+
+    
+
+

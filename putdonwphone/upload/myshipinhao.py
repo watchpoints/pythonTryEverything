@@ -138,9 +138,9 @@ def interface_get_daily_note():
     sys = platform.system()
     sys = platform.system()  
     if sys == "Windows":
-        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
-        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
+        save_picture_path = r"D:\mp4\etc\temp.png"
+        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\mp4\etc\01_get_up.txt"
     elif sys == "Darwin":
         save_picture_path = r"/Users/wangchuanyi/etc/temp.png"
         default_picture_path = r"/Users/wangchuanyi/etc/ZfCYoSG1BE_small.jpg"
@@ -185,8 +185,12 @@ class CMyShipinhao:
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
-            #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-            self.browser = playwright.chromium.launch(headless=display_headless)
+            sys = platform.system()
+            if sys == "Linux":
+              self.browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            #self.browser = playwright.chromium.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
             print("login_or_restore_cookies")
             self.auto_upload_picture(login_page, picture_path, habit_name,habit_detail)
@@ -328,7 +332,7 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
         upload_picture_url = "https://channels.weixin.qq.com/platform/post/create"
         upload_mp4_url = "https://channels.weixin.qq.com/platform/post/create"
         if sys == "Windows":
-            cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\shipinhao_xiaohao.json"
+            cookies_path = r"D:\mp4\etc\shipinhao_xiaohao.json"
         elif sys == "Darwin":
              cookies_path = r"/Users/wangchuanyi/etc/shipinhao_xiaohao.json"
         else:

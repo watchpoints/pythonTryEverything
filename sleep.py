@@ -164,6 +164,20 @@ def auto_upload_mp4():
                 print(file_path)
                 shutil.move(file_path, BACK_PATH)
 
+
+############################
+def auto_window_task():
+    if platform.system() == "Windows":
+        OUT_PATH = r"D:\mp4\output"
+        BACK_PATH = r"D:\mp4\bak"
+    else:
+        OUT_PATH = r"/root/mp4/output"
+        BACK_PATH = r"/root/mp4/bak"
+    try:
+        myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
+    finally:
+        print("interface_auo_upload_shipinhao")
+    
 if __name__ == '__main__':
     #auto_upload_mp4()
     #get_up_tuwen()
