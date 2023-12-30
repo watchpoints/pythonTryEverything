@@ -1,0 +1,17 @@
+<textarea data-v-1f132b29="" rows="1" placeholder="有什么新的观点，快来说说看～" id="messageText" class="comment-area" style="height: 110px;"></textarea>
+
+
+  
+    page.get_by_placeholder("有什么新的观点，快来说说看～").fill(habit_name)
+    
+    
+    
+    <div data-v-f31c164c="" class="reply-btn send-btn-b clearTpaErr ">
+     <span data-v-f31c164c="" class="text">发布</span>
+     <span data-v-f31c164c="" class="val">Ctrl+Enter</span>
+   </div>
+    
+     page.locator("xpath=//button[contains(text(), '发布')]").click()
+     page.locator("xpath=//button[./span[contains(text(), '发布')]]").click()
+     
+     

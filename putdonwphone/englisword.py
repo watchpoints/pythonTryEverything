@@ -141,3 +141,9 @@ def interface_get_daily_englis_word():
     getup = GetupHabit(save_picture_path, default_picture_path, get_up_path) 
     temp_habit_name,temp_habit_detail = getup.interface_get_up()
     return getup.save_picture_path, temp_habit_name,temp_habit_detail
+
+if __name__ == '__main__':
+    file_path, habit_name,habit_detail = interface_get_daily_englis_word()
+    print(file_path)
+    print(habit_name)
+    print(habit_detail)
