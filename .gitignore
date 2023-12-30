@@ -157,3 +157,7 @@ venv.bak/
 .mypy_cache/
 .pyc
 venv
+*.log
+build
+__pycache__
+dist
