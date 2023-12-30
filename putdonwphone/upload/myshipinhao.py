@@ -314,15 +314,24 @@ class CMyShipinhao:
         page.wait_for_url(self.upload_mp4_url)
         
        # 请上传2小时以内的视频
+<<<<<<< HEAD
         print(mp4_path)
+=======
+        print("msg_up_load_mp4")
+>>>>>>> 76109e22b6d20741cdccdff70ada9acbad0ead80
         # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
             page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
         print("upload file begin")
         file_chooser = fc_info.value
         file_chooser.set_files(mp4_path)
+<<<<<<< HEAD
         # 预备文件5分钟上传时间
         time.sleep(300)
+=======
+        # 预备文件上传时间
+        time.sleep(60)
+>>>>>>> 76109e22b6d20741cdccdff70ada9acbad0ead80
         print(mp4_path)
         page.mouse.down()
         
@@ -389,10 +398,15 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
                     msg += habit_detail
                     print(msg)
                     if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
+<<<<<<< HEAD
                         print("ok")
+=======
+                        print("autoupload.upload_mp4 is ok ")
+>>>>>>> 76109e22b6d20741cdccdff70ada9acbad0ead80
                         logging.info("upload_mp4 %s", mp4_file_path)
+                        # 用完删除，我是最后一个使用的 我需要删除。
+                        shutil.move(file_path, BACK_PATH)
         print("mp4 done")
-        
     except ValueError:
         print("Could not convert data to an integer.")
     except Exception as err:
