@@ -15,27 +15,31 @@ import dedao
 import zhishi
 from kernel import interface_db
 from third import mainWechatDaily
-from blog import baidubaijia
 from putdonwphone import mykuaishou2
 from putdonwphone import mydouyin
 from putdonwphone import mytoutiao
 from putdonwphone import myzhihu
 from putdonwphone import  myshipinhao
 from putdonwphone import  mycsdn
+from putdonwphone import  englisword
 
 def get_up_tuwen():
     """
       早睡早起图文模式
     """
     try:
-        
+        file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
+        mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path,habit_name,habit_detail)
         time.sleep(random.randint(1,10))
-        mykuaishou2.interface_auo_upload_kuaishou2("pic")
         myxiaohongshu.interface_auo_upload_myxiaohongshu("pic")
+        time.sleep(random.randint(1,10))
         mydouyin.interface_auo_upload_mydouyin()
+        time.sleep(random.randint(1,10))
         mytoutiao.interface_auo_upload_weitoutiao()
+        time.sleep(random.randint(1,10))
         myzhihu.interface_auo_upload_zhihu()
-        mycsdn.interface_auo_upload_mycsdn()
+        time.sleep(random.randint(1,10))
+        mycsdn.interface_auo_upload_mycsdn(file_path,habit_name,habit_detail)
     finally:
         print("end")
 
@@ -84,7 +88,6 @@ def show_sleep():
             zhishi.send_msg_to_zhishi(msgGetUp)
             # whchat 
             mainWechatDaily.wechat_every_daily()
-            baidubaijia.send_msg_to_baidubaijia(msgGetUp)
         except Exception as err:
             print(f"Unexpected {err=}, {type(err)=}")
         
@@ -176,7 +179,16 @@ def auto_window_task():
         myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
     finally:
         print("interface_auo_upload_shipinhao")
-    
+
+def my_test():
+    """_summary_
+    """
+    file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
+    print(file_path)
+    print(habit_name)
+    print(habit_detail)
+    mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path,habit_name,habit_detail)
+    #mycsdn.interface_auo_upload_mycsdn(file_path,habit_name,habit_detail)
 if __name__ == '__main__':
     #auto_upload_mp4()
     #get_up_tuwen()
@@ -187,4 +199,4 @@ if __name__ == '__main__':
     # mydouyin.interface_auo_upload_mydouyin()
     # mytoutiao.interface_auo_upload_weitoutiao()
     # myzhihu.interface_auo_upload_zhihu()
-    mycsdn.interface_auo_upload_mycsdn()
+    my_test()
