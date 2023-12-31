@@ -328,18 +328,18 @@ class CMyShipinhao:
         
         # <div contenteditable="" data-placeholder="添加描述" class="input-editor"></div>
         page.locator(".input-editor").fill(habit_detail)
-        time.sleep(8)
+        time.sleep(3)
         
         # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
         page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
-        time.sleep(8)
+        time.sleep(2)
         print(habit_name)
         page.mouse.down()
         page.mouse.down()
-        time.sleep(3)
+        time.sleep(1)
         page.get_by_role("button", name="发表").click()
         print("发表")
-        time.sleep(5)
+        time.sleep(8)
        
     #################################################################################
 
