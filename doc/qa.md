@@ -1,10 +1,15 @@
 
+### python引入同一目录下的py文件
+
+  同级目录引用直接improt 文件名就可以啊！import englisword
+
+
 ### 微信上传慢 点击发布 没有发布视频
 
 1. 2g上传直接卡死
 2. 发布没有起作用
 
-
+4分钟内
 ## 当天问题当天解决
 
 python+playwright 学习-03  input文件上传控件display: none
