@@ -1,0 +1,12 @@
+
+moviepy  ImageMagick window 配置
+
+
+moviepy 缺少了ImageMagick，需要先安装ImageMagic
+nThis error can be due to the fact that ImageMagick is not installed on your computer, or (for Windows users) that yo
+dn't specify the path to the ImageMagick binary in file conf.py, or that the path you specified is incorrect
+
+
+https://blog.csdn.net/DWBCZ/article/details/113914857
+
+config_default.py
