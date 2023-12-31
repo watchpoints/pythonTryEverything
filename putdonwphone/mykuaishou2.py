@@ -8,7 +8,6 @@ import requests
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-import englisword
 ########################################################################
 class MyKuaishou:
     def __init__(self,cookies_path:str,login_url:str, upload_url:str):
@@ -188,7 +187,7 @@ class MyKuaishou:
 #################################################################################
        
 
-def interface_auo_upload_kuaishou2(upload_type:str):
+def interface_auo_upload_kuaishou2(upload_type:str,file_path:str,habit_name:str,habit_detail:str):
     ''' 远离手机'''
     sys = platform.system()
     if sys == "Windows":
@@ -205,8 +204,6 @@ def interface_auo_upload_kuaishou2(upload_type:str):
         # BACK_PATH = r"/root/mp4/bak"
 
     
-    file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
-    time.sleep(1)
     msg = habit_name + "\r\n"
     msg += habit_detail
     print(msg)
@@ -231,6 +228,6 @@ def interface_auo_upload_kuaishou2(upload_type:str):
 
 
 if __name__ == '__main__':
-    
-    interface_auo_upload_kuaishou2("pic")
+    print("test")
+    # interface_auo_upload_kuaishou2("pic")
     #interface_auo_upload_kuaishou2("mp4")
