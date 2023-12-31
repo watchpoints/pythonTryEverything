@@ -9,11 +9,16 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from putdonwphone import  myshipinhao
 from putdonwphone import  ffmeg_to_mp4
 from putdonwphone import myxiaohongshu
+from putdonwphone import  englisword
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 def auto_window_task():
     
+    file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
+    print(file_path)
+    print(habit_name)
+    print(habit_detail)
     time.sleep(random.randint(1,50))
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
@@ -22,8 +27,10 @@ def auto_window_task():
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     try:
+        time.sleep(random.randint(1,50))
         myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
-        myxiaohongshu.interface_auo_upload_myxiaohongshu("pic")
+        time.sleep(random.randint(1,50))
+        myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
     finally:
         print("interface_auo_upload_shipinhao")
 
@@ -47,8 +54,17 @@ def change_mp4_to_small():
         ffmeg_to_mp4.interface_mp4_to_post()
     except Exception as myunkonw:
         logging.error(f"处理视频文件时出错: {str(myunkonw)}")
-    
-
+#########################
+def my_test():
+    """_summary_
+    """
+    file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
+    print(file_path)
+    print(habit_name)
+    print(habit_detail)
+    #myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
+###########################################################
+ 
 if __name__ == "__main__":
     if platform.system() == "Windows":
         log_path = r"D:\mp4\bak\pythonTryEverythingWin.log"
@@ -73,6 +89,7 @@ if __name__ == "__main__":
         'coalesce': False,
         'max_instances': 1
     }
+    my_test()
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
     # pip install apscheduler
