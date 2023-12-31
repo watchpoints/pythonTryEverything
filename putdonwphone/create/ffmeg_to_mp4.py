@@ -1,12 +1,13 @@
 """This module provides mp4"""
 import os
-import shutil
 import platform
 import logging
 import subprocess
 import traceback
+import time
 from moviepy.editor import VideoFileClip,TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
+
 
 
 def cut_video(input_path, output_path, header_time_str, footer_time_str):
@@ -68,8 +69,6 @@ def create_big_to_small(input_dir:str,output_dir:str,bak_dir:str):
             try:
                 if file.endswith('.mp4'):
                     print(file_path)
-                    bak_file_name = os.path.basename(file_path)
-                    bak_file_name_path =os.path.join(bak_dir, bak_file_name)
                     duration, file_size = get_video_properties(file_path)
                     if  duration > 30*60 or  file_size /1024/1024  > 250:
                         # 必须是4分钟内
@@ -78,7 +77,8 @@ def create_big_to_small(input_dir:str,output_dir:str,bak_dir:str):
                             print("done split_video")
             except Exception as myunkonw:
                 print(f"处理视频文件时出错: {str(myunkonw)}")
-    
+                return False
+    print("done")
     return True
                     
                      
@@ -89,6 +89,7 @@ def split_video(input_file, output_dir, duration):
         输出：
     """
     try:
+        print("------split_video----------")
         file_name = os.path.basename(input_file)
         file_name_without_ext = os.path.splitext(file_name)[0]
 
@@ -122,11 +123,14 @@ def split_video(input_file, output_dir, duration):
             # 指定保存的文件名
             filename = f'{file_name_without_ext}_{i + 1}.mp4'
             #ffmepg -codecs
+            print(filename)
             segment.write_videofile(os.path.join(output_dir, filename),fps=clip.fps, threads=16,preset='ultrafast',codec="libx264")
+        clip.close()
     except Exception as myunkonw:
         print(f"处理视频文件时出错: {str(myunkonw)}")
         print("使用 traceback 输出异常: {}".format(traceback.format_exc()))
-        return False    
+        clip.close()
+        return False
     return True
 
 # def split_video(input_path, output_path, duration):
@@ -168,6 +172,7 @@ def get_video_properties(video_path):
         file_size = os.path.getsize(video_path)
         print(f"视频文件的时长为 {duration} 秒")
         print(f"视频文件的大小为 {file_size/1024/1204} M")
+        clip.close()
         return duration, file_size
     except Exception as myunkonw:
        print(f"发生异常：{myunkonw}")
@@ -279,7 +284,7 @@ def interface_mp4_to_post():
         print("Windows")
         input_dir = r'D:\mp4\input'
         output_dir = r'D:\mp4\output'
-        bak_dir = r"D:\mp4\bak\\"
+        bak_dir = r"D:\mp4\bak"
     else:
         input_dir = r'/root/mp4/input'
         output_dir = r'/root/mp4/output'
@@ -292,6 +297,7 @@ def interface_mp4_to_post():
         print("create_big_to_small failed")
         logging.error("create_big_to_small failed")
     #delete
+    file_hash = {}
     for root,_,files in os.walk(input_dir):
         for file in files:
             # 拼接路径
@@ -299,13 +305,19 @@ def interface_mp4_to_post():
             print(file_path)
             bak_file_name = os.path.basename(file_path)
             bak_file_name_path =os.path.join(bak_dir, bak_file_name)
-            
-            if not os.path.exists(bak_file_name_path):
-                shutil.move(file_path, bak_dir)
-                print("shutil.move")
-            else:
-                os.remove(file_path)
-                print("remove")
+            print(bak_file_name_path)
+            file_hash[file_path] = bak_file_name_path
+    
+    for file_path, bak_file_name_path in file_hash.items():
+        print(file_path)
+        print(bak_file_name_path)     
+        if not os.path.exists(bak_file_name_path):
+            print("11111111111111111111111111111111")
+            os.replace(file_path,bak_file_name_path)
+        else:
+            print("22222222222222222")
+            os.remove(file_path)
+            print("remove")
             
                 
     

@@ -209,9 +209,11 @@ class CMyShipinhao:
             file_size = os.path.getsize(video_path)
             print(f"视频文件的时长为 {duration} 秒")
             print(f"视频文件的大小为 {file_size/1024/1204} M")
+            clip.close()
             return duration, file_size
         except Exception as myunkonw:
            print(f"发生异常：{myunkonw}")
+           clip.close()
      
     def upload_mp4(self, mp4_path: str,habit_name: str,habit_detail: str):
         """
