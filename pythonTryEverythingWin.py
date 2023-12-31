@@ -1,14 +1,14 @@
 import os
 import logging
 import platform
+import random
+import time
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 from putdonwphone import  myshipinhao
 from putdonwphone import  ffmeg_to_mp4
-import random
-import time
-
+from putdonwphone import myxiaohongshu
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -23,6 +23,7 @@ def auto_window_task():
         BACK_PATH = r"/root/mp4/bak"
     try:
         myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
+        myxiaohongshu.interface_auo_upload_myxiaohongshu("pic")
     finally:
         print("interface_auo_upload_shipinhao")
 
@@ -80,7 +81,7 @@ if __name__ == "__main__":
     #1点:开始切换文件
     backsched.add_job(change_mp4_to_small, CronTrigger.from_crontab("0 1 * * *"), id="cut_big_file")
     #4点:开始上传文件
-    backsched.add_job(auto_upload_mp4, CronTrigger.from_crontab("46 17 * * *"), id="put_small_file")
+    backsched.add_job(auto_upload_mp4, CronTrigger.from_crontab("0 2 * * *"), id="put_small_file")
     print("start pythonTryEverythingWin")
     backsched.start()
     

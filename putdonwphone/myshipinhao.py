@@ -397,8 +397,8 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
                         print("autoupload.upload_mp4 is ok ")
                         logging.info("upload_mp4 %s", mp4_file_path)
                         # 用完删除，我是最后一个使用的 我需要删除
-                        if not os.path.exists(bak_file_name_path):
-                            shutil.move(mp4_file_path, bak_path)
+                        if os.path.exists(mp4_file_path):
+                            os.remove(mp4_file_path)
         print("mp4 done")
     except ValueError:
         print("Could not convert data to an integer.")

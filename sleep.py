@@ -17,7 +17,6 @@ from kernel import interface_db
 from third import mainWechatDaily
 from blog import baidubaijia
 from putdonwphone import mykuaishou2
-from putdonwphone import myxiaohongshu
 from putdonwphone import mydouyin
 from putdonwphone import mytoutiao
 from putdonwphone import myzhihu

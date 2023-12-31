@@ -301,12 +301,17 @@ def interface_auo_upload_myxiaohongshu(file_type="pic"):
     upload_mp4_url = "https://creator.xiaohongshu.com/publish/publish?source=official"
     sys = platform.system()
     if sys == "Windows":
-        cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\xiaohongshu.json"
-        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
-        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
+        cookies_path = r"D:\mp4\etc\xiaohongshu.json"
+        save_picture_path = r"D:\mp4\etc\temp.png"
+        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\mp4\etc\01_get_up.txt"
         out_path = r"D:\mp4\output"
         # BACK_PATH = r"D:\mp4\bak"
+    elif sys == "Darwin":
+        cookies_path = r"/Users/wangchuanyi/etcxiaohongshu.json"
+        save_picture_path = r"/Users/wangchuanyi/etc/temp.png"
+        default_picture_path = r"/Users/wangchuanyi/etc/ZfCYoSG1BE_small.jpg"
+        get_up_path = '/Users/wangchuanyi/etc/01_get_up.txt'
     else:
         cookies_path = r"/root/bin/xiaohongshu.json"
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
