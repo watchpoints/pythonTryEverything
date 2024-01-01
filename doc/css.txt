@@ -1,3 +1,8 @@
+   2) <div class="ChatSend-button ">发送</div> aka get_by_text("发送", exact=True)
+playwright._impl._api_types.Error: Error: strict mode violation: locator("xpath=//div[contains(text(), '发送')]") resolved to 2 elements:        
+    1) <div class="InteractiveGiftPanel-tips">点击发送弹幕或礼物参与互动</div> aka get_by_text("点击发送弹幕或礼物参与互动")
+    2) <div class="ChatSend-button ">发送</div> aka get_by_text("发送", exact=True)
+
 def helper_admin_class_rule(self, page: Page, task:str):
         """
           弹幕提醒：
