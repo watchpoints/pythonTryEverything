@@ -199,11 +199,11 @@ def helper_admin_class_rule(page: Page, watch_room_url):
         # 累计3个小时 自动退出
         while True:
             count +=1
-            if count > 36:
+            if count > 24:
                 return
             page.get_by_placeholder("这里输入聊天内容").fill(task)
             time.sleep(1)
-            page.locator("xpath=//div[text()='发送']").click()
+            #page.locator("xpath=//div[text()='发送']").click()
             print(count)
             sleep_time = 300 + random.randint(1,10)
             time.sleep(sleep_time)
