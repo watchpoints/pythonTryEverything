@@ -1,0 +1,34 @@
+[Config]
+PortalUsername = 'olive'
+PortalPassword = 'olive'
+# 日志输出目录
+LogDir = '/root/log/olive'
+# 全局 OutTmpl
+OutTmpl = "[{{ now | date "2006-01-02 15-04-05"}}].flv"
+# 全局 SaveDir，绝对路径
+#SaveDir = "/Users/luxcgo/olive/{{ .SiteName }}/{{ .StreamerName }}/"
+SaveDir = "/root/mp4/input/"
+
+# 日志等级 (0~6), 越大日志输出越多
+LogLevel = 3
+# 直播间状态查询间隔时间（秒）
+SnapRestSeconds = 15
+# 文件是否满足切割条件检测间隔时间（秒）
+SplitRestSeconds = 60
+# 直播间录播结束后执行命令的并发执行的个数
+CommanderPoolSize = 1
+# 解析器工作状态检查间隔时间（秒）
+ParserMonitorRestSeconds = 10
+
+# 部分网站需要配置 cookie
+KuaishouCookie = "did=web_d86297aa2f579589b8abc2594b0ea985"
+
+
+[[Shows]]
+ID = 'a'
+Platform = "bilibili"
+RoomID = "21852"
+StreamerName = "old-tomato"
+# 文件名称将会是 `[2022-04-24 02-02-32][old-tomato][Hi!]`
+OutTmpl = "[{{ now | date \"2006-01-02 15-04-05\"}}][{{ .StreamerName }}][{{ .RoomName }}]"
+

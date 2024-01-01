@@ -1,0 +1,32 @@
+[Config]
+PortalUsername = 'olive'
+PortalPassword = 'olive'
+LogDir = '/root/mp4/input'
+SaveDir = '/root/mp4/input'
+OutTmpl = '[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv'
+LogLevel = 5
+SnapRestSeconds = 15
+SplitRestSeconds = 60
+CommanderPoolSize = 1
+ParserMonitorRestSeconds = 300
+PostCmdsRetryCount = 2
+DouyinCookie = ''
+KuaishouCookie = ''
+BiliupEnable = false
+CookieFilepath = ''
+Threads = 0
+MaxBytesPerSecond = 0.0
+
+[[Shows]]
+ID = ''
+Enable = false
+Platform = 'bilibili'
+RoomID = '30795542'
+StreamerName = '哔哩哔哩'
+OutTmpl = ''
+Parser = ''
+SaveDir = ''
+PostCmds = ''
+SplitRule = ''
+DateCreated = 0001-01-01T00:00:00Z
+DateUpdated = 0001-01-01T00:00:00Z

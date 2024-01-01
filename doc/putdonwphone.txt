@@ -1,0 +1,33 @@
+
+2. copying and pasting text to the clipboard.
+https://pyperclip.readthedocs.io/en/latest/
+python之Pyperclip模块
+下面介绍一下，python中的Pyperclip模块，它的简单又实用，主要用法就2点：
+
+1.用于复制剪贴板里的内容、
+
+2.向剪贴板写入内容。
+
+To copy text to the clipboard, pass a string to pyperclip.copy(). 
+To paste the text from the clipboard, call pyperclip.paste() and the text will be returned as a string value.
+
+
+-----------------------------------------------------
+
+1. How do I close a VideoFileClip #653
+ 
+  clip.close() 
+ https://github.com/Zulko/moviepy/issues/653
+
+close(self)
+Release any resources that are in use.
+
+https://zulko.github.io/moviepy/ref/VideoClip/VideoClip.html?highlight=videofileclip
+
+
+ os.replace(file_path,bak_file_name_path)
+https://onecompiler.com/python/3y5fwbdux
+
+ main 函数直接调用一级目录数据，
+ 一级目录直接不允许相互调用
+ 不允许建立二级目录。

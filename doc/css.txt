@@ -1,17 +1,86 @@
-<textarea data-v-1f132b29="" rows="1" placeholder="有什么新的观点，快来说说看～" id="messageText" class="comment-area" style="height: 110px;"></textarea>
+def helper_admin_class_rule(self, page: Page, task:str):
+        """
+          弹幕提醒：
+        """
+        print(task)
+        page.goto(self.watch_room_url)
+        time.sleep(5)
+        print(f"open  {self.zhibo_url}")
+        page.mouse.down()
+        page.mouse.down()
+    
+        task = "认真学习使用：今日目标 敢于朗读"
+        while True:
+            page.get_by_placeholder("这里输入聊天内容").fill(task)
+            time.sleep(1)
+            page.locator("xpath=//div[contains(text(), '发送')]").click()
+
+<div class="ChatSend"><textarea class="ChatSend-txt  " placeholder="这里输入聊天内容" maxlength="200" style="color: rgb(169, 169, 169);"><
+
+/textarea><div class="ChatBarrageCollect"><div class="ChatBarrageCollect-tip">收藏的弹幕
+
+</div></div><div class="ChatSend-button ">发送</div></div>
 
 
-  
-    page.get_by_placeholder("有什么新的观点，快来说说看～").fill(habit_name)
-    
-    
-    
-    <div data-v-f31c164c="" class="reply-btn send-btn-b clearTpaErr ">
-     <span data-v-f31c164c="" class="text">发布</span>
-     <span data-v-f31c164c="" class="val">Ctrl+Enter</span>
-   </div>
-    
-     page.locator("xpath=//button[contains(text(), '发布')]").click()
-     page.locator("xpath=//button[./span[contains(text(), '发布')]]").click()
-     
-     
+
+
+
+## dropdown1 = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=1")
+
+元素匹配器 - nth 
+banana = page.get_by_role("listitem").nth(2)
+
+
+dropdown1 = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=1")
+
+
+page.locator(".css-88f71l > button:nth-child(2)").click()
+
+
+<svg class="svgIcon--2ypAR1M svg--2uID9Py" aria-hidden="true"><use xlink:href="#copyNew"></use></svg>
+python+playwright 学习-27 鼠标悬停 hover() 和listitem 定位
+
+https://www.cnblogs.com/yoyoketang/p/17198000.html
+鼠标移动元素位置
+然后点击//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[1]/svg
+
+#root > div.main--2dWJZUD > div.pageContainer--1QvqcZF > div > div:nth-child(1) > div:nth-child(1) > div.startLive--10KsKES > div.rtmpSetting--1tIUj7H > div:nth-child(2) > svg
+
+driver.findElement(By.linkText("View Profile")).click()
+
+
+xpath a href text
+
+https://devhints.io/xpath
+
+<div class="tab--Rnkicmy">
+<a class="item--3rQACdO active--1dSBpiX" href="/creator/main/live" aria-current="page">开直播</a>
+<a class="item--3rQACdO " href="/creator/main/loop">开轮播</a>
+</div>
+
+//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[1]/div/a[1]
+
+???? class same 
+<input readonly="" type="text" class="shark-Input input--2DEflcU" value="rtmp://sendtc3.douyu.com/live">
+
+
+<div class="itemWrap--2f8TJ3y"><span class="fieldTitle--2VcWT2c">直播码</span>
+<input readonly="" type="text" class="shark-Input input--2DEflcU" value="11975253ruf8Lo8X?wsSecret=********************************&amp;wsTime=6590f914&amp;wsSeek=off&amp;wm=0&amp;tw=0&amp;roirecognition=0&amp;record=flv&amp;origin=tct&amp;txHost=sendtc3.douyu.com">
+<input readonly="" type="text" class="shark-Input input--2DEflcU" value="11975253ruf8Lo8X?wsSecret=********************************&amp;wsTime=6590f914&amp;wsSeek=off&amp;wm=0&amp;tw=0&amp;roirecognition=0&amp;record=flv&amp;origin=tct&amp;txHost=sendtc3.douyu.com">
+<input readonly="" type="text" class="shark-Input input--2DEflcU" value="11975253ruf8Lo8X?wsSecret=********************************&amp;wsTime=6590f914&amp;wsSeek=off&amp;wm=0&amp;tw=0&amp;roirecognition=0&amp;record=flv&amp;origin=tct&amp;txHost=sendtc3.douyu.com">
+<input readonly="" type="text" class="shark-Input input--2DEflcU" value="11975253ruf8Lo8X?wsSecret=********************************&amp;wsTime=6590f914&amp;wsSeek=off&amp;wm=0&amp;tw=0&amp;roirecognition=0&amp;record=flv&amp;origin=tct&amp;txHost=sendtc3.douyu.com"><svg class="svgIcon--2ypAR1M svg--2uID9Py" aria-hidden="true">
+<use xlink:href="#copyNew"></use></svg>
+</div>
+
+<div class="startWrap--xTNr2Gq"><span class="close--1RVpTW1">关闭直播</span><span class="rtmp--3Qlxg0A">切换推流线路&gt;</span></div>
+
+
+------------------------
+<div class="startWrap--xTNr2Gq">
+  <span class="start--1NvkXEZ">开始直播</span>
+  <span class="rtmp--3Qlxg0A">切换推流线路&gt</span>
+</div>
+
+
+laywright._impl._api_types.Error: DOMException: Failed to execute 'evaluate' on 'Document': 
+The string './/div[span[text()='开始直播')]' is not a valid XPath expression.

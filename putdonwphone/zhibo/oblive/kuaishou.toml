@@ -1,0 +1,34 @@
+[Config]
+PortalUsername = 'olive'
+PortalPassword = 'olive'
+LogDir = '/root/mp4/input'
+SaveDir = '/root/mp4/input'
+OutTmpl = '[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv'
+LogLevel = 5
+SnapRestSeconds = 15
+SplitRestSeconds = 60
+CommanderPoolSize = 1
+ParserMonitorRestSeconds = 300
+PostCmdsRetryCount = 2
+DouyinCookie = ''
+KuaishouCookie = ''
+BiliupEnable = false
+CookieFilepath = ''
+Threads = 0
+MaxBytesPerSecond = 0.0
+
+# 部分网站需要配置 cookie
+KuaishouCookie = "did=web_d86297aa2f579589b8abc2594b0ea985"
+[[Shows]]
+ID = ''
+Enable = false
+Platform = 'kuaishou'
+RoomID = '3xjrfwinr23gycg'
+StreamerName = '快手'
+OutTmpl = ''
+Parser = ''
+SaveDir = ''
+PostCmds = ''
+SplitRule = ''
+DateCreated = 0001-01-01T00:00:00Z
+DateUpdated = 0001-01-01T00:00:00Z

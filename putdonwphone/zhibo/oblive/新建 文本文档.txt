@@ -1,0 +1,2 @@
+cookie项设置userId=2444965230是不够的
+you-live -c "clientid=3; did=web_xxx; client_key=xxx; kpn=xxx; didv=xxx; ..." kuaishou luknn222

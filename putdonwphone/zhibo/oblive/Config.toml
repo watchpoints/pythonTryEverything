@@ -1,0 +1,50 @@
+[Config]
+PortalUsername = 'olive'
+PortalPassword = 'olive'
+# 日志输出目录
+LogDir = '/Users/luxcgo/olive'
+# 全局 OutTmpl
+OutTmpl = "[{{ now | date "2006-01-02 15-04-05"}}].flv"
+# 全局 SaveDir，绝对路径
+SaveDir = "/Users/luxcgo/olive/{{ .SiteName }}/{{ .StreamerName }}/"
+
+# 日志等级 (0~6), 越大日志输出越多
+LogLevel = 5
+# 直播间状态查询间隔时间（秒）
+SnapRestSeconds = 15
+# 文件是否满足切割条件检测间隔时间（秒）
+SplitRestSeconds = 60
+# 直播间录播结束后执行命令的并发执行的个数
+CommanderPoolSize = 1
+# 解析器工作状态检查间隔时间（秒）
+ParserMonitorRestSeconds = 10
+
+# 部分网站需要配置 cookie
+DouyinCookie = "__ac_nonce=06245c89100e7ab2dd536; __ac_signature=_02B4Z6wo00f01LjBMSAAAIDBwA.aJ.c4z1C44TWAAEx696;"
+KuaishouCookie = "did=web_d86297aa2f579589b8abc2594b0ea985"
+
+# biliup 配置项
+BiliupEnable = false
+CookieFilepath = '/Users/lucas/github/olive/cookies.json'
+Threads = 6
+MaxBytesPerSecond = 2097152
+
+[[Shows]]
+# 全局唯一字符串，因为配置修改会实时监控实时更新，故以此 ID 作为标识这一个录制的配置项
+ID = 'a'
+# 平台名称
+Platform = "huya"
+# 房间号
+RoomID = "518512"
+
+[[Shows]]
+ID = 'b'
+Enable = false
+Platform = 'bilibili'
+RoomID = '1319379'
+StreamerName = 'test1'
+OutTmpl = '[{{ .StreamerName }}][{{ .RoomName }}][{{ now | date "2006-01-02 15-04-05"}}].flv'
+Parser = 'flv'
+SaveDir = ''
+PostCmds = '[{"Path":"oliveshell","Args":["/bin/zsh","-c","echo $FILE_PATH"]},{"Path":"olivebiliup"},{"Path":"olivetrash"}]'
+SplitRule = '{"FileSize":2000000000,"Duration":"1h"}'
