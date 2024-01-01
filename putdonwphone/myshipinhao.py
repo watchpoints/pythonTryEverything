@@ -370,6 +370,7 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
         
         autoupload = CMyShipinhao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
         if upload_type == "pic":
+            print("pic")
             autoupload.upload_picture(file_path,habit_name,habit_detail)
             return
         for root,_,files in os.walk(out_path):
@@ -417,8 +418,8 @@ if __name__ == '__main__':
     else:
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
-    #interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
-    interface_auo_upload_shipinhao("mp4", OUT_PATH, BACK_PATH)
+    interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
+    #interface_auo_upload_shipinhao("mp4", OUT_PATH, BACK_PATH)
 
     
 

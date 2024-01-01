@@ -224,3 +224,5 @@ def interface_auo_upload_myxiaohongshu(file_type,file_path,habit_name,habit_deta
                     print(habit_name)
                     if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
                         logging.info("upload_mp4 %s", mp4_file_path)
+if __name__ == '__main__':
+    print("hi")
