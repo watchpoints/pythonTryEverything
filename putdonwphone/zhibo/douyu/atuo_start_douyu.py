@@ -231,16 +231,16 @@ def helper_admin_class_rule(page: Page, watch_room_url):
         page.mouse.down()
         page.mouse.down()
         print("count")
-        # task = "认真学习使用：今日目标 敢于朗读"
+        task = "认真学习使用：今日目标 敢于朗读"
         count = 0
         # 累计3个小时 自动退出
         while True:
             count +=1
             if count > 24:
                 return
-            # page.get_by_placeholder("这里输入聊天内容").fill(task)
-            # time.sleep(1)
-            # page.locator("css=.ChatSend-button ").click()
+            page.get_by_placeholder("这里输入聊天内容").fill(task)
+            time.sleep(1)
+            page.locator("css=.ChatSend-button ").click()
             print(count)
             sleep_time = 300 + random.randint(1,10)
             time.sleep(sleep_time)
@@ -280,8 +280,14 @@ def rtmp_timeout_task(input_directory,output_url):
     """
     try:
         # signal.alarm(7200)   # 设置超时时间为2个小时 3个小时 10800
+        timestamp1 = time.time()
         while True:
             local_file_to_rtmp(input_directory,output_url)
+            timestamp2 = time.time()
+            time_difference = timestamp2 - timestamp1
+            if int(time_difference) > 10800:
+                logging.info("timeout")
+                break
     except Exception as mye:
         print(mye)
         traceback.print_exc()
@@ -327,8 +333,8 @@ def start_live_stream(input_file, rtmp_url):
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
     ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
-
-    result = subprocess.run(ffmpeg_cmd, shell=True,capture_output=True, text=True,check=False, encoding='utf-8')
+    
+    result = subprocess.run(ffmpeg_cmd, shell=True,capture_output=True, text=True,check=False, encoding='utf-8',timeout=10800)
 
     # 获取命令执行结果
     output = result.stdout

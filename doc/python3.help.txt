@@ -1,3 +1,8 @@
+3. Python 001: How to timeout a subprocess
+
+subprocess.run(cmd, timeout=5)
+
+
 
 2. 【Vscode踩坑】vscode调试python提示由于目标计算机积极拒绝，无法连接。原来是代理问题
 - what 
