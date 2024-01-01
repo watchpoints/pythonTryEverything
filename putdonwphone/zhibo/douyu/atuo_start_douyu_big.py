@@ -5,6 +5,7 @@ import os
 import platform
 import random
 import subprocess
+import shlex
 import sys
 import traceback
 import threading
@@ -113,6 +114,14 @@ class CZTOUYU:
         page.mouse.down()
         print(picture_path,habit_name,habit_detail)
         
+        
+        # # 如果一级开始 ，可以关闭
+        # print("关闭直播")
+        # aa = page.wait_for_timeout(2000).get_by_text("关闭直播")
+        # page.get_by_text("关闭直播").click()
+        # time.sleep(10)
+        # page.get_by_text("直接下播").click()
+        
         # Text match
         # https://sqa.stackexchange.com/questions/29079/how-to-access-a-hyper-link-using-xpath
         page.locator("xpath=//a[contains(text(),'开直播')]").click()
@@ -146,8 +155,8 @@ class CZTOUYU:
         # dropdown = page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[1]/svg')
         dropdown = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=0")
         dropdown.hover()
+        time.sleep(1)
         dropdown.click()
-        
         time.sleep(2)
         rtpm_url = pyperclip.paste()
         print(rtpm_url)
@@ -159,6 +168,7 @@ class CZTOUYU:
         # 元素匹配器 - nth
         dropdown1 = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=1")
         dropdown1.hover()
+        time.sleep(1)
         dropdown1.click()
         time.sleep(2)
         rtpm_code = pyperclip.paste()
@@ -211,9 +221,9 @@ class CZTOUYU:
         time.sleep(1)
         print("关闭直播")
         page.get_by_text("关闭直播").click()
-        time.sleep(10)
+        time.sleep(5)
         page.get_by_text("直接下播").click()
-        time.sleep(10)
+        time.sleep(5)
 
 def helper_admin_class_rule(page: Page, watch_room_url):
         """
@@ -224,16 +234,16 @@ def helper_admin_class_rule(page: Page, watch_room_url):
         page.mouse.down()
         page.mouse.down()
         print("count")
-        # task = "认真学习使用：今日目标 敢于朗读"
+        task = "认真学习使用：今日目标 敢于朗读"
         count = 0
         # 累计3个小时 自动退出
         while True:
             count +=1
             if count > 24:
                 return
-            # page.get_by_placeholder("这里输入聊天内容").fill(task)
-            # time.sleep(1)
-            # page.locator("css=.ChatSend-button ").click()
+            page.get_by_placeholder("这里输入聊天内容").fill(task)
+            time.sleep(1)
+            page.locator("css=.ChatSend-button ").click()
             print(count)
             sleep_time = 300 + random.randint(1,10)
             time.sleep(sleep_time)
@@ -246,7 +256,7 @@ def interface_auo_start_douyu_zhibo(input_directory, only_msg):
     """
     login_url = "https://www.douyu.com/"
     zhibo_url = "https://www.douyu.com/creator/main/live"
-    watch_room_url = "https://www.douyu.com/11975253"
+    watch_room_url = "https://www.douyu.com/1480416"
     if platform.system() == "Windows":
         cookies_path = r"D:\mp4\etc\zhibodouyu.json"
     else:
@@ -273,7 +283,7 @@ def rtmp_timeout_task(input_directory,output_url):
     """
     try:
         # signal.alarm(7200)   # 设置超时时间为2个小时 3个小时 10800
-        while True:
+        while 1:
             local_file_to_rtmp(input_directory,output_url)
     except Exception as mye:
         print(mye)
@@ -318,11 +328,38 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f"ffmpeg -re -i {input_file} -vcodec copy -acodec copy -f flv -y  {rtmp_url}"
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
+    # cmd = shlex.split(ffmpeg_cmd)
+    #https://blog.csdn.net/cnweike/article/details/73620250
+    # Execute a child program in a new process.
+    # https://docs.python.org/zh-cn/3/library/subprocess.html
+    # Python：从subprocess运行的子进程中实时获取输出
+    myp = subprocess.Popen(ffmpeg_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,text=True, encoding='utf-8')
+    # oll() is None means that the child is still running.
+    while myp.poll() is None:
+        line = myp.stdout.readline()
+        #https://juejin.cn/post/6926442577294000136
+        line = line.strip()
+        if line:
+            print(line)
+    #     # 通过循环实时获取输出
+    # while True:
+    #     # 从管道中读取一行输出
+    #     output_line = myp.stdout.readline()
 
-    result = subprocess.run(ffmpeg_cmd, capture_output=True, text=True,check=False, encoding='utf-8')
+    #     # 判断输出是否为空，为空表示子进程已经结束
+    #     if output_line == '' and myp.poll() is not None:
+    #         break
 
+    if myp.returncode == 0:
+        print('Subprogram success')
+    else:
+        print('Subprogram failed')
+        
+    print(ffmpeg_cmd)
+    # https://www.cnblogs.com/suwings/p/6216279.html
+    result = subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,check=False, encoding='utf-8')
     # 获取命令执行结果
     output = result.stdout
     error = result.stderr

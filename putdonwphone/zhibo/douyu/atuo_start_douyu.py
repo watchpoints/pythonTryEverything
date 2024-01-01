@@ -325,10 +325,10 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f"ffmpeg -re -i {input_file} -vcodec copy -acodec copy -f flv -y  {rtmp_url}"
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
 
-    result = subprocess.run(ffmpeg_cmd, capture_output=True, text=True,check=False, encoding='utf-8')
+    result = subprocess.run(ffmpeg_cmd, shell=True,capture_output=True, text=True,check=False, encoding='utf-8')
 
     # 获取命令执行结果
     output = result.stdout
