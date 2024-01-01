@@ -342,10 +342,6 @@ def start_live_stream(input_file, rtmp_url):
 if __name__ == '__main__':
     # playwright codegen https://www.douyu.com/creator/main/live
     MP4_DIR = r"D:\mp4\speak"
-<<<<<<< HEAD
-    ## false 直播 --留言  true 只有留言
-=======
     # false 直播 --留言  true 只有留言
->>>>>>> 81484ff547abdb0741680ff9a5da1b7bfb2677b4
     ONLIY_MSG = False
     interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
