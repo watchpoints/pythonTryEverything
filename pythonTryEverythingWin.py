@@ -62,12 +62,12 @@ def my_test():
     print(file_path)
     print(habit_name)
     print(habit_detail)
-    #myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
+    myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
 ###########################################################
  
 if __name__ == "__main__":
     if platform.system() == "Windows":
-        log_path = r"D:\mp4\bak\pythonTryEverythingWin.log"
+        log_path = r"D:\mp4\log\pythonTryEverythingWin.log"
     else:
         log_path = "pythonTryEverythingWin.log"
         
