@@ -23,7 +23,7 @@ class CZTOUYU:
     - save_picture_path (str): The path to save pictures.
     - default_picture_path (str): The default path for pictures.
     """
-    def __init__(self,cookies_path: str, login_url: str, zhibo_url: str, watch_room_url: str, mp4_input_directory: str):
+    def __init__(self,cookies_path: str, login_url: str, zhibo_url: str, watch_room_url: str, mp4_input_directory: str, only_msg):
         self.cookies_path = cookies_path
         self.login_url = login_url
         self.zhibo_url = zhibo_url
@@ -31,6 +31,7 @@ class CZTOUYU:
         # playwright 部分
         self.browser = None
         self.input_directory = mp4_input_directory
+        self.only_msg = only_msg
         print("create CMyDouyin")
 
     def __del__(self):
@@ -51,21 +52,6 @@ class CZTOUYU:
                 self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             login_page = self.login_or_restore_cookies()
             self.helper_start_zhibo(login_page, picture_path, habit_name,habit_detail)
-            self.browser.close()
-    
-    def upload_mp4(self, mp4_path: str, msg: str):
-        """
-          upload_mp4
-        """
-        with sync_playwright() as playwright:
-            display_headless = False
-            # display_headless = True
-            sys = platform.system()
-            if sys == "Linux":
-                display_headless = True
-            self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-            login_page = self.login_or_restore_cookies()
-            self.msg_up_load_mp4(login_page, mp4_path, msg)
             self.browser.close()
         
     def login_or_restore_cookies(self) -> Page:
@@ -99,6 +85,11 @@ class CZTOUYU:
         """
          解析直播推流地址：防止自动黑屏 断流后 扣费 定时直播2个小时。
         """
+        # 只测试留言功能
+        if self.only_msg:
+            helper_admin_class_rule(page,self.watch_room_url)
+            return
+            
         page.goto(self.zhibo_url)
         time.sleep(5)
         print(f"open  {self.zhibo_url}")
@@ -144,7 +135,8 @@ class CZTOUYU:
         rtpm_url = pyperclip.paste()
         print(rtpm_url)
         #rtmp://sendtc3.douyu.com/live
-         
+    
+        
         # page.locator("div").filter(has_text="直播码").locator("svg").click()
         # dropdown1 = page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[2]/svg')
         # 元素匹配器 - nth
@@ -169,15 +161,16 @@ class CZTOUYU:
        
         print(self.watch_room_url)
         
-        # Create a thread with arguments
-        my_msg = threading.Thread(target=helper_admin_class_rule, args=page)
-        # Start the thread
-        my_msg.daemon = True
-        my_msg.start()
+        # # Create a thread with arguments
+        # my_msg = threading.Thread(target=helper_admin_class_rule, args=page)
+        # # Start the thread
+        # my_msg.daemon = True
+        # my_msg.start()
        
         ## 每天定时直播 3个小时
         #time.sleep(60*60*3)
-        time.sleep(60*60*3)
+        # time.sleep(60*60*3)
+        helper_admin_class_rule(page,self.watch_room_url)
                 
         # 推送直播
         #关闭直播
@@ -192,26 +185,32 @@ class CZTOUYU:
         
         time.sleep(120)
 
-def helper_admin_class_rule(page: Page):
+def helper_admin_class_rule(page: Page, watch_room_url):
         """
           弹幕提醒：
         """
-        page.goto(self.watch_room_url)
+        page.goto(watch_room_url)
         time.sleep(5)
-        print(f"open  {self.zhibo_url}")
         page.mouse.down()
         page.mouse.down()
-    
+        print("count")
         task = "认真学习使用：今日目标 敢于朗读"
+        count = 0
+        # 累计3个小时 自动退出
         while True:
+            count +=1
+            if count > 36:
+                return
             page.get_by_placeholder("这里输入聊天内容").fill(task)
             time.sleep(1)
-            page.locator("xpath=//div[contains(text(), '发送')]").click()
-            time.sleep(300)
+            page.locator("xpath=//div[text()='发送']").click()
+            print(count)
+            sleep_time = 300 + random.randint(1,10)
+            time.sleep(sleep_time)
     
 
 
-def interface_auo_start_douyu_zhibo(input_directory):
+def interface_auo_start_douyu_zhibo(input_directory, only_msg):
     """
       对外调用接口
     """
@@ -226,7 +225,7 @@ def interface_auo_start_douyu_zhibo(input_directory):
     file_path = ""
     habit_name = ""
     habit_detail =""
-    autoupload = CZTOUYU(cookies_path, login_url, zhibo_url,watch_room_url,input_directory)
+    autoupload = CZTOUYU(cookies_path, login_url, zhibo_url,watch_room_url,input_directory,only_msg)
     autoupload.auto_start_zhibo(file_path, habit_name,habit_detail)
 
 def rtmp_timeout_task(input_directory,output_url):
@@ -297,11 +296,6 @@ def start_live_stream(input_file, rtmp_url):
 
 if __name__ == '__main__':
     # playwright codegen https://www.douyu.com/creator/main/live
-    mp4_dir_path = r"D:\mp4\speak"
-    interface_auo_start_douyu_zhibo(mp4_dir_path)
-    #  # 本地文件夹路径，包含多个视频文件
-    
-
-    # # 输出 URL，可以是 RTMP 服务器地址
-    # output_url = "rtmp://example.com/live/stream_key"
-    # local_file_to_rtmp(input_directory, output_url)
+    MP4_DIR = r"D:\mp4\speak"
+    ONLIY_MSG = False
+    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
