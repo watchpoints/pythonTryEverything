@@ -2,6 +2,7 @@
 import time
 import json
 import os
+import logging
 import platform
 import random
 import subprocess
@@ -129,10 +130,11 @@ class CZTOUYU:
         # dropdown = page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[1]/svg')
         dropdown = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=0")
         dropdown.hover()
+        time.sleep(1)
         dropdown.click()
-        
         time.sleep(2)
         rtpm_url = pyperclip.paste()
+        time.sleep(1)
         print(rtpm_url)
         #rtmp://sendtc3.douyu.com/live
     
@@ -142,23 +144,28 @@ class CZTOUYU:
         # 元素匹配器 - nth
         dropdown1 = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=1")
         dropdown1.hover()
+        time.sleep(1)
         dropdown1.click()
+        # 等待2秒获取黏贴内容
         time.sleep(2)
         rtpm_code = pyperclip.paste()
         print("直播码")
+        time.sleep(1)
         print(rtpm_code)
-        time.sleep(2)
+        logging.debug(rtpm_code)
         #11975253rWycoTVM?wsSecret=d3f8b9b7cb13599952f8d3e8fae27901&wsTime=65915099&wsSeek=off&wm=0&tw=0&roirecognition=0&record=flv&origin=tct&txHost=sendtc3.douyu.com
         
         rtmp_stream =  rtpm_url + "/" + rtpm_code
+        logging.debug(rtpm_code)
         print(rtmp_stream)
         # 开始推流
         # Create a thread with arguments
         my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
-        # Start the thread
+        #Start the thread
         my_thread.daemon = True
         my_thread.start()
-       
+        time.sleep(1)
+        #rtmp_timeout_task(self.input_directory,rtmp_stream)
         print(self.watch_room_url)
         
         # # Create a thread with arguments
@@ -201,14 +208,10 @@ def helper_admin_class_rule(page: Page, watch_room_url):
             count +=1
             if count > 24:
                 return
-            page.get_by_placeholder("这里输入聊天内容").fill(task)
-            time.sleep(1)
-<<<<<<< HEAD
-            #page.locator("xpath=//div[text()='发送']").click()
-=======
+            #page.get_by_placeholder("这里输入聊天内容").fill(task)
+            #time.sleep(1)
             # page.locator("xpath=//div[text()='发送']").click()
-            page.locator("css=.ChatSend-button ").click()
->>>>>>> 41fa8d49ad1fa2ed0046182d075cb82ecae6b61d
+            #page.locator("css=.ChatSend-button ").click()
             print(count)
             sleep_time = 300 + random.randint(1,10)
             time.sleep(sleep_time)
@@ -302,5 +305,6 @@ def start_live_stream(input_file, rtmp_url):
 if __name__ == '__main__':
     # playwright codegen https://www.douyu.com/creator/main/live
     MP4_DIR = r"D:\mp4\speak"
+    # false 直播 --留言  true 只有留言
     ONLIY_MSG = False
     interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
