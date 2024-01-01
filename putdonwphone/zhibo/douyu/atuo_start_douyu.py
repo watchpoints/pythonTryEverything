@@ -349,25 +349,15 @@ def start_live_stream(input_file, rtmp_url):
     print(error)
 
 if __name__ == '__main__':
-    
     if platform.system() == "Windows":
-       LOG_PATH = r"D:\mp4\log\pythonTryEverythingWin.log"
+        LOG_PATH = r"D:\mp4\log\douyu.log"
     else:
-        LOG_PATH = "pythonTryEverythingWin.log"
-        
+        LOG_PATH = "douyu.log"
     logging.basicConfig(level=logging.DEBUG,
                         format=LOG_FORMAT,
                         datefmt=DATE_FORMAT,
                         filename=LOG_PATH
                         )
-
-    logging.info("""
-        ┌──────────────────────────────────────────────────────────────────────┐
-        │                                                                      │    
-        │                      •  Start pythonTryEverythingWin  •                             │
-        │                                                                      │
-        └──────────────────────────────────────────────────────────────────────┘
-    """)
 
     job_defaults = {
         'coalesce': False,
