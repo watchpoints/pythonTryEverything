@@ -143,9 +143,6 @@ class CMyCsdn:
         #     file_chooser = fc_info.value
         #     file_chooser.set_files(picture_path)
 
-        # time.sleep(3)
-        # page.mouse.down()
-        # page.mouse.down()
 
         # # 填写描述
         # page.locator("css=.iGOvMbhp8tU-").fill(msg)

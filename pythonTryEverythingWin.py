@@ -3,6 +3,7 @@ import logging
 import platform
 import random
 import time
+import signal
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -55,6 +56,19 @@ def change_mp4_to_small():
     except Exception as myunkonw:
         logging.error(f"处理视频文件时出错: {str(myunkonw)}")
 #########################
+class TimeoutException(Exception):
+    pass
+def timeout_handler(signum, frame):
+    """_summary_
+    Args:
+        signum (_type_): _description_
+        frame (_type_): _description_
+
+    Raises:
+        TimeoutException: _description_
+    """
+    raise TimeoutException("Function execution timed out.")
+
 def my_test():
     """_summary_
     """
@@ -66,6 +80,7 @@ def my_test():
 ###########################################################
  
 if __name__ == "__main__":
+    signal.signal(signal.SIGALRM, timeout_handler)
     if platform.system() == "Windows":
         log_path = r"D:\mp4\bak\pythonTryEverythingWin.log"
     else:

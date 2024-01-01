@@ -1,4 +1,25 @@
 
+#  why 
+
+my_thread = threading.Thread(target=my_function)
+my_thread.setDaemon(True)
+my_thread.start()
+t.daemon = True
+
+
+Another way is to use the .setDaemon(True) method,
+ which sets the thread as a daemon thread, 
+which means that it will automatically be terminated when the main program exits.
+
+
+(method) setDaemon(daemonic: bool) -> None
+Set whether this thread is a daemon.
+
+This method is deprecated, use the .daemon property instead
+
+
+ #  css class 相同 不唯一---元素匹配器 - nth
+   dropdown1 = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=1")
 
 
 
