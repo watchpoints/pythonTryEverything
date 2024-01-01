@@ -208,10 +208,16 @@ def helper_admin_class_rule(page: Page, watch_room_url):
             count +=1
             if count > 24:
                 return
+<<<<<<< HEAD
             #page.get_by_placeholder("这里输入聊天内容").fill(task)
             #time.sleep(1)
             # page.locator("xpath=//div[text()='发送']").click()
             #page.locator("css=.ChatSend-button ").click()
+=======
+            # page.get_by_placeholder("这里输入聊天内容").fill(task)
+            # time.sleep(1)
+            # page.locator("css=.ChatSend-button ").click()
+>>>>>>> 6f6bd519a683acea6b2ab1d9ff04fe5f9090e20a
             print(count)
             sleep_time = 300 + random.randint(1,10)
             time.sleep(sleep_time)
