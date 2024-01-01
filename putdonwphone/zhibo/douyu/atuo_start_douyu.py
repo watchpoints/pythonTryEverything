@@ -12,9 +12,12 @@ import threading
 import pyperclip
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 
-
-
+######################global########################
+LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
+DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 ########################################################################
 class CZTOUYU:
@@ -346,8 +349,41 @@ def start_live_stream(input_file, rtmp_url):
     print(error)
 
 if __name__ == '__main__':
-    # playwright codegen https://www.douyu.com/creator/main/live
+    
+    if platform.system() == "Windows":
+       LOG_PATH = r"D:\mp4\log\pythonTryEverythingWin.log"
+    else:
+        LOG_PATH = "pythonTryEverythingWin.log"
+        
+    logging.basicConfig(level=logging.DEBUG,
+                        format=LOG_FORMAT,
+                        datefmt=DATE_FORMAT,
+                        filename=LOG_PATH
+                        )
+
+    logging.info("""
+        ┌──────────────────────────────────────────────────────────────────────┐
+        │                                                                      │    
+        │                      •  Start pythonTryEverythingWin  •                             │
+        │                                                                      │
+        └──────────────────────────────────────────────────────────────────────┘
+    """)
+
+    job_defaults = {
+        'coalesce': False,
+        'max_instances': 1
+    }
     MP4_DIR = r"D:\mp4\speak"
     # false 直播 --留言  true 只有留言
     ONLIY_MSG = False
-    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
+    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # 习惯养成--早睡早起
+    # pip install apscheduler
+    #12点:发一个图文
+    backsched.add_job(interface_auo_start_douyu_zhibo,
+                     CronTrigger.from_crontab("30 8 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+    
+    backsched.add_job(interface_auo_start_douyu_zhibo,
+                      CronTrigger.from_crontab("0 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+    backsched.start()
+    # playwright codegen https://www.douyu.com/creator/main/live

@@ -9,7 +9,7 @@ from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 from putdonwphone import  myshipinhao
 from putdonwphone import  ffmeg_to_mp4
-from putdonwphone import myxiaohongshu
+from putdonwphone import myxiaohongshu  
 from putdonwphone import  englisword
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
