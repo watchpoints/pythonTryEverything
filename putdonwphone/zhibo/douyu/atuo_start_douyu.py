@@ -155,7 +155,7 @@ class CZTOUYU:
         rtpm_code = pyperclip.paste()
         print("直播码")
         print(rtpm_code)
-        time.sleep(20)
+        time.sleep(2)
         #11975253rWycoTVM?wsSecret=d3f8b9b7cb13599952f8d3e8fae27901&wsTime=65915099&wsSeek=off&wm=0&tw=0&roirecognition=0&record=flv&origin=tct&txHost=sendtc3.douyu.com
         
         rtmp_stream =  rtpm_url + "/" + rtpm_code
@@ -170,12 +170,13 @@ class CZTOUYU:
         print(self.watch_room_url)
         
         # Create a thread with arguments
-        my_msg = threading.Thread(target=helper_admin_class_rule, args=(page, "MSG"))
+        my_msg = threading.Thread(target=helper_admin_class_rule, args=page)
         # Start the thread
         my_msg.daemon = True
         my_msg.start()
        
         ## 每天定时直播 3个小时
+        #time.sleep(60*60*3)
         time.sleep(60*60*3)
                 
         # 推送直播
@@ -191,11 +192,10 @@ class CZTOUYU:
         
         time.sleep(120)
 
-def helper_admin_class_rule(self, page: Page, task:str):
+def helper_admin_class_rule(page: Page):
         """
           弹幕提醒：
         """
-        print(task)
         page.goto(self.watch_room_url)
         time.sleep(5)
         print(f"open  {self.zhibo_url}")
@@ -297,7 +297,7 @@ def start_live_stream(input_file, rtmp_url):
 
 if __name__ == '__main__':
     # playwright codegen https://www.douyu.com/creator/main/live
-    mp4_dir_path = r"D:\mp4\普通话"
+    mp4_dir_path = r"D:\mp4\speak"
     interface_auo_start_douyu_zhibo(mp4_dir_path)
     #  # 本地文件夹路径，包含多个视频文件
     
