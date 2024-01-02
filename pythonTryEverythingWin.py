@@ -28,8 +28,9 @@ def auto_window_task():
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     try:
-        time.sleep(random.randint(1,50))
-        myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
+        # cookies台容易过去了 因此去掉了
+        # time.sleep(random.randint(1,50))
+        # myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
         time.sleep(random.randint(1,50))
         myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
     finally:
