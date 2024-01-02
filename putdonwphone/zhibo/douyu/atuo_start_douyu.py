@@ -241,9 +241,9 @@ def helper_admin_class_rule(page: Page, watch_room_url):
             count +=1
             if count > 24:
                 return
-            page.get_by_placeholder("这里输入聊天内容").fill(task)
+            #page.get_by_placeholder("这里输入聊天内容").fill(task)
             time.sleep(1)
-            page.locator("css=.ChatSend-button ").click()
+            #page.locator("css=.ChatSend-button ").click()
             print(count)
             sleep_time = 300 + random.randint(1,10)
             time.sleep(sleep_time)
@@ -371,7 +371,7 @@ if __name__ == '__main__':
     # pip install apscheduler
     #12点:发一个图文
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("30 8 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("22 7 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
     
     backsched.add_job(interface_auo_start_douyu_zhibo,
                       CronTrigger.from_crontab("0 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
