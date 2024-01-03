@@ -399,7 +399,6 @@ if __name__ == '__main__':
     # 习惯养成--早睡早起
     # pip install apscheduler
     #12点:发一个图文
-    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched.add_job(interface_auo_start_douyu_zhibo,
                      CronTrigger.from_crontab("30 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
