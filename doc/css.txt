@@ -1,3 +1,19 @@
+  
+  https://www.cnblogs.com/tarzen213/p/16857283.html
+
+解决办法
+这个不需要解决哈，忽略提示信息。如果是连续打印了很多行提示信息，我们先删除一下浏览器二进制文件，目录：~/.cache/ms-playwright/执行命令：
+
+rm -rf ~/.cache/ms-playwright/
+然后再执行：
+
+playwright install
+
+firefox-ubuntu-20.04.zip
+firefox-ubuntu-20.04.zip
+
+-----------------
+  
    2) <div class="ChatSend-button ">发送</div> aka get_by_text("发送", exact=True)
 playwright._impl._api_types.Error: Error: strict mode violation: locator("xpath=//div[contains(text(), '发送')]") resolved to 2 elements:        
     1) <div class="InteractiveGiftPanel-tips">点击发送弹幕或礼物参与互动</div> aka get_by_text("点击发送弹幕或礼物参与互动")

@@ -23,6 +23,7 @@ TOTAL_COUNT= 0
 one_work_time =30
 #STEPS = 10
 STEPS = 10
+TOTAL_WORK_TIME_COUNT = 0
 ########################################################################
 class CZTOUYU:
     """
@@ -56,9 +57,11 @@ class CZTOUYU:
             if platform.system() == "Linux":
                 display_headless = True
             if sys == "Linux":
-              self.browser = playwright.chromium.launch(headless=display_headless)
+            #   self.browser = playwright.chromium.launch(headless=display_headless)
+                self.browser = playwright.firefox.launch(headless=display_headless)
             else:
-                self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+                # self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+                self.browser = playwright.firefox.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
             self.helper_start_zhibo(login_page, picture_path, habit_name,habit_detail)
             if self.browser.is_connected:
@@ -230,8 +233,8 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     count = 0
     # 累计3个小时 自动退出
     while True:
-        logging.info(TOTAL_COUNT)
-        if TOTAL_COUNT > 20 or page.is_closed() :
+        
+        if count > 24 or page.is_closed() :
             return
         if only_msg ==1 or only_msg ==3:
             task = get_task_msg()
@@ -242,21 +245,26 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
         print(count)
         sleep_time = STEPS*60 + random.randint(1,10)
         TOTAL_COUNT += 1
+        count +=1
         time.sleep(sleep_time)
 def get_task_msg():
     """ task"""
+    global TOTAL_COUNT
+    global TOTAL_WORK_TIME_COUNT
     get_work_time =  STEPS*TOTAL_COUNT
+    TOTAL_WORK_TIME_COUNT +=STEPS
     print(get_work_time)
     get_off_work_time = TOTAL_WORK_TIME - get_work_time
     get_rest_time  = one_work_time - get_work_time
     print(get_rest_time)
 
-    if get_off_work_time < 0 or  get_rest_time < 0:
+    if get_off_work_time <= 0 or  get_rest_time <= 0:
         get_off_work_time = 0
         get_rest_time = 0
+        TOTAL_COUNT = 0
 
     # task =" 专注番茄时间 30分钟工作 5分钟休息" + "\r\n"
-    task = "累计学习：" + str(get_work_time) + "分钟"
+    task = "累计学习：" + str(TOTAL_WORK_TIME_COUNT) + "分钟"
     task +=" 距离下播" + str(get_off_work_time) + "分钟"
     # task += "距离下次休息：" + "\r\n"
     if 30 == get_rest_time:
@@ -387,7 +395,7 @@ if __name__ == '__main__':
     MP4_DIR = r"D:\mp4\speak"
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 1
-    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
+    # interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
     # pip install apscheduler
