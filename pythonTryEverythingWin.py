@@ -81,7 +81,6 @@ def my_test():
 ###########################################################
  
 if __name__ == "__main__":
-    signal.signal(signal.SIGALRM, timeout_handler)
     if platform.system() == "Windows":
         log_path = r"D:\mp4\log\pythonTryEverythingWin.log"
     else:
