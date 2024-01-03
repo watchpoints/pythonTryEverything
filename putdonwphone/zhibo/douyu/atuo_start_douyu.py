@@ -219,6 +219,7 @@ class CZTOUYU:
         page.get_by_text("直接下播").click()
         time.sleep(10)
 
+<<<<<<< HEAD
 def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     """弹幕提醒"""
     global TOTAL_COUNT
@@ -250,6 +251,31 @@ def get_task_msg():
     get_off_work_time = TOTAL_WORK_TIME - get_work_time
     get_rest_time  = one_work_time - get_work_time
     print(get_rest_time)
+=======
+def helper_admin_class_rule(page: Page, watch_room_url):
+        """
+          弹幕提醒：
+        """
+        page.goto(watch_room_url)
+        time.sleep(5)
+        page.mouse.down()
+        page.mouse.down()
+        print("count")
+        task = "认真学习使用：今日目标 敢于朗读"
+        count = 0
+        # 累计3个小时 自动退出
+        while True:
+            count +=1
+            if count > 24:
+                return
+            #page.get_by_placeholder("这里输入聊天内容").fill(task)
+            time.sleep(1)
+            #page.locator("css=.ChatSend-button ").click()
+            print(count)
+            sleep_time = 300 + random.randint(1,10)
+            time.sleep(sleep_time)
+    
+>>>>>>> 7edf4cef9687552b785e3b6a0a37166f61755661
 
     if get_off_work_time < 0 or  get_rest_time < 0:
         get_off_work_time = 0
@@ -394,6 +420,7 @@ if __name__ == '__main__':
     #12点:发一个图文
     #interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched.add_job(interface_auo_start_douyu_zhibo,
+<<<<<<< HEAD
                      CronTrigger.from_crontab("30 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
     backsched.add_job(interface_auo_start_douyu_zhibo,
@@ -401,5 +428,11 @@ if __name__ == '__main__':
     
     backsched.add_job(interface_auo_start_douyu_zhibo,
                       CronTrigger.from_crontab("30 17 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+=======
+                     CronTrigger.from_crontab("22 7 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+    
+    backsched.add_job(interface_auo_start_douyu_zhibo,
+                      CronTrigger.from_crontab("55 17 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+>>>>>>> 7edf4cef9687552b785e3b6a0a37166f61755661
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
