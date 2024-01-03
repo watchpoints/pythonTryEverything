@@ -374,6 +374,6 @@ if __name__ == '__main__':
                      CronTrigger.from_crontab("22 7 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
     
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                      CronTrigger.from_crontab("0 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+                      CronTrigger.from_crontab("55 17 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
