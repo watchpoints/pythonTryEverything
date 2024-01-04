@@ -130,9 +130,9 @@ def interface_get_daily_englis_word():
     sys = platform.system()
     sys = platform.system()  
     if sys == "Windows":
-        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
-        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
+        save_picture_path = r"D:\mp4\etc\temp.png"
+        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\mp4\etc\01_get_up.txt"
     else:
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
         default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
@@ -331,7 +331,7 @@ def interface_auo_upload_zhihu():
         upload_picture_url = "https://www.zhihu.com/"
         upload_mp4_url = "https://www.zhihu.com/"
         if sys == "Windows":
-            cookies_path = r"D:\doc\2023\05-third\chromedriver_win32\zhihu_xiaohao.json"
+            cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
         else:
             cookies_path = r"/root/bin/zhihu_xiaohao.json"
 
