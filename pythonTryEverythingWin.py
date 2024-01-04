@@ -11,6 +11,7 @@ from putdonwphone import  myshipinhao
 from putdonwphone import  ffmeg_to_mp4
 from putdonwphone import myxiaohongshu  
 from putdonwphone import  englisword
+from putdonwphone import  myzhihu
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -33,6 +34,8 @@ def auto_window_task():
         # myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
         time.sleep(random.randint(1,50))
         myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
+        time.sleep(random.randint(1,50))
+        myzhihu.interface_auo_upload_zhihu()
     finally:
         print("interface_auo_upload_shipinhao")
 
@@ -77,7 +80,8 @@ def my_test():
     print(file_path)
     print(habit_name)
     print(habit_detail)
-    myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
+    myzhihu.interface_auo_upload_zhihu()
+    # myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
 ###########################################################
  
 if __name__ == "__main__":
