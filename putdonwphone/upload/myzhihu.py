@@ -171,9 +171,10 @@ class CMyDouyin:
             display_headless = False
             sys = platform.system()
             if sys == "Linux":
-                display_headless = True
-            #self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-            self.browser = playwright.chromium.launch(headless=display_headless)
+              display_headless = True
+              self.browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             login_page = self.login_or_restore_cookies()
             print("login_or_restore_cookies")
             self.msg_up_load(login_page, picture_path, habit_name,habit_detail)
