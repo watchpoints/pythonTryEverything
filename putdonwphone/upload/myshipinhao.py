@@ -13,6 +13,8 @@ from playwright.sync_api import Page
 from moviepy.editor import VideoFileClip,TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
+from putdonwphone import  englisword
+
 class GetupHabit:
     """This class provides a way to do something."""
     def __init__(self, save_picture_path: str, default_picture_path: str, get_up_path:str):

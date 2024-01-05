@@ -8,7 +8,9 @@ import requests
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
+from pythonTryEverything.putdonwphone.data import englisword
 ########################################################################
+
 class MyKuaishou:
     def __init__(self,cookies_path:str,login_url:str, upload_url:str):
          self.driver = None
@@ -24,37 +26,28 @@ class MyKuaishou:
         print("is being destroyed")
     
     def upload_picture(self,picture_path:str,msg:str):
-        """_summary_
-
-        Args:
-            picture_path (str): _description_
-            msg (str): _description_
-        """
+        """ start instance"""
         with sync_playwright() as playwright:
             #01 启动chomue浏览器
             # playwright执行默认运行的浏览器是chromium！
             #全局代理
             display_headless = False
-            #display_headless = True
             if platform.system() == "Linux":
                 display_headless = True
-            # https://github.com/microsoft/playwright-python?tab=readme-ov-file
-            # self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-            self.browser = playwright.chromium.launch(headless=display_headless)
-            # 模拟登录
+                self.browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                self.browser = playwright.chromium.launch(channel="chrome",
+                                                          headless=display_headless)
             login_page = self.login_or_restore_cookies()
             self.msg_up_load(login_page,picture_path,msg)
-            # https://www.programsbuzz.com/article/playwright-xpath-selectors
             self.browser.close()
-            
-    # 登录
+    # 登录 设置代理
     def login_or_restore_cookies(self)-> Page:
         # 创建一个新的页面
         user_agent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
         sys = platform.system()
         if sys == "Linux":
             user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
-        
         context = self.browser.new_context(user_agent=user_agent)
         context.clear_cookies()
         page = context.new_page()
@@ -185,9 +178,8 @@ class MyKuaishou:
             self.browser.close()
         
 #################################################################################
-       
-
-def interface_auo_upload_kuaishou2(upload_type:str,file_path:str,habit_name:str,habit_detail:str):
+def interface_auo_upload_kuaishou2(upload_type:str,file_path :str,
+                                   habit_name :str,habit_detail :str):
     ''' 远离手机'''
     sys = platform.system()
     if sys == "Windows":
@@ -195,20 +187,16 @@ def interface_auo_upload_kuaishou2(upload_type:str,file_path:str,habit_name:str,
         login_url = "https://cp.kuaishou.com/profile"
         upload_url = "https://cp.kuaishou.com/article/publish/video"
         out_path = r"D:\mp4\output"
-        # BACK_PATH = r"D:\mp4\bak"
     else:
         coook_path = r"/root/bin/mykuaishou.json"
         login_url = "https://cp.kuaishou.com/profile"
         upload_url = "https://cp.kuaishou.com/article/publish/video"
         out_path = r"/root/mp4/output"
-        # BACK_PATH = r"/root/mp4/bak"
 
-    
     msg = habit_name + "\r\n"
     msg += habit_detail
     print(msg)
     msg = msg[:407]
-        
     autoupload = MyKuaishou(coook_path,login_url,upload_url)
     if "mp4" == upload_type:
         for root,_,files in os.walk(out_path):
@@ -228,6 +216,9 @@ def interface_auo_upload_kuaishou2(upload_type:str,file_path:str,habit_name:str,
 
 
 if __name__ == '__main__':
-    print("test")
-    # interface_auo_upload_kuaishou2("pic")
+    cur_file_path, cur_habit_name,cur_habit_detail  = englisword.interface_get_daily_englis_word()
+    print(cur_file_path)
+    print(cur_habit_name)
+    print(cur_habit_detail)
+    interface_auo_upload_kuaishou2("pic",cur_file_path, cur_habit_name,cur_habit_detail)
     #interface_auo_upload_kuaishou2("mp4")

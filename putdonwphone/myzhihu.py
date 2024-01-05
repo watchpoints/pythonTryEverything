@@ -7,6 +7,7 @@ from datetime import datetime
 import requests
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
+from putdonwphone import  englisword
 
 
 class GetupHabit:
