@@ -8,7 +8,7 @@ import requests
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-from pythonTryEverything.putdonwphone.data import englisword
+#from pythonTryEverything.putdonwphone.data import englisword
 ########################################################################
 
 class MyKuaishou:
@@ -87,7 +87,6 @@ class MyKuaishou:
         example_element.click()
         print("进入图文页面")
         time.sleep(2)
-        # https://github.com/Superheroff/douyin_uplod/blob/main/main.py
         
         # 点击选择文件，输入文件
         with page.expect_file_chooser() as fc_info:
@@ -212,13 +211,15 @@ def interface_auo_upload_kuaishou2(upload_type:str,file_path :str,
                     if autoupload.upload_mp4(mp4_file_path,habit_name):
                         logging.info("upload_mp4 %s", mp4_file_path)
     else:
+        print("kuaishou pic")
         autoupload.upload_picture(file_path,msg)
 
 
 if __name__ == '__main__':
-    cur_file_path, cur_habit_name,cur_habit_detail  = englisword.interface_get_daily_englis_word()
-    print(cur_file_path)
-    print(cur_habit_name)
-    print(cur_habit_detail)
-    interface_auo_upload_kuaishou2("pic",cur_file_path, cur_habit_name,cur_habit_detail)
+    print("test")
+    #cur_file_path, cur_habit_name,cur_habit_detail  = englisword.interface_get_daily_englis_word()
+    #print(cur_file_path)
+    #print(cur_habit_name)
+    #print(cur_habit_detail)
+    #interface_auo_upload_kuaishou2("pic",cur_file_path, cur_habit_name,cur_habit_detail)
     #interface_auo_upload_kuaishou2("mp4")

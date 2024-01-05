@@ -38,6 +38,10 @@
 ### mp4
 - shipinhao 必须是4分钟，超过5分钟2g内存上传不上。
 
+## 安装依赖
+
+pip install cryptography
+pip install werobot
 
 # 技术栈
 
@@ -57,6 +61,12 @@ opencv也是我们最常用的视频读写库，但是opencv很明显，不太�
 
 
 ## 安装依赖
+
+
+
+cryptography
+
+
 
 ### https://imagemagick.org/script/download.php#google_vignette
    D:\tools\python3\Lib\site-packages\moviepy

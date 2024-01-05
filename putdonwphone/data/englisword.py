@@ -130,9 +130,9 @@ def interface_get_daily_englis_word():
     sys = platform.system()
     sys = platform.system()  
     if sys == "Windows":
-        save_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\temp.png"
-        default_picture_path = r"D:\github\pythonTryEverything\putdonwphone\upload\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\github\pythonTryEverything\config\01_get_up.txt"
+        save_picture_path = r"D:\mp4\etc\temp.png"
+        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\mp4\etc\01_get_up.txt"
     else:
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
         default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
@@ -141,3 +141,9 @@ def interface_get_daily_englis_word():
     getup = GetupHabit(save_picture_path, default_picture_path, get_up_path) 
     temp_habit_name,temp_habit_detail = getup.interface_get_up()
     return getup.save_picture_path, temp_habit_name,temp_habit_detail
+
+if __name__ == '__main__':
+    file_path, habit_name,habit_detail = interface_get_daily_englis_word()
+    print(file_path)
+    print(habit_name)
+    print(habit_detail)
