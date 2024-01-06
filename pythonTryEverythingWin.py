@@ -7,7 +7,6 @@ import signal
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
-from putdonwphone import  myshipinhao
 from putdonwphone import  ffmeg_to_mp4
 from putdonwphone import myxiaohongshu  
 from putdonwphone import  englisword
@@ -31,15 +30,17 @@ def auto_window_task():
         BACK_PATH = r"/root/mp4/bak"
     try:
         # cookies台容易过去了 因此去掉了
-        # time.sleep(random.randint(1,50))
-        # myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
         time.sleep(random.randint(1,50))
         myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
+        logging.info("--------------myxiaohongshu-------------------")
         time.sleep(random.randint(1,50))
         myzhihu.interface_auo_upload_zhihu()
+        logging.info("---------------myzhihu-----------------")
+        time.sleep(random.randint(1,50))
         mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path, habit_name,habit_detail)
+        logging.info("---------------mykuaishou2-----------------")
     finally:
-        print("interface_auo_upload_shipinhao")
+        print("---------------")
 
 def auto_upload_mp4():
     
@@ -51,7 +52,8 @@ def auto_upload_mp4():
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     try:
-        myshipinhao.interface_auo_upload_shipinhao("mp4",OUT_PATH, BACK_PATH)
+        #myshipinhao.interface_auo_upload_shipinhao("mp4",OUT_PATH, BACK_PATH)
+        print("")
     finally:
         print("interface_auo_upload_shipinhao")
         
@@ -111,7 +113,8 @@ if __name__ == "__main__":
         'coalesce': False,
         'max_instances': 1
     }
-    my_test()
+    #my_test()
+    auto_window_task()
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
     # pip install apscheduler
