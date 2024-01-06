@@ -13,7 +13,7 @@ from playwright.sync_api import Page
 from moviepy.editor import VideoFileClip,TextClip
 from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
-from putdonwphone import  englisword
+from pythonTryEverything.putdonwphone.data import englisword
 
 class GetupHabit:
     """This class provides a way to do something."""
@@ -173,10 +173,10 @@ class CMyShipinhao:
         self.upload_mp4_url = upload_mp4_url
         # playwright 部分
         self.browser = None
-        print("create CMyDouyin")
+        print("create CMyShipinhao")
 
     def __del__(self):
-        print("CMyDouyin is being destroyed")
+        print("CMyShipinhao is being destroyed")
 
     def upload_picture(self, picture_path: str, habit_name:str, habit_detail:str):
         """
@@ -258,6 +258,7 @@ class CMyShipinhao:
             # 从文件中加载 cookies
             with open(self.cookies_path, 'r',encoding='utf-8') as myfile:
                 cookies = json.load(myfile)
+            print(cookies)
             context.add_cookies(cookies)
             time.sleep(3)
         else:
@@ -289,7 +290,7 @@ class CMyShipinhao:
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path)
         # 预备文件上传时间
-        time.sleep(30)
+        time.sleep(20)
         print(picture_path)
         page.mouse.down()
         
@@ -303,6 +304,11 @@ class CMyShipinhao:
         print(habit_name)
         page.get_by_role("button", name="发表").click()
         print("发表")
+        time.sleep(2)
+        
+        cookies = page.context.cookies()
+        with open(self.cookies_path, 'w',encoding='utf-8') as myfile:
+            myfile.write(json.dumps(cookies))
         time.sleep(5)
 
     def msg_up_load_mp4(self, page: Page, mp4_path: str,habit_name: str,habit_detail: str):
@@ -417,8 +423,8 @@ if __name__ == '__main__':
     else:
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
-    #interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
-    interface_auo_upload_shipinhao("mp4", OUT_PATH, BACK_PATH)
+    interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
+    #interface_auo_upload_shipinhao("mp4", OUT_PATH, BACK_PATH)
 
     
 
