@@ -15,6 +15,11 @@ from moviepy.video.compositing.CompositeVideoClip import CompositeVideoClip
 
 from pythonTryEverything.putdonwphone.data import englisword
 
+
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
+from apscheduler.schedulers.background import BackgroundScheduler
+
 class GetupHabit:
     """This class provides a way to do something."""
     def __init__(self, save_picture_path: str, default_picture_path: str, get_up_path:str):
@@ -304,7 +309,7 @@ class CMyShipinhao:
         print(habit_name)
         page.get_by_role("button", name="发表").click()
         print("发表")
-        time.sleep(2)
+        time.sleep(3)
         
         cookies = page.context.cookies()
         with open(self.cookies_path, 'w',encoding='utf-8') as myfile:
@@ -425,6 +430,17 @@ if __name__ == '__main__':
         BACK_PATH = r"/root/mp4/bak"
     interface_auo_upload_shipinhao("pic", OUT_PATH, BACK_PATH)
     #interface_auo_upload_shipinhao("mp4", OUT_PATH, BACK_PATH)
+    job_defaults = {
+        'coalesce': False,
+        'max_instances': 1
+    }
+    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # 图文1习惯养成--早睡早起
+    backsched.add_job(interface_auo_upload_shipinhao, CronTrigger.from_crontab("0 6 * * *"),args=["pic", OUT_PATH, BACK_PATH], id="get_up")
+
+    print("start pythonTryEverythingWin")
+    backsched.start()
+    
 
     
 
