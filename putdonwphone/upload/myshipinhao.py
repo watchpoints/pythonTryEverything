@@ -310,7 +310,6 @@ class CMyShipinhao:
         page.get_by_role("button", name="发表").click()
         print("发表")
         time.sleep(3)
-        
         cookies = page.context.cookies()
         with open(self.cookies_path, 'w',encoding='utf-8') as myfile:
             myfile.write(json.dumps(cookies))
