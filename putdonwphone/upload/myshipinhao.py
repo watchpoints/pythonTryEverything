@@ -437,7 +437,7 @@ if __name__ == '__main__':
     # 图文1习惯养成--早睡早起
     backsched.add_job(interface_auo_upload_shipinhao, CronTrigger.from_crontab("0 6 * * *"),args=["pic", OUT_PATH, BACK_PATH], id="get_up")
 
-    print("start pythonTryEverythingWin")
+    print("start shipinhao")
     backsched.start()
     
 
