@@ -113,7 +113,7 @@ if __name__ == "__main__":
     # 习惯养成--早睡早起
     # pip install apscheduler
     #12点:发一个图文
-    backsched.add_job(auto_window_task, CronTrigger.from_crontab("0 0 * * *"), id="get_up")
+    backsched.add_job(auto_window_task, CronTrigger.from_crontab("0 15 * * *"), id="get_up")
     #1点:开始切换文件
     backsched.add_job(change_mp4_to_small, CronTrigger.from_crontab("0 1 * * *"), id="cut_big_file")
     #4点:开始上传文件
