@@ -52,10 +52,9 @@ def auto_upload_mp4():
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     try:
-        #myshipinhao.interface_auo_upload_shipinhao("mp4",OUT_PATH, BACK_PATH)
         print("")
     finally:
-        print("interface_auo_upload_shipinhao")
+        print("...")
         
 def change_mp4_to_small():
     logging.debug("change_mp4_to_small")
