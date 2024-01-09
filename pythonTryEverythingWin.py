@@ -8,7 +8,6 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 from putdonwphone import  ffmeg_to_mp4
-from putdonwphone import myxiaohongshu  
 from putdonwphone import  englisword
 from putdonwphone import  myzhihu
 from putdonwphone import  mykuaishou2
@@ -30,9 +29,6 @@ def auto_window_task():
         BACK_PATH = r"/root/mp4/bak"
     try:
         # cookies台容易过去了 因此去掉了
-        time.sleep(random.randint(1,50))
-        myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
-        logging.info("--------------myxiaohongshu-------------------")
         time.sleep(random.randint(1,50))
         myzhihu.interface_auo_upload_zhihu()
         logging.info("---------------myzhihu-----------------")
@@ -85,7 +81,6 @@ def my_test():
     print(habit_detail)
     mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path, habit_name,habit_detail)
     # myzhihu.interface_auo_upload_zhihu()
-    # myxiaohongshu.interface_auo_upload_myxiaohongshu("pic",file_path,habit_name,habit_detail)
 ###########################################################
  
 if __name__ == "__main__":
