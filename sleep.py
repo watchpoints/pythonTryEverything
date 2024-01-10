@@ -19,7 +19,6 @@ from putdonwphone import mykuaishou2
 from putdonwphone import mydouyin
 from putdonwphone import mytoutiao
 from putdonwphone import myzhihu
-from putdonwphone import  myshipinhao
 from putdonwphone import  mycsdn
 from putdonwphone import  englisword
 
@@ -146,7 +145,8 @@ def auto_upload_mp4():
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     try:
-        myshipinhao.interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
+        print("")
+        #myshipinhao.interface_auo_upload_shipinhao(OUT_PATH, BACK_PATH)
     finally:
         print("interface_auo_upload_shipinhao")
     try:
@@ -176,7 +176,8 @@ def auto_window_task():
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"
     try:
-        myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
+        #myshipinhao.interface_auo_upload_shipinhao("pic",OUT_PATH, BACK_PATH)
+        print("")
     finally:
         print("interface_auo_upload_shipinhao")
 

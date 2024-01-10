@@ -134,6 +134,10 @@ def interface_get_daily_englis_word():
         save_picture_path = r"D:\mp4\etc\temp.png"
         default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
         get_up_path = r"D:\mp4\etc\01_get_up.txt"
+    elif sys == "Darwin":
+        save_picture_path = r"/Users/wangchuanyi/mp4/etc/temp.png"
+        default_picture_path = r"/Users/wangchuanyi/mp4/etc/ZfCYoSG1BE_small.jpg"
+        get_up_path = r"/Users/wangchuanyi/mp4/etc/01_get_up.txt"
     else:
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
         default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"

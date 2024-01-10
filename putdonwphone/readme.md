@@ -40,9 +40,11 @@
 
 ## 安装依赖
 
+pip install apscheduler
 pip install cryptography
 pip install werobot
-
+pip install flask
+pip install  wechatpy
 # 技术栈
 
 - Chrome + ChromeDriver
