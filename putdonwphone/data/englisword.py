@@ -2,7 +2,8 @@
 from datetime import datetime
 import platform
 import requests
-
+import random
+import os
 
 
 class GetupHabit:
@@ -142,8 +143,49 @@ def interface_get_daily_englis_word():
     temp_habit_name,temp_habit_detail = getup.interface_get_up()
     return getup.save_picture_path, temp_habit_name,temp_habit_detail
 
+def interface_get_daily_englis_word_pic():
+    """
+    interface_get_daily_englis_word_pic
+    """
+    sys = platform.system()
+    if sys == "Windows":
+        save_picture_path = r"D:\mp4\etc\temp.png"
+        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
+        get_up_path = r"D:\mp4\etc\01_get_up.txt"
+        pic_path = r"D:\mp4\action_card"
+    else:
+        save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
+        default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
+        get_up_path = '/root/code/python/config/01_get_up.txt'
+        pic_path = r"D:\mp4\action_card"
+    temp_file_list = read_pic_rand_two(pic_path)
+    getup = GetupHabit(save_picture_path, default_picture_path, get_up_path)
+    temp_file_list.append(getup.save_picture_path)
+    temp_habit_name,temp_habit_detail = getup.interface_get_up()
+    return temp_file_list, temp_habit_name,temp_habit_detail
+
+def read_pic_rand_two(input_path):
+    """
+    read_pic_rand_two
+    """
+    file_list = []
+    count = 0
+    index = random.randint(0,73)
+    print(index)
+    while True:
+        name = str(index)  + ".jpg"
+        temp_file_path = os.path.join(input_path, name)
+        if not os.path.exists(temp_file_path):
+            continue
+        file_list.append(temp_file_path)
+        # print("add" + temp_file_path)
+        count += 1
+        if 2 == count:
+            break
+    # print("read_pic_rand_two" + str(file_list))
+    return file_list
 if __name__ == '__main__':
-    file_path, habit_name,habit_detail = interface_get_daily_englis_word()
-    print(file_path)
-    print(habit_name)
-    print(habit_detail)
+    file_path_list, habit_name,habit_detail = interface_get_daily_englis_word_pic()
+    print("------------")
+    print(file_path_list)
+  
