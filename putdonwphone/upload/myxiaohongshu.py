@@ -6,8 +6,8 @@ import platform
 import logging
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-#from pythonTryEverything.putdonwphone.data import englisword
-from putdonwphone.data import englisword
+from pythonTryEverything.putdonwphone.data import englisword
+#from putdonwphone.data import englisword
 class CMyRedBook:
     """
     This class represents a GetupHabit.

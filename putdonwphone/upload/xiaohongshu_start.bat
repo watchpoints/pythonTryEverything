@@ -1,4 +1,3 @@
 @echo off
 set PYTHONPATH=%PYTHONPATH%;D:\python
-cmd /k  python D:\python\pythonTryEverything\putdonwphone\upload\myshipinhao.py
-exit
+cmd /k  python D:\python\pythonTryEverything\putdonwphone\upload\myxiaohongshu.py
