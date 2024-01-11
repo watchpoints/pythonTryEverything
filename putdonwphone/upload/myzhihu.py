@@ -185,6 +185,56 @@ class CMyZhiHu:
         # time.sleep(5)
         print("发布")
         time.sleep(600)
+        
+    def auto_help_answer(self, page: Page, picture_path_list,habit_name:str, habit_detail:str):
+        """
+        msg_up_load
+        """
+        page.goto(self.upload_picture_url)
+        time.sleep(6)
+        print(f"open  {self.upload_picture_url}")
+        # 从主页进入 headless不行
+        page.locator("xpath=//div[contains(text(), '写想法')]").click()
+        print("点击 发布图文")
+        # time.sleep(3)
+        # print(page.content)
+        
+        # # https://www.zhihu.com/creator
+        # page.mouse.click(200,200)
+        # dropdown = page.get_by_text("内容创作")
+        # dropdown.hover()
+        # # dropdown.locator('.dropdown__link >> text=python').click()
+        # #dropdown.get_by_role("listitem").filter(has_text="python").click()
+        # # 对于ul-li的元素，可以用listitem 的角色定位方式
+        # page.locator("a").filter(has_text="发布想法").click()
+        
+        
+        time.sleep(2)
+        
+        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
+        # page.locator(".InputLike").fill(habit_detail)
+        time.sleep(3)
+        
+        print("开始上传图片")
+        page.locator(".css-88f71l > button:nth-child(2)").click()
+        time.sleep(2)
+        print("本地上传")
+        with page.expect_file_chooser() as fc_info:
+            page.locator(".css-n71hcb").click()
+        file_chooser = fc_info.value
+        file_chooser.set_files(picture_path_list)
+        time.sleep(5)
+       
+        
+        page.get_by_role("button", name="插入图片").click()
+        time.sleep(5)
+        
+        print("结束上传图片")
+        
+        page.get_by_role("button", name="发布").click()
+        print("发布")
+        time.sleep(5)
     #################################################################################
 
 
