@@ -7,7 +7,8 @@ from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
 from pythonTryEverything.putdonwphone.data import englisword
 
-
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 ########################################################################
 class CMyZhiHu:
     """
@@ -199,9 +200,9 @@ def interface_auo_upload_zhihu():
         upload_picture_url = "https://www.zhihu.com/"
         upload_mp4_url = "https://www.zhihu.com/"
         if sys == "Windows":
-            cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
+            cookies_path = r"D:\mp4\etc\zhihu_big.json"
         else:
-            cookies_path = r"/root/bin/zhihu_xiaohao.json"
+            cookies_path = r"/root/bin/zhihu_big.json"
 
         file_path_list, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
         print(file_path_list)
@@ -220,3 +221,14 @@ def interface_auo_upload_zhihu():
 
 if __name__ == '__main__':
     interface_auo_upload_zhihu()
+    job_defaults = {
+        'coalesce': False,
+        'max_instances': 1
+    }
+    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # 图文1习惯养成--早睡早起
+    backsched.add_job(interface_auo_upload_zhihu, CronTrigger.from_crontab("0 12 * * *"),args=["pic", OUT_PATH, BACK_PATH], id="get_up")
+
+    print("start shipinhao")
+    backsched.start()
+    
