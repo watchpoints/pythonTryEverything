@@ -103,7 +103,7 @@ class CMyZhiHu:
         print(f"open  {self.upload_picture_url}")
         # 从主页进入 headless不行
         page.locator("xpath=//div[contains(text(), '写想法')]").click()
-        print("点击 发布图文")
+        #print("点击 发布图文")
         # time.sleep(3)
         # print(page.content)
         
@@ -124,24 +124,24 @@ class CMyZhiHu:
         # page.locator(".InputLike").fill(habit_detail)
         time.sleep(3)
         
-        print("开始上传图片")
+        #print("开始上传图片")
         page.locator(".css-88f71l > button:nth-child(2)").click()
         time.sleep(2)
-        print("本地上传")
+        #print("本地上传")
         with page.expect_file_chooser() as fc_info:
             page.locator(".css-n71hcb").click()
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path_list)
-        time.sleep(5)
+        time.sleep(30)
        
         
         page.get_by_role("button", name="插入图片").click()
         time.sleep(5)
         
-        print("结束上传图片")
+        #print("结束上传图片")
         
         page.get_by_role("button", name="发布").click()
-        print("发布")
+        #print("发布")
         time.sleep(5)
 
     def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
@@ -205,9 +205,7 @@ def interface_auo_upload_zhihu():
             cookies_path = r"/root/bin/zhihu_big.json"
 
         file_path_list, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
-        print(file_path_list)
-        print(habit_name)
-        print(habit_detail)
+        print("--------------interface_auo_upload_zhihu-----------")
         
         autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
         autoupload.upload_picture(file_path_list, habit_name,habit_detail)

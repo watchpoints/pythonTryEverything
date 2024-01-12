@@ -152,8 +152,8 @@ class CMyShipinhao:
         time.sleep(15)
         page.wait_for_url(self.upload_mp4_url)
         
-       # 请上传2小时以内的视频
-        print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
+        # 请上传2小时以内的视频
+        #print("上传时长2小时内，大小不超过4GB，建议分辨率720p")
         # performs action and waits for a new `FileChooser` to be created
         with page.expect_file_chooser() as fc_info:
             page.locator("xpath=//div[./span[text()='上传时长2小时内，大小不超过4GB，建议分辨率720p及以上，码率10Mbps以内，格式为MP4/H.264格式']]").click()
@@ -172,9 +172,9 @@ class CMyShipinhao:
         # <input type="text" name="" placeholder="概括视频主要内容，字数建议6-16个字符" class="weui-desktop-form__input">
         page.get_by_placeholder("概括视频主要内容，字数建议6-16个字符").fill(habit_name)
         time.sleep(1)
-        print(habit_name)
+        #print(habit_name)
         page.get_by_role("button", name="发表").click()
-        print("发表")
+        #print("发表")
         time.sleep(3)
         cookies = page.context.cookies()
         with open(self.cookies_path, 'w',encoding='utf-8') as myfile:
@@ -216,7 +216,7 @@ class CMyShipinhao:
         page.mouse.down()
         time.sleep(3)
         page.get_by_role("button", name="发表").click()
-        print("发表")
+        #print("发表")
         time.sleep(5)
        
     #################################################################################
@@ -239,9 +239,6 @@ def interface_auo_upload_shipinhao(upload_type:str,out_path:str, bak_path:str):
             cookies_path = r"/root/bin/shipinhao_xiaohao.json"
 
         file_path, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
-        print(file_path)
-        print(habit_name)
-        print(habit_detail)
         
         
         autoupload = CMyShipinhao(cookies_path, login_url, upload_picture_url,upload_mp4_url)
@@ -310,7 +307,7 @@ def interface_not_quit_auto_shipinhao_window():
             # 发布视频
             steps = 12*60*60
             time.sleep(steps)
-            print("start xiaohongshu")
+            print("--------------start xiaohongshu----------------")
     finally:
         autoupload.browser.close()
 ############################################################################
