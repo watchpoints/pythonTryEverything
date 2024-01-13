@@ -1,0 +1,247 @@
+<button type="button" class="Button QuestionRichText-more FEfUrdfMIKpQDJDqkjte Button--plain fEPKGkUK5jyc4fUuT0QP">显示全部 <span style="display: inline-flex; align-items: center;">​<svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--ArrowDown" fill="currentColor"><path fill-rule="evenodd" d="M17.776 10.517a.875.875 0 0 1-.248 1.212l-5.05 3.335a.875.875 0 0 1-.964 0L6.47 11.73a.875.875 0 1 1 .965-1.46l4.56 3.015 4.568-3.016a.875.875 0 0 1 1.212.248Z" clip-rule="evenodd"></path></svg></span></button>
+
+
+//*[@id="root"]/div/main/div/div/div[1]/div[2]/div/div[1]/div[1]/div[3]/div/div/div/span
+
+
+CSS3 - :first-child，:nth-child(1) 失效
+<p data-first-child="">大家有什么踩过的坑 ️，分享分享，给别人，也给自己一个避免以后踩坑的机会！</p>
+
+
+<div class="css-eew49z"><div class="QuestionRichText QuestionRichText--expandable"><div><div class="css-376mun"><span class="RichText ztext css-jflero" options="[object Object]" itemprop="text"><p data-first-child="">大家有什么踩过的坑 ️，分享分享，给别人，也给自己一个避免以后踩坑的机会！</p><p></p></span></div></div></div></div>
+
+
+
+N-th element locator
+
+RichText.ztext.css-jflero:nth-child(2)
+element = soup.select_one('.RichText.ztext.css-jflero:first-child')
+page.locator('button').locator('nth=0').click();
+
+
+ question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
+
+
+How do I use Playwright to verify if a specific string is present in an h1 element?
+
+:nth-child()
+RichText.ztext.css-jflero:nth-child(2)
+.RichText.ztext.css-jflero:first-child
+-------------
+
+
+https://www.cnblogs.com/hiyong/p/15490980.html
+
+Each BrowserContext can have multiple pages
+BrowserContexts provide a way to operate multiple independent browser sessions. 
+A Page refers to a single tab or a popup window within a browser context
+
+browser_context.add_cookies
+browser_context.cookies()
+
+Handling new pages
+The page event on browser contexts can be used to get new pages that are created in the context. 
+This can be used to handle new pages opened by target="_blank" links.
+ with self.context.expect_page(timeout=20000) as new_page_info:
+            #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
+            page.locator("div:nth-child(3) > .css-n9ov20 > .css-wfj162 > .css-nyeu1f > div > .Button").click(timeout=20000)
+            time.sleep(3)
+
+
+
+https://www.guru99.com/xpath-selenium.html
+
+Q6 Web自动化测试之playwright：pages、popup、dialog和frame处理
+
+
+from playwright.sync_api import sync_playwright, Playwright
+
+def run(playwright: Playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch()
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://example.com")
+    page.screenshot(path="screenshot.png")
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)
+
+
+--------------------
+
+
+<button type="button"
+    class="Button FEfUrdfMIKpQDJDqkjte Button--blue JmYzaky7MEPMFcJDLNMG"><span style="display: inline-flex; align-items: center;">​<svg width="16" height="16" viewBox="0 0 24 24" class="Zi Zi--Edit QuestionButton-icon" fill="currentColor"><path d="m7.841 20.043-4.328 1.18a.6.6 0 0 1-.737-.736l1.18-4.324a1.2 1.2 0 0 1 .314-.539l8.094-7.995a.9.9 0 0 1 1.268.003l2.736 2.736a.9.9 0 0 1 .004 1.268l-7.196 7.296-.802.802a1.2 1.2 0 0 1-.533.31ZM19.703 4.81l-.514-.513a2.542 2.542 0 0 0-3.595 0l-.999 1.067a.9.9 0 0 0 .02 1.252l2.77 2.768a.9.9 0 0 0 1.25.02l1.068-.999a2.542 2.542 0 0 0 0-3.594Z"></path></svg></span>写回答
+</button>
+
+
+//*[@id="root"]/div/main/div/div/div[1]/div[2]/div/div[1]/div[1]/div[3]/div/div/div/div/span/p
+
+//*[@id="root"]/div/main/div/div/div[1]/div[2]/div/div[1]/div[1]/div[3]/div/div/div/div
+选择具有特定 ID 的元素：#id
+选择具有特定类的元素：.class
+选择具有特定文本内容的元素：text()
+选择具有特定属性的元素：[@属性名="属性值"]
+
+
+h1.QuestionHeader-title"是一个 XPath 表达式，用于在 HTML 页面中选择具有特定类（"QuestionHeader-title"）的 <h1> 元素。
+XPath 是一种在 XML 或 HTML 文档中定位和选择元素的语言，它提供了一种简单而强大的方式来选择具有特定属性或文本内容的元素
+
+<div class="css-376mun"><span class="RichText ztext css-jflero" options="[object Object]" itemprop="text"><p data-first-child="">想早点入睡，室友很吵12点以后没关灯，2点还在开着很亮的灯。本人对声音很敏感，对光也很敏感，想快速入睡，有没有什么方法</p></span></div>
+
+<h1 class="QuestionHeader-title">有没有什么能快速入睡的方法？</h1>
+
+<div class="css-eew49z">
+<div class="QuestionRichText QuestionRichText--expandable"><div>
+<div class="css-376mun">
+<span class="RichText ztext css-jflero" options="[object Object]" itemprop="text">
+<p data-first-child="">想早点入睡，室友很吵12点以后没关灯，2点还在开着很亮的灯。本人对声音很敏感，对光也很敏感，想快速入睡，有没有什么方法</p>
+</span></div>
+</div></div>
+</div>
+
+<button type="button" class="Button FEfUrdfMIKpQDJDqkjte Button--blue JmYzaky7MEPMFcJDLNMG"><span style="display: inline-flex; align-items: center;">​<svg width="16" height="16" viewBox="0 0 24 24" class="Zi Zi--Edit QuestionButton-icon" fill="currentColor"><path d="m7.841 20.043-4.328 1.18a.6.6 0 0 1-.737-.736l1.18-4.324a1.2 1.2 0 0 1 .314-.539l8.094-7.995a.9.9 0 0 1 1.268.003l2.736 2.736a.9.9 0 0 1 .004 1.268l-7.196 7.296-.802.802a1.2 1.2 0 0 1-.533.31ZM19.703 4.81l-.514-.513a2.542 2.542 0 0 0-3.595 0l-.999 1.067a.9.9 0 0 0 .02 1.252l2.77 2.768a.9.9 0 0 0 1.25.02l1.068-.999a2.542 2.542 0 0 0 0-3.594Z"></path></svg></span>写回答</button>
+-----------
+//*[contains(text(),'写回答')]
+
+  with page.expect_popup() as page1_info:
+        page.locator(".css-nyeu1f > div > .Button").first.click()
+    page1 = page1_info.value
+    with page.expect_popup() as page2_info:
+        page.locator(".css-nyeu1f > div > .Button").first.click()
+    page2 = page2_info.value
+    page2.close()
+
+
+
+    from playwright.sync_api import Playwright, sync_playwright, expect
+
+
+def run(playwright: Playwright) -> None:
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://www.zhihu.com/signin?next=%2Fcreator%2Ffeatured-question%2Frecommend")
+    page.goto("https://www.zhihu.com/creator/featured-question/recommend")
+    page.get_by_role("link", name="邀请回答").click()
+    with page.expect_popup() as page1_info:
+        page.get_by_role("link", name="晚上睡不着都是什么原因？").click()
+    page1 = page1_info.value
+    page1.get_by_text("失眠？想太多？").click()
+    page1.get_by_role("main").get_by_role("heading", name="晚上睡不着都是什么原因？").click(click_count=3)
+    page1.locator("body").press("Control+c")
+    page1.get_by_role("main").locator("div").filter(has_text="关注问题写回答").get_by_role("button", name="​ 写回答").click()
+    page1.locator(".Dropzone").click()
+    page1.locator("#js-answerAddCard").get_by_text("晚上睡不着都是什么原因？").click()
+    page1.locator("#js-answerAddCard").get_by_role("heading", name="晚上睡不着都是什么原因？").locator("div").click()
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因想的t").fill("晚上睡不着都是什么原因\n可能原因：\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("ArrowUp")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("ArrowDown")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情，\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室。\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
+    page1.locator("div").filter(has_text="手机不放入卧室").click()
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("ArrowDown")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n明天计划什么，日\n\n\n\n ")
+    page1.get_by_text("晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").click()
+    page1.locator("div").filter(has_text="明天计划什么").nth(1).click()
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n明天计划什么，不在思想上斗争。\n\n\n\n ")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
+    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n明天计划什么，不在思想上斗争。\n类似 美杜莎有诱惑出现，创造一个良好环境。\n\n\n\n ")
+    page1.get_by_text("类似 美杜莎有诱惑出现，创造一个良好环境。").click()
+    page1.get_by_text("类似 美杜莎有诱惑出现，创造一个良好环境。").click()
+    page1.locator("div").filter(has_text="类似 美杜莎有诱惑出现，创造一个良好环境。").nth(1).click()
+    page1.get_by_text("无声明").click()
+    page1.get_by_role("option", name="无声明").click()
+    page1.get_by_text("允许规范转载").click()
+    page1.get_by_role("option", name="禁止转载").click()
+    page1.get_by_text("任何人都可以评论").click()
+    page1.get_by_role("option", name="我关注的人能评论").click()
+    page1.get_by_role("button", name="发布回答").click()
+
+    # ---------------------
+    context.close()
+    browser.close()
+
+
+with sync_playwright() as playwright:
+    run(playwright)
+
+
+
+
+    
+---------------
+
+
+
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://www.zhihu.com/signin?next=%2F")
+    page.goto("https://www.zhihu.com/")
+    page.get_by_role("main").get_by_role("link", name="推荐", exact=True).click()
+    page.get_by_role("main").get_by_role("link", name="关注", exact=True).click()
+    page.get_by_role("main").get_by_role("link", name="推荐").click()
+    page.get_by_role("button", name="赞同 21").click()
+
+
+
+<button aria-label="赞同 515 " aria-live="polite" type="button" class="Button VoteButton VoteButton--up FEfUrdfMIKpQDJDqkjte">
+<span style="display: inline-flex; align-items: center;">​<svg width="10" height="10" viewBox="0 0 24 24" class="Zi Zi--TriangleUp VoteButton-TriangleUp" fill="currentColor"><path fill-rule="evenodd" d="M13.792 3.681c-.781-1.406-2.803-1.406-3.584 0l-7.79 14.023c-.76 1.367.228 3.046 1.791 3.046h15.582c1.563 0 2.55-1.68 1.791-3.046l-7.79-14.023Z" clip-rule="evenodd"></path></svg>
+
+</span>赞同 515</button>
+
+如果你想使用 XPath 来查找包含 "赞同" 的第二个按钮，你可以使用以下表达式：
+xpath
+//button[contains(text(), '赞同')][2]
+这个 XPath 表达式的含义是：
+//button：选择所有的 button 元素。
+[contains(text(), '赞同')]：选择包含文本 "赞同" 的 button 元素。
+[2]：选择满足前面条件的第二个 button 元素。
+请注意，这仅在 HTML 结构正确且按钮在同一层次结构中的情况下有效。如果按钮的结构或位置有所不同，你可能需要使用更具体的 XPath 表达式或其他方法来找到第二个按钮
+
+
+
+
+
+<button aria-label="赞同 277 " aria-live="polite" type="button" class="Button VoteButton VoteButton--up FEfUrdfMIKpQDJDqkjte"><span style="display: inline-flex; align-items: center;">​<svg width="10" height="10" viewBox="0 0 24 24" class="Zi Zi--TriangleUp VoteButton-TriangleUp" fill="currentColor"><path fill-rule="evenodd" d="M13.792 3.681c-.781-1.406-2.803-1.406-3.584 0l-7.79 14.023c-.76 1.367.228 3.046 1.791 3.046h15.582c1.563 0 2.55-1.68 1.791-3.046l-7.79-14.023Z" clip-rule="evenodd"></path></svg>
+
+</span>赞同 277</button>
+
+
+
+
+
+<a tabindex="0" aria-controls="Topstory-recommend" class="TopstoryTabs-link Topstory-tabsLink is-active" data-za-detail-view-id="9122" data-za-extra="{&quot;button&quot;:{&quot;text&quot;:&quot;推荐&quot;}}" href="/"
+>
+推荐
+</a>
+
+What is XPath in Selenium?
+
+XPath in Selenium is an XML path used for navigation through the HTML structure of the page
+https://www.guru99.com/xpath-selenium.html
+
+
+<a href="https://www.runoob.com">访问菜鸟教程!</a>
+
+
+
+<button aria-label="赞同 515 " aria-live="polite" type="button" class="Button VoteButton VoteButton--up FEfUrdfMIKpQDJDqkjte"><span style="display: inline-flex; align-items: center;">​<svg width="10" height="10" viewBox="0 0 24 24" class="Zi Zi--TriangleUp VoteButton-TriangleUp" fill="currentColor"><path fill-rule="evenodd" d="M13.792 3.681c-.781-1.406-2.803-1.406-3.584 0l-7.79 14.023c-.76 1.367.228 3.046 1.791 3.046h15.582c1.563 0 2.55-1.68 1.791-3.046l-7.79-14.023Z" clip-rule="evenodd"></path></svg></span>赞同 515</button>

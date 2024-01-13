@@ -1,0 +1,56 @@
+## css 
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child
+
+
+-----------------------------------------------------------------------
+
+## Q6 Web自动化测试之playwright：pages、popup、dialog和frame处理
+
+
+Each BrowserContext can have multiple pages
+BrowserContexts provide a way to operate multiple independent browser sessions. 
+A Page refers to a single tab or a popup window within a browser context
+
+browser_context.add_cookies
+browser_context.cookies()
+
+https://playwright.dev/python/docs/api/class-page
+Handling new pages
+The page event on browser contexts can be used to get new pages that are created in the context. 
+This can be used to handle new pages opened by target="_blank" links.
+ with self.context.expect_page(timeout=20000) as new_page_info:
+            #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
+            page.locator("div:nth-child(3) > .css-n9ov20 > .css-wfj162 > .css-nyeu1f > div > .Button").click(timeout=20000)
+            time.sleep(3)
+
+
+
+https://www.cnblogs.com/hiyong/p/15490980.html
+
+
+https://zhuanlan.zhihu.com/p/515565872
+timeout 等待的超时时间默认30秒
+
+
+
+
+选择具有特定 ID 的元素：#id
+选择具有特定类的元素：.class
+选择具有特定文本内容的元素：text()
+选择具有特定属性的元素：[@属性名="属性值"]
+
+
+from playwright.sync_api import sync_playwright, Playwright
+
+def run(playwright: Playwright):
+    webkit = playwright.webkit
+    browser = webkit.launch()
+    context = browser.new_context()
+    page = context.new_page()
+    page.goto("https://example.com")
+    page.screenshot(path="screenshot.png")
+    browser.close()
+
+with sync_playwright() as playwright:
+    run(playwright)

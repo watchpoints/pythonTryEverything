@@ -24,6 +24,9 @@ class CMyZhiHu:
         self.upload_mp4_url = upload_mp4_url
         # playwright 部分
         self.browser = None
+        # 想法 ---喜欢
+        self.user_list = None
+        self.context = None
         print("create CMyDouyin")
 
     def __del__(self):
@@ -70,9 +73,9 @@ class CMyZhiHu:
         if sys == "Linux":
             userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
         
-        context = self.browser.new_context(user_agent=userAgent)
-        context.clear_cookies()
-        page = context.new_page()
+        self.context = self.browser.new_context(user_agent=userAgent)
+        self.context.clear_cookies()
+        page = self.context.new_page()
         page.goto(self.login_url)
 
         if os.path.exists(self.cookies_path):
@@ -80,7 +83,7 @@ class CMyZhiHu:
             # 从文件中加载 cookies
             with open(self.cookies_path, 'r',encoding='utf-8') as f:
                 cookies = json.load(f)
-            context.add_cookies(cookies)
+            self.context.add_cookies(cookies)
             time.sleep(3)
         else:
             # 扫名二维码登录 需要人工处理
@@ -143,6 +146,106 @@ class CMyZhiHu:
         print("发布")
         time.sleep(5)
 
+    def zhihu_auto_agree(self, page: Page):
+        """
+         赞同 三个积分 playwright codegen https://www.zhihu.com/
+         follow ---
+        """
+        page.goto("https://www.zhihu.com/follow")
+        time.sleep(3)
+
+        # page.locator("xpath=//a[text()='推荐']").click()
+        #page.locator("xpath=//a[contains(text(),'推荐']").click()
+        page.get_by_role("main").get_by_role("link", name="推荐", exact=True).click()
+        time.sleep(6)
+        page.mouse.down()
+        
+        ## Child
+        element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth=2')
+        time.sleep(1)
+        element.hover()
+        time.sleep(2)
+        element.click()
+        time.sleep(5)
+        print("---------zhihu_auto_agree---------")
+
+    ###########################################################################  
+    def zhihu_auto_answer(self, page: Page):
+        """
+        回答问题 playwright codegen https://www.zhihu.com/creator/featured-question/recommend
+        """
+        page.goto("https://www.zhihu.com/creator/featured-question/recommend")
+        time.sleep(3)
+        print("https://www.zhihu.com/creator/featured-question/recommend")
+        page.get_by_role("link", name="为你推荐").click()
+        print("为你推荐,这个时间设置5秒，太短，改为10秒")
+        time.sleep(10)
+        
+        # man question 第二个问题 下表是3
+        with self.context.expect_page(timeout=20000) as new_page_info:
+            #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
+            page.locator("div:nth-child(3) > .css-n9ov20 > .css-wfj162 > .css-nyeu1f > div > .Button").click(timeout=20000)
+            time.sleep(3)
+        question_page = new_page_info.value
+        question_page.wait_for_load_state()
+
+        question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
+        time.sleep(2)
+        print(question_title)
+        #question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
+        question_example = question_page.locator("css=.RichText.ztext.css-jflero:first-child").text_content()
+        if len(question_example) ==0:
+            question_example =None
+        print(question_example)
+        time.sleep(2)
+
+        #写回答
+        question_page.locator("css=.Button.FEfUrdfMIKpQDJDqkjte.Button--blue.JmYzaky7MEPMFcJDLNMG").click()
+        time.sleep(20)
+        question_page.get_by_role("textbox").fill(question_title)
+        
+        question_page.get_by_role("option", name="包含 AI 辅助创作").click()
+        time.sleep(1)
+        question_page.get_by_role("option", name="禁止转载").click()
+        time.sleep(1)
+        question_page.get_by_role("option", name="我关注的人能评论").click()
+        time.sleep(1)
+        
+        time.sleep(500)
+
+        
+
+    ###################################################
+    # def like_other_things(self, page: Page, user_list):
+    #     """
+    #     喜欢 playwright codegen https://www.zhihu.com/
+    #     """
+    #     for  cur_url in user_list:
+    #         page.goto(cur_url)
+    #         time.sleep(6)
+    #         print(f"open  {cur_url}")
+    #         # 从主页进入 headless不行
+    #         page.locator("xpath=//div[contains(text(), '写想法')]").click()
+    #         print("点击 发布图文")
+            
+            
+    #         time.sleep(2)
+            
+    #         page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+    #         page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
+    #         # page.locator(".InputLike").fill(habit_detail)
+    #         time.sleep(3)
+            
+    #         print("开始上传图片")
+    #         page.locator(".css-88f71l > button:nth-child(2)").click()
+    #         time.sleep(2)
+    #         print("本地上传")
+    #         with page.expect_file_chooser() as fc_info:
+    #             page.locator(".css-n71hcb").click()
+    #         file_chooser = fc_info.value
+    #         file_chooser.set_files(picture_path_list)
+    #         time.sleep(5)
+     ################################################################################
     def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
         """
         msg_up_load_mp4
@@ -239,7 +342,6 @@ class CMyZhiHu:
 
 
 def interface_auo_upload_zhihu():
-    
     """
       对外调用接口
     """
@@ -252,21 +354,36 @@ def interface_auo_upload_zhihu():
             cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
         else:
             cookies_path = r"/root/bin/zhihu_xiaohao.json"
-
         file_path_list, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
-        print(file_path_list)
-        print(habit_name)
-        print(habit_detail)
-        
+
         autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-        autoupload.upload_picture(file_path_list, habit_name,habit_detail)
         # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
         # autoupload.upload_mp4(mp4_path, msg)
-    except ValueError:
-        print("Could not convert data to an integer.")
+        with sync_playwright() as playwright:
+            display_headless = False
+            sys = platform.system()
+            if sys == "Linux":
+                display_headless = True
+                browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            autoupload.browser = browser
+            login_page = autoupload.login_or_restore_cookies()
+            # 发布想法
+            autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+            # 赞同
+            autoupload.zhihu_auto_agree(login_page)
+            
+            # 回答问题
+            autoupload.zhihu_auto_answer(login_page)
+            # 关闭浏览器
+            autoupload.browser.close()
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
+    finally:
+        print("---------interface_auo_upload_zhihu----------")
 
 
 if __name__ == '__main__':
     interface_auo_upload_zhihu()
+
