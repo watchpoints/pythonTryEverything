@@ -3,6 +3,24 @@
 https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child
 
 
+##  Web自动化测试之playwright/selenium：下拉菜单
+
+场景：
+1. 点击鼠标才出现
+2， 鼠标悬停才出现
+
+
+
+    #添加音乐
+    page.get_by_placeholder("搜索音乐、歌手、歌词添加至作品").click()
+    time.sleep(5)
+    index = random.randint(0, 5)
+    page.locator("xpath=//button[./span[text()='添加']]").locator("nth={}".format(index)).click()
+    time.sleep(5)
+
+
+-------------------------------
+· Playwright和Selenium都是用于Web UI自动化测试的工具
 -----------------------------------------------------------------------
 
 ## Q6 Web自动化测试之playwright：pages、popup、dialog和frame处理

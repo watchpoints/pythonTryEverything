@@ -1,3 +1,12 @@
+<button role="combobox" aria-expanded="false" id="Popover36-toggle" aria-haspopup="true" aria-owns="Popover36-content" type="button" class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">包含医疗建议<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg></button>
+
+https://www.zhihu.com/question/322959031
+
+<button role="combobox" aria-expanded="false" id="Popover26-toggle" aria-haspopup="true" aria-owns="Popover26-content" type="button" class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">任何人都可以评论<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg></button>
+<button role="combobox" aria-expanded="false" id="Popover30-toggle" aria-haspopup="true" aria-owns="Popover30-content" type="button" class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">包含理财内容<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg></button>
+
+
+<button role="combobox" aria-expanded="false" id="Popover25-toggle" aria-haspopup="true" aria-owns="Popover25-content" type="button" class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">禁止转载<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg></button>
 <button type="button" class="Button QuestionRichText-more FEfUrdfMIKpQDJDqkjte Button--plain fEPKGkUK5jyc4fUuT0QP">显示全部 <span style="display: inline-flex; align-items: center;">​<svg width="24" height="24" viewBox="0 0 24 24" class="Zi Zi--ArrowDown" fill="currentColor"><path fill-rule="evenodd" d="M17.776 10.517a.875.875 0 0 1-.248 1.212l-5.05 3.335a.875.875 0 0 1-.964 0L6.47 11.73a.875.875 0 1 1 .965-1.46l4.56 3.015 4.568-3.016a.875.875 0 0 1 1.212.248Z" clip-rule="evenodd"></path></svg></span></button>
 
 
@@ -101,88 +110,6 @@ XPath 是一种在 XML 或 HTML 文档中定位和选择元素的语言，它提
 </span></div>
 </div></div>
 </div>
-
-<button type="button" class="Button FEfUrdfMIKpQDJDqkjte Button--blue JmYzaky7MEPMFcJDLNMG"><span style="display: inline-flex; align-items: center;">​<svg width="16" height="16" viewBox="0 0 24 24" class="Zi Zi--Edit QuestionButton-icon" fill="currentColor"><path d="m7.841 20.043-4.328 1.18a.6.6 0 0 1-.737-.736l1.18-4.324a1.2 1.2 0 0 1 .314-.539l8.094-7.995a.9.9 0 0 1 1.268.003l2.736 2.736a.9.9 0 0 1 .004 1.268l-7.196 7.296-.802.802a1.2 1.2 0 0 1-.533.31ZM19.703 4.81l-.514-.513a2.542 2.542 0 0 0-3.595 0l-.999 1.067a.9.9 0 0 0 .02 1.252l2.77 2.768a.9.9 0 0 0 1.25.02l1.068-.999a2.542 2.542 0 0 0 0-3.594Z"></path></svg></span>写回答</button>
------------
-//*[contains(text(),'写回答')]
-
-  with page.expect_popup() as page1_info:
-        page.locator(".css-nyeu1f > div > .Button").first.click()
-    page1 = page1_info.value
-    with page.expect_popup() as page2_info:
-        page.locator(".css-nyeu1f > div > .Button").first.click()
-    page2 = page2_info.value
-    page2.close()
-
-
-
-    from playwright.sync_api import Playwright, sync_playwright, expect
-
-
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("https://www.zhihu.com/signin?next=%2Fcreator%2Ffeatured-question%2Frecommend")
-    page.goto("https://www.zhihu.com/creator/featured-question/recommend")
-    page.get_by_role("link", name="邀请回答").click()
-    with page.expect_popup() as page1_info:
-        page.get_by_role("link", name="晚上睡不着都是什么原因？").click()
-    page1 = page1_info.value
-    page1.get_by_text("失眠？想太多？").click()
-    page1.get_by_role("main").get_by_role("heading", name="晚上睡不着都是什么原因？").click(click_count=3)
-    page1.locator("body").press("Control+c")
-    page1.get_by_role("main").locator("div").filter(has_text="关注问题写回答").get_by_role("button", name="​ 写回答").click()
-    page1.locator(".Dropzone").click()
-    page1.locator("#js-answerAddCard").get_by_text("晚上睡不着都是什么原因？").click()
-    page1.locator("#js-answerAddCard").get_by_role("heading", name="晚上睡不着都是什么原因？").locator("div").click()
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因想的t").fill("晚上睡不着都是什么原因\n可能原因：\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("ArrowUp")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("ArrowDown")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情，\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室。\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
-    page1.locator("div").filter(has_text="手机不放入卧室").click()
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("ArrowDown")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n明天计划什么，日\n\n\n\n ")
-    page1.get_by_text("晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").click()
-    page1.locator("div").filter(has_text="明天计划什么").nth(1).click()
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n明天计划什么，不在思想上斗争。\n\n\n\n ")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").press("Enter")
-    page1.get_by_role("textbox").filter(has_text="晚上睡不着都是什么原因可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题解决办法：每天白天三只青蛙，专注事情本身，行动起来晚上：刷牙洗澡运动，做放松事情").fill("晚上睡不着都是什么原因\n可能原因：事情太多，白天事情 在晚上大脑回放。这不是你问题\n解决办法：\n每天白天三只青蛙，专注事情本身，行动起来\n晚上：刷牙洗澡运动，做放松事情\n手机不放入卧室\n明天计划：\n明天计划什么，不在思想上斗争。\n类似 美杜莎有诱惑出现，创造一个良好环境。\n\n\n\n ")
-    page1.get_by_text("类似 美杜莎有诱惑出现，创造一个良好环境。").click()
-    page1.get_by_text("类似 美杜莎有诱惑出现，创造一个良好环境。").click()
-    page1.locator("div").filter(has_text="类似 美杜莎有诱惑出现，创造一个良好环境。").nth(1).click()
-    page1.get_by_text("无声明").click()
-    page1.get_by_role("option", name="无声明").click()
-    page1.get_by_text("允许规范转载").click()
-    page1.get_by_role("option", name="禁止转载").click()
-    page1.get_by_text("任何人都可以评论").click()
-    page1.get_by_role("option", name="我关注的人能评论").click()
-    page1.get_by_role("button", name="发布回答").click()
-
-    # ---------------------
-    context.close()
-    browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
-
 
 
 

@@ -193,18 +193,18 @@ class CMyZhiHu:
         question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
         time.sleep(2)
         print(question_title)
-        #question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
-        question_example = question_page.locator("css=.RichText.ztext.css-jflero:first-child").text_content()
-        if len(question_example) ==0:
-            question_example =None
-        print(question_example)
-        time.sleep(2)
+        # #question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
+        # question_example = question_page.locator("css=.RichText.ztext.css-jflero:first-child").text_content()
+        # if len(question_example) ==0:
+        #     question_example =None
+        # print(question_example)
+        # time.sleep(2)
 
         #写回答
         question_page.locator("css=.Button.FEfUrdfMIKpQDJDqkjte.Button--blue.JmYzaky7MEPMFcJDLNMG").click()
         time.sleep(20)
         question_page.get_by_role("textbox").fill(question_title)
-        
+
         question_page.get_by_role("option", name="包含 AI 辅助创作").click()
         time.sleep(1)
         question_page.get_by_role("option", name="禁止转载").click()
@@ -371,16 +371,14 @@ def interface_auo_upload_zhihu():
             autoupload.browser = browser
             login_page = autoupload.login_or_restore_cookies()
             # 发布想法
-            autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+            #autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
             # 赞同
-            autoupload.zhihu_auto_agree(login_page)
+            #autoupload.zhihu_auto_agree(login_page)
             
             # 回答问题
-            #autoupload.zhihu_auto_answer(login_page)
+            autoupload.zhihu_auto_answer(login_page)
             # 关闭浏览器
             autoupload.browser.close()
-    except Exception as err:
-        print(f"Unexpected {err=}, {type(err)=}")
     finally:
         print("---------interface_auo_upload_zhihu----------")
 
