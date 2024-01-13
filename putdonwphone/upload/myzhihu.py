@@ -162,11 +162,12 @@ class CMyZhiHu:
         
         ## Child
         element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth=2')
-        time.sleep(1)
-        element.hover()
         time.sleep(2)
+        page.mouse.down()
+        element.hover()
+        time.sleep(3)
         element.click()
-        time.sleep(5)
+        time.sleep(6)
         print("---------zhihu_auto_agree---------")
 
     ###########################################################################  
@@ -375,7 +376,7 @@ def interface_auo_upload_zhihu():
             autoupload.zhihu_auto_agree(login_page)
             
             # 回答问题
-            autoupload.zhihu_auto_answer(login_page)
+            #autoupload.zhihu_auto_answer(login_page)
             # 关闭浏览器
             autoupload.browser.close()
     except Exception as err:

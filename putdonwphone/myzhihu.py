@@ -1,150 +1,15 @@
 """This module provides mydouyn"""
-import time
 import json
 import os
+import time
 import platform
-from datetime import datetime
-import requests
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-from putdonwphone import  englisword
+from putdonwphone.data import englisword
 
-
-class GetupHabit:
-    """This class provides a way to do something."""
-    def __init__(self, save_picture_path: str, default_picture_path: str, get_up_path:str):
-        self.save_picture_path = save_picture_path
-        self.default_picture_path = default_picture_path
-        self.get_up_path = get_up_path
-        print("create GetupHabit")
-
-    def get_weather(self):
-        """定义通过城市获取天气信息的函数."""
-        print(self.save_picture_path)
-        url: str = 'https://restapi.amap.com/v3/weather/weatherInfo?parameters'
-        params_estimate1 = {
-            'key': '0a0bb34d7214a2caebb4cb2fe6471f9f',
-            'city': '110105',
-            'extensions': 'all'  # 获取预报天气
-        }
-
-        res = requests.get(url=url, params=params_estimate1)  # 预报天气
-        # res2 = requests.get(url=url,params=params_realtime) # 实时天气
-        data_json = res.json()
-        # date = data_json.get('forecasts')[0].get("casts")[0].get('date')  # 获取日期
-        week = data_json.get('forecasts')[0].get("casts")[0].get('week')  # 获取星期几
-        dayweather = data_json.get('forecasts')[0].get("casts")[0].get('dayweather')  # 白天天气现象
-        #nightweather = data_json.get('forecasts')[0].get("casts")[0].get('nightweather')  # 晚上天气现象
-        daytemp = data_json.get('forecasts')[0].get("casts")[0].get('daytemp')  # 白天温度
-        nighttemp = data_json.get('forecasts')[0].get("casts")[0].get('nighttemp')  # 晚上温度
-        #daywind = data_json.get('forecasts')[0].get("casts")[0].get('daywind')  # 白天风向
-        daypower = data_json.get('forecasts')[0].get("casts")[0].get('daypower')  # 白天风力
-
-        weather = ''
-        weather +='星期：' + week + "\r\n"
-        weather += '✅ 天气:' + dayweather + "\r\n"
-        weather += '✅  温度:' + "低温 " + nighttemp + "℃ ~高温 " + daytemp + " ℃\r\n"
-        weather += '✅ 风力:' + daypower + "级\r"
-        return weather
-    # 获取金山词霸每日一句
-    def get_every_word(self):
-        """
-        目标养成计划
-        """
-        print(self.save_picture_path)
-        return requests.get("https://open.iciba.com/dsapi/").json()
-
-    def read_get_up_from_txt(self,path: str):
-        """
-        目标养成计划 emoji 表情作为目标的例子：
-
-        """
-        content = ""
-        with open(path, encoding='UTF-8') as file:
-            lines = file.readlines()
-            for i, line in enumerate(lines):
-                if len(line.strip()) == 0:
-                    continue
-                if i % 3 == 0:
-                    # content += (line.strip() + " 😊") + "\r\n"
-                    content += (line.strip()) + "\r\n"
-                elif i % 3 == 1:
-                    content += (line.strip()) + "\r\n"
-                else:
-                    content += (line.strip()) + "\r\n"
-        content += "🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉" + "\r\n"
-        return content
-
-    def down_picture(self, image_url: str):
-        """
-        目标养成计划
-        """
-        # 发送 GET 请求获取图片内容
-        response = requests.get(image_url)
-        # 检查请求是否成功
-        if response.status_code == 200:
-            # 获取图片内容
-            image_content = response.content
-            # 保存图片到本地
-            with open(self.save_picture_path, "wb") as file:
-                file.write(image_content)
-                print(f"Image downloaded and saved to {self.save_picture_path}")
-        else:
-            print(f"Failed to download image. Status code: {response.status_code}")
-            self.save_picture_path = self.default_picture_path
-
-    def interface_get_up(self):
-        """
-        目标养成计划
-        """
-        # Current date
-        current_date = datetime.now()
-        # Specific date (2023-12-10)
-        target_date = datetime(2023, 12, 1)
-        # Calculate the difference in days
-        difference_in_days = (current_date - target_date).days
-
-        temp_habit_name = "挑战早睡早起100天" + "第" + str(difference_in_days) + "天"
-        data = self.get_every_word()
-        title = "#挑战早睡早起100天" + "\r\n"
-        title += data['content'] + "\r\n"
-        title += data['note'] + "\r\n"
-        print(str(data['fenxiang_img']))
-        self.down_picture(data['fenxiang_img'])
-        title += datetime.now().strftime('%Y-%m-%d') + "\r\n"
-        weather = self.get_weather()
-        title += weather + "\r\n"
-        title += "\r\n"
-        title += self.read_get_up_from_txt(self.get_up_path)
-        return temp_habit_name,title
-
- 
-def interface_get_daily_englis_word():
-    """
-    获取每日英语单词
-
-    Returns:
-        tuple[str, str, Any]: 包含单词、释义和相关图片路径的元组
-    Python Return Multiple Values  How to Return a Tuple, List, or Dictionary
-    https://www.freecodecamp.org/news/python-returns-multiple-values-how-to-return-a-tuple-list-dictionary/
-    """
-    sys = platform.system()
-    sys = platform.system()  
-    if sys == "Windows":
-        save_picture_path = r"D:\mp4\etc\temp.png"
-        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\mp4\etc\01_get_up.txt"
-    else:
-        save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
-        default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
-        get_up_path = '/root/code/python/config/01_get_up.txt'
-
-    getup = GetupHabit(save_picture_path, default_picture_path, get_up_path) 
-    temp_habit_name,temp_habit_detail = getup.interface_get_up()
-    return getup.save_picture_path, temp_habit_name,temp_habit_detail
 
 ########################################################################
-class CMyDouyin:
+class CMyZhiHu:
     """
     This class represents a GetupHabit.
 
@@ -159,12 +24,15 @@ class CMyDouyin:
         self.upload_mp4_url = upload_mp4_url
         # playwright 部分
         self.browser = None
+        # 想法 ---喜欢
+        self.user_list = None
+        self.context = None
         print("create CMyDouyin")
 
     def __del__(self):
-        print("CMyDouyin is being destroyed")
+        print("CMyZhiHu is being destroyed")
 
-    def upload_picture(self, picture_path: str, habit_name:str, habit_detail:str):
+    def upload_picture(self, picture_path_list: str, habit_name:str, habit_detail:str):
         """
           upload_picture
         """
@@ -178,7 +46,7 @@ class CMyDouyin:
                 self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
             login_page = self.login_or_restore_cookies()
             print("login_or_restore_cookies")
-            self.msg_up_load(login_page, picture_path, habit_name,habit_detail)
+            self.msg_up_load(login_page, picture_path_list, habit_name,habit_detail)
             self.browser.close()
     
     def upload_mp4(self, mp4_path: str, msg: str):
@@ -205,9 +73,9 @@ class CMyDouyin:
         if sys == "Linux":
             userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
         
-        context = self.browser.new_context(user_agent=userAgent)
-        context.clear_cookies()
-        page = context.new_page()
+        self.context = self.browser.new_context(user_agent=userAgent)
+        self.context.clear_cookies()
+        page = self.context.new_page()
         page.goto(self.login_url)
 
         if os.path.exists(self.cookies_path):
@@ -215,7 +83,7 @@ class CMyDouyin:
             # 从文件中加载 cookies
             with open(self.cookies_path, 'r',encoding='utf-8') as f:
                 cookies = json.load(f)
-            context.add_cookies(cookies)
+            self.context.add_cookies(cookies)
             time.sleep(3)
         else:
             # 扫名二维码登录 需要人工处理
@@ -228,7 +96,7 @@ class CMyDouyin:
         print("login_or_restore_cookies")
         return page
 
-    def msg_up_load(self, page: Page, picture_path: str,habit_name:str, habit_detail:str):
+    def msg_up_load(self, page: Page, picture_path_list,habit_name:str, habit_detail:str):
         """
         msg_up_load
         """
@@ -265,8 +133,9 @@ class CMyDouyin:
         with page.expect_file_chooser() as fc_info:
             page.locator(".css-n71hcb").click()
         file_chooser = fc_info.value
-        file_chooser.set_files(picture_path)
+        file_chooser.set_files(picture_path_list)
         time.sleep(5)
+       
         
         page.get_by_role("button", name="插入图片").click()
         time.sleep(5)
@@ -277,6 +146,106 @@ class CMyDouyin:
         print("发布")
         time.sleep(5)
 
+    def zhihu_auto_agree(self, page: Page):
+        """
+         赞同 三个积分 playwright codegen https://www.zhihu.com/
+         follow ---
+        """
+        page.goto("https://www.zhihu.com/follow")
+        time.sleep(3)
+
+        # page.locator("xpath=//a[text()='推荐']").click()
+        #page.locator("xpath=//a[contains(text(),'推荐']").click()
+        page.get_by_role("main").get_by_role("link", name="推荐", exact=True).click()
+        time.sleep(6)
+        page.mouse.down()
+        
+        ## Child
+        element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth=2')
+        time.sleep(1)
+        element.hover()
+        time.sleep(2)
+        element.click()
+        time.sleep(5)
+        print("---------zhihu_auto_agree---------")
+
+    ###########################################################################  
+    def zhihu_auto_answer(self, page: Page):
+        """
+        回答问题 playwright codegen https://www.zhihu.com/creator/featured-question/recommend
+        """
+        page.goto("https://www.zhihu.com/creator/featured-question/recommend")
+        time.sleep(3)
+        print("https://www.zhihu.com/creator/featured-question/recommend")
+        page.get_by_role("link", name="为你推荐").click()
+        print("为你推荐,这个时间设置5秒，太短，改为10秒")
+        time.sleep(10)
+        
+        # man question 第二个问题 下表是3
+        with self.context.expect_page(timeout=20000) as new_page_info:
+            #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
+            page.locator("div:nth-child(3) > .css-n9ov20 > .css-wfj162 > .css-nyeu1f > div > .Button").click(timeout=20000)
+            time.sleep(3)
+        question_page = new_page_info.value
+        question_page.wait_for_load_state()
+
+        question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
+        time.sleep(2)
+        print(question_title)
+        #question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
+        question_example = question_page.locator("css=.RichText.ztext.css-jflero:first-child").text_content()
+        if len(question_example) ==0:
+            question_example =None
+        print(question_example)
+        time.sleep(2)
+
+        #写回答
+        question_page.locator("css=.Button.FEfUrdfMIKpQDJDqkjte.Button--blue.JmYzaky7MEPMFcJDLNMG").click()
+        time.sleep(20)
+        question_page.get_by_role("textbox").fill(question_title)
+        
+        question_page.get_by_role("option", name="包含 AI 辅助创作").click()
+        time.sleep(1)
+        question_page.get_by_role("option", name="禁止转载").click()
+        time.sleep(1)
+        question_page.get_by_role("option", name="我关注的人能评论").click()
+        time.sleep(1)
+        
+        time.sleep(500)
+
+        
+
+    ###################################################
+    # def like_other_things(self, page: Page, user_list):
+    #     """
+    #     喜欢 playwright codegen https://www.zhihu.com/
+    #     """
+    #     for  cur_url in user_list:
+    #         page.goto(cur_url)
+    #         time.sleep(6)
+    #         print(f"open  {cur_url}")
+    #         # 从主页进入 headless不行
+    #         page.locator("xpath=//div[contains(text(), '写想法')]").click()
+    #         print("点击 发布图文")
+            
+            
+    #         time.sleep(2)
+            
+    #         page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+    #         page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
+    #         # page.locator(".InputLike").fill(habit_detail)
+    #         time.sleep(3)
+            
+    #         print("开始上传图片")
+    #         page.locator(".css-88f71l > button:nth-child(2)").click()
+    #         time.sleep(2)
+    #         print("本地上传")
+    #         with page.expect_file_chooser() as fc_info:
+    #             page.locator(".css-n71hcb").click()
+    #         file_chooser = fc_info.value
+    #         file_chooser.set_files(picture_path_list)
+    #         time.sleep(5)
+     ################################################################################
     def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
         """
         msg_up_load_mp4
@@ -319,11 +288,60 @@ class CMyDouyin:
         # time.sleep(5)
         print("发布")
         time.sleep(600)
+        
+    def auto_help_answer(self, page: Page, picture_path_list,habit_name:str, habit_detail:str):
+        """
+        msg_up_load
+        """
+        page.goto(self.upload_picture_url)
+        time.sleep(6)
+        print(f"open  {self.upload_picture_url}")
+        # 从主页进入 headless不行
+        page.locator("xpath=//div[contains(text(), '写想法')]").click()
+        print("点击 发布图文")
+        # time.sleep(3)
+        # print(page.content)
+        
+        # # https://www.zhihu.com/creator
+        # page.mouse.click(200,200)
+        # dropdown = page.get_by_text("内容创作")
+        # dropdown.hover()
+        # # dropdown.locator('.dropdown__link >> text=python').click()
+        # #dropdown.get_by_role("listitem").filter(has_text="python").click()
+        # # 对于ul-li的元素，可以用listitem 的角色定位方式
+        # page.locator("a").filter(has_text="发布想法").click()
+        
+        
+        time.sleep(2)
+        
+        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
+        # page.locator(".InputLike").fill(habit_detail)
+        time.sleep(3)
+        
+        print("开始上传图片")
+        page.locator(".css-88f71l > button:nth-child(2)").click()
+        time.sleep(2)
+        print("本地上传")
+        with page.expect_file_chooser() as fc_info:
+            page.locator(".css-n71hcb").click()
+        file_chooser = fc_info.value
+        file_chooser.set_files(picture_path_list)
+        time.sleep(5)
+       
+        
+        page.get_by_role("button", name="插入图片").click()
+        time.sleep(5)
+        
+        print("结束上传图片")
+        
+        page.get_by_role("button", name="发布").click()
+        print("发布")
+        time.sleep(5)
     #################################################################################
 
 
 def interface_auo_upload_zhihu():
-    
     """
       对外调用接口
     """
@@ -336,21 +354,36 @@ def interface_auo_upload_zhihu():
             cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
         else:
             cookies_path = r"/root/bin/zhihu_xiaohao.json"
+        file_path_list, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
 
-        file_path, habit_name,habit_detail = interface_get_daily_englis_word()
-        print(file_path)
-        print(habit_name)
-        print(habit_detail)
-        
-        autoupload = CMyDouyin(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-        autoupload.upload_picture(file_path, habit_name,habit_detail)
+        autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
         # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
         # autoupload.upload_mp4(mp4_path, msg)
-    except ValueError:
-        print("Could not convert data to an integer.")
+        with sync_playwright() as playwright:
+            display_headless = False
+            sys = platform.system()
+            if sys == "Linux":
+                display_headless = True
+                browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            autoupload.browser = browser
+            login_page = autoupload.login_or_restore_cookies()
+            # 发布想法
+            autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+            # 赞同
+            autoupload.zhihu_auto_agree(login_page)
+            
+            # 回答问题
+            #autoupload.zhihu_auto_answer(login_page)
+            # 关闭浏览器
+            autoupload.browser.close()
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
+    finally:
+        print("---------interface_auo_upload_zhihu----------")
 
 
 if __name__ == '__main__':
     interface_auo_upload_zhihu()
+
