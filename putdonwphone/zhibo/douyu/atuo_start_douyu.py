@@ -351,6 +351,7 @@ def local_file_to_rtmp(input_directory,output_url):
             start_live_stream(file_name, output_url)
 
 
+
 def start_live_stream(input_file, rtmp_url):
     """_summary_
 
@@ -362,6 +363,57 @@ def start_live_stream(input_file, rtmp_url):
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
     ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
+    # cmd = shlex.split(ffmpeg_cmd)
+    #https://blog.csdn.net/cnweike/article/details/73620250
+    # Execute a child program in a new process.
+    # https://docs.python.org/zh-cn/3/library/subprocess.html
+    # Python：从subprocess运行的子进程中实时获取输出
+    myp = subprocess.Popen(ffmpeg_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,text=True, encoding='utf-8')
+    # oll() is None means that the child is still running.
+    while myp.poll() is None:
+        line = myp.stdout.readline()
+        #https://juejin.cn/post/6926442577294000136
+        line = line.strip()
+        if line:
+            print(line)
+    #     # 通过循环实时获取输出
+    # while True:
+    #     # 从管道中读取一行输出
+    #     output_line = myp.stdout.readline()
+
+    #     # 判断输出是否为空，为空表示子进程已经结束
+    #     if output_line == '' and myp.poll() is not None:
+    #         break
+
+    if myp.returncode == 0:
+        print('Subprogram success')
+    else:
+        print('Subprogram failed')
+        
+    print(ffmpeg_cmd)
+    # https://www.cnblogs.com/suwings/p/6216279.html
+    result = subprocess.run(ffmpeg_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,check=False, encoding='utf-8')
+    # 获取命令执行结果
+    output = result.stdout
+    error = result.stderr
+
+    # 打印输出结果
+    print(output)
+    # 打印错误结果
+    print(error)
+
+def start_live_stream1(input_file, rtmp_url):
+    """_summary_
+
+    Args:
+        input_file (_type_): _description_
+        output_url (_type_): _description_
+    """
+    sys.stdout.reconfigure(encoding='utf-8')
+    # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
+    print(ffmpeg_cmd)
+    logging.info(ffmpeg_cmd)
     
     result = subprocess.run(ffmpeg_cmd, shell=True,capture_output=True, text=True,check=False, encoding='utf-8',timeout=10800)
 
@@ -394,16 +446,17 @@ if __name__ == '__main__':
     MP4_DIR = r"D:\mp4\speak"
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
+    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     # interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
     # pip install apscheduler
     #12点:发一个图文
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("30 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("30 9 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
-    backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
+    #backsched.add_job(interface_auo_start_douyu_zhibo,
+    #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
     
     backsched.add_job(interface_auo_start_douyu_zhibo,
                       CronTrigger.from_crontab("30 17 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
