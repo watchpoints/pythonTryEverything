@@ -3,13 +3,10 @@ import json
 import os
 import time
 import platform
-import random
-import requests
-from datetime import datetime
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
 #from pythonTryEverything.putdonwphone.data import englisword
-from ..putdonwphone.data import englisword
+from learn import learn_english_speak
 ########################################################################
 class CMyZhiHu:
     """
@@ -362,35 +359,31 @@ def interface_auo_upload_zhihu():
         cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
     else:
         cookies_path = r"/root/bin/zhihu_xiaohao.json"
-    file_path_list, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
+    file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_pic2()
 
-    #     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-    #     # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
-    #     # autoupload.upload_mp4(mp4_path, msg)
-    #     with sync_playwright() as playwright:
-    #         display_headless = False
-    #         sys = platform.system()
-    #         if sys == "Linux":
-    #             display_headless = True
-    #             browser = playwright.chromium.launch(headless=display_headless)
-    #         else:
-    #             browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-    #         autoupload.browser = browser
-    #         login_page = autoupload.login_or_restore_cookies()
-    #         # 发布想法
-    #         #autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
-    #         # 赞同
-    #         #autoupload.zhihu_auto_agree(login_page)
-            
-    #         # 回答问题
-    #         autoupload.zhihu_auto_answer(login_page)
-    #         # 关闭浏览器
-    #         autoupload.browser.close()
-    # finally:
-    #     print("---------interface_auo_upload_zhihu----------")
-
+    autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
+    # autoupload.upload_mp4(mp4_path, msg)
+    with sync_playwright() as playwright:
+        display_headless = False
+        sys = platform.system()
+        if sys == "Linux":
+            display_headless = True
+            browser = playwright.chromium.launch(headless=display_headless)
+        else:
+            browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+        autoupload.browser = browser
+        login_page = autoupload.login_or_restore_cookies()
+        # 发布想法
+        #autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+        # 赞同
+        #autoupload.zhihu_auto_agree(login_page)
+        
+        # 回答问题
+        autoupload.zhihu_auto_answer(login_page)
+        # 关闭浏览器
+        autoupload.browser.close()
 
 if __name__ == '__main__':
     print("---interface_auo_upload_zhihu---")
     interface_auo_upload_zhihu()
-
