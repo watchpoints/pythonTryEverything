@@ -3,13 +3,14 @@
 https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child
 
 
-##  Web自动化测试之playwright/selenium：下拉菜单combobox
-
-    [Question] How to select react combobox element?
+## [Question] Web自动化测试之playwright/selenium：如何选择下拉菜单(combobox)
 
 场景：
-1. 点击鼠标才出现
-2， 鼠标悬停才出现
+1. 鼠标悬停然自然
+2. 鼠标移动上方，然后点击出现
+
+
+
 
 
 

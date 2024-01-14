@@ -1,0 +1,52 @@
+<div class="css-1codfpf">全屏编辑</div>
+-----------------------------------------
+知识点：
+
+应用：
+
+演示：
+
+<div class="css-1pysja1">
+  <div class="Popover ddLajxN_Q0AuobBZjX9m css-12sgcwu">
+     <button role="combobox" aria-expanded="false" id="Popover40-toggle" aria-haspopup="true" aria-owns="Popover40-content" type="button" class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">
+        包含 AI 辅助创作
+        <svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg>
+     </button>
+ </div>
+</div>
+
+https://github.com/microsoft/playwright/issues/5305#issuecomment-1077481666
+https://github.com/microsoft/playwright/issues/13470
+https://github.com/microsoft/playwright/issues/5305#issuecomment-1077481666
+<div class="Popover ddLajxN_Q0AuobBZjX9m css-12sgcwu">  ---三个 三个 三个
+page.getByRole("checkbox").click() instead of .check()
+ <button role="combobox" 
+ aria-expanded="false" 
+ id="Popover40-toggle" 
+ aria-haspopup="true" 
+ aria-owns="Popover40-content" 
+ type="button" 
+ class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">无声明<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg></button></div>
+
+
+
+
+Playwright can interact with HTML Input elements 
+such as text inputs, 
+checkboxes, 
+radio buttons, 
+select options, 
+mouse clicks, 
+type characters, keys and shortcuts as well as upload files and focus elements.
+https://playwright.dev/docs/input
+
+
+
+-------案例1----------------------------------
+<div aria-describedby="placeholder-d3d0m" 
+class="notranslate public-DraftEditor-content" 
+contenteditable="true" 
+role="textbox" 
+spellcheck="true" tabindex="0" style="outline: none; 
+user-select: text; white-space: pre-wrap; overflow-wrap: 
+break-word;"><div data-contents="true"><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="766d1-0-0"><div data-offset-key="766d1-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="766d1-0-0"><span data-text="true">11111111111111111</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="3tqji-0-0"><div data-offset-key="3tqji-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="3tqji-0-0"><span data-text="true">22222222</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="9qcen-0-0"><div data-offset-key="9qcen-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="9qcen-0-0"><span data-text="true">333333333</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="10cb1-0-0"><div data-offset-key="10cb1-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="10cb1-0-0"><span data-text="true">444444444</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="5rier-0-0"><div data-offset-key="5rier-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="5rier-0-0"><span data-text="true">5555555</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="5hn0i-0-0"><div data-offset-key="5hn0i-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="5hn0i-0-0"><br data-text="true"></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="fcop9-0-0"><div data-offset-key="fcop9-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="fcop9-0-0"><span data-text="true">666666</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="crdoe-0-0"><div data-offset-key="crdoe-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="crdoe-0-0"><br data-text="true"></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="dcur5-0-0"><div data-offset-key="dcur5-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="dcur5-0-0"><span data-text="true">77777777</span></span></div></div><div class="Editable-unstyled" data-block="true" data-editor="d3d0m" data-offset-key="5gl04-0-0"><div data-offset-key="5gl04-0-0" class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"><span data-offset-key="5gl04-0-0"><span data-text="true">888888888</span></span></div></div></div></div>

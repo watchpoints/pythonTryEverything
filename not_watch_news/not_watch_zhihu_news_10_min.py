@@ -26,7 +26,7 @@ class CMyZhiHu:
         # 想法 ---喜欢
         self.user_list = None
         self.context = None
-        print("create CMyDouyin")
+        print("create CMyZhiHu")
 
     def __del__(self):
         print("CMyZhiHu is being destroyed")
@@ -185,37 +185,50 @@ class CMyZhiHu:
         with self.context.expect_page(timeout=20000) as new_page_info:
             #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
             page.locator("div:nth-child(3) > .css-n9ov20 > .css-wfj162 > .css-nyeu1f > div > .Button").click(timeout=20000)
-            time.sleep(3)
+            
+        time.sleep(5)
         question_page = new_page_info.value
         question_page.wait_for_load_state()
 
         question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
-        time.sleep(2)
         print(question_title)
         # #question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
         # question_example = question_page.locator("css=.RichText.ztext.css-jflero:first-child").text_content()
         # if len(question_example) ==0:
         #     question_example =None
         # print(question_example)
-        # time.sleep(2)
-
-        #写回答
-        question_page.locator("css=.Button.FEfUrdfMIKpQDJDqkjte.Button--blue.JmYzaky7MEPMFcJDLNMG").click()
-        time.sleep(20)
-        question_page.get_by_role("textbox").fill(question_title)
-
-        buttion_1 = question_page.locator("#Popover25-toggle")
-        buttion_1.click()
-        
-        question_page.get_by_role("option", name="包含 AI 辅助创作").click()
         time.sleep(2)
-
-        question_page.get_by_role("option", name="禁止转载").click()
-        time.sleep(1000)
-        question_page.get_by_role("option", name="我关注的人能评论").click()
-        time.sleep(1)
+        print("---写回答-----")
+        #写回答
+        #question_page.get_by_role("main").get_by_role("button", name="​写回答").click()
+        #page.locator("xpath=//button[./span[text()='发布']]").click()
+        question_page.locator("xpath=//button[contains(text(),'写回答')]").locator("nth=0").click()
+        time.sleep(5)
         
-        time.sleep(500)
+        with self.context.expect_page(timeout=20000) as page_answer1:
+            #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
+            #question_page.locator(".css-1codfpf").click(timeout=20000)
+            question_page.get_by_text("全屏编辑").click()
+        time.sleep(5)
+        page_answer = page_answer1.value
+        page_answer.wait_for_load_state()
+
+        #question_page.get_by_role("textbox").fill(question_title)
+        page_answer.locator("css=.notranslate.public-DraftEditor-content").fill(question_title)
+        page_answer.mouse.down()
+        page_answer.mouse.down()
+        page_answer.mouse.down()
+        page_answer.get_by_text("无声明").click()
+        time.sleep(3)
+        page_answer.get_by_role("option", name="包含 AI 辅助创作").click()
+        time.sleep(3)
+
+        page_answer.get_by_text("允许规范转载").click()
+        page_answer.get_by_role("option", name="禁止转载").click()
+        time.sleep(1)
+
+        page_answer.get_by_role("button", name="发布回答").click()
+        time.sleep(30)
 
         
 
@@ -357,6 +370,8 @@ def interface_auo_upload_zhihu():
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
         cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
+    elif sys == "Darwin":
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_xiaohao.json"
     else:
         cookies_path = r"/root/bin/zhihu_xiaohao.json"
     file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_pic2()
