@@ -3,12 +3,19 @@
 https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child
 
 
-##  Web自动化测试之playwright/selenium：下拉菜单
+##  Web自动化测试之playwright/selenium：下拉菜单combobox
+
+    [Question] How to select react combobox element?
 
 场景：
 1. 点击鼠标才出现
 2， 鼠标悬停才出现
 
+
+
+
+https://stackoverflow.com/questions/74485788/playwright-comboboxes
+https://github.com/microsoft/playwright/issues/27146
 
 
     #添加音乐
@@ -18,8 +25,28 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child
     page.locator("xpath=//button[./span[text()='添加']]").locator("nth={}".format(index)).click()
     time.sleep(5)
 
-
+https://blog.csdn.net/m0_56192597/article/details/132187932
 -------------------------------
+
+button = page.get_by_role("button", name="Submit")
+
+page.get_by_role("link", name="Get started"):查找链接，用于筛选具有名称为 "Get started" 的链接元素
+
+"button": 查找按钮元素。
+"checkbox": 查找复选框元素。
+"radio": 查找单选框元素。
+"textbox": 查找文本框元素。
+"combobox": 查找下拉框（组合框）元素。
+"listbox": 查找列表框元素。
+"link": 查找链接元素。
+"heading": 查找标题（例如 <h1>, <h2> 等）元素。
+"menu": 查找菜单元素。
+"menuitem": 查找菜单项元素。
+"progressbar": 查找进度条元素。
+"radio": 查找单选按钮元素。
+————————————————
+版权声明：本文为CSDN博主「m0_56192597」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/m0_56192597/article/details/132187932
 · Playwright和Selenium都是用于Web UI自动化测试的工具
 -----------------------------------------------------------------------
 

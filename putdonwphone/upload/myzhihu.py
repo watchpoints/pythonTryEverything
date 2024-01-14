@@ -205,10 +205,13 @@ class CMyZhiHu:
         time.sleep(20)
         question_page.get_by_role("textbox").fill(question_title)
 
+        buttion_1 = question_page.locator("#Popover25-toggle")
+        buttion_1.click()
         question_page.get_by_role("option", name="包含 AI 辅助创作").click()
-        time.sleep(1)
+        time.sleep(2)
+
         question_page.get_by_role("option", name="禁止转载").click()
-        time.sleep(1)
+        time.sleep(1000)
         question_page.get_by_role("option", name="我关注的人能评论").click()
         time.sleep(1)
         

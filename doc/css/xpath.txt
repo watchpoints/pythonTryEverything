@@ -1,3 +1,14 @@
+
+将 h264 文件推流到 RTMP 服务器
+
+
+
+https://stackoverflow.com/questions/74485788/playwright-comboboxes
+https://github.com/microsoft/playwright/issues/27146
+
+https://playwright.dev/python/docs/input#select-options
+
+
 <button role="combobox" aria-expanded="false" id="Popover36-toggle" aria-haspopup="true" aria-owns="Popover36-content" type="button" class="Button InputLike EQvEDwRqICOvs_x_kUWW InputButton W2ewFU1c0bx6tahox08q Select-button HrHisPElmD_XxB9LKi6j FEfUrdfMIKpQDJDqkjte">包含医疗建议<svg width="1.2em" height="1.2em" viewBox="0 0 24 24" class="ZDI ZDI--ArrowUpDown24 Select-arrow RXYxRcvJ7zVIfNZSOcHa" fill="currentColor"><path fill-rule="evenodd" d="M12.53 3.47a.75.75 0 0 0-1.06 0l-5 5a.75.75 0 0 0 1.06 1.06L12 5.06l4.47 4.47a.75.75 0 1 0 1.06-1.06l-5-5Zm-5 11a.75.75 0 0 0-1.06 1.06l5 5a.75.75 0 0 0 1.06 0l5-5a.75.75 0 1 0-1.06-1.06L12 18.94l-4.47-4.47Z" clip-rule="evenodd"></path></svg></button>
 
 https://www.zhihu.com/question/322959031

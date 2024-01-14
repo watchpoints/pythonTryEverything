@@ -402,12 +402,9 @@ if __name__ == '__main__':
     #12点:发一个图文
     interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("30 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
-
-    backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
+                     CronTrigger.from_crontab("30 9 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
     
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                      CronTrigger.from_crontab("30 17 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+                      CronTrigger.from_crontab("01 17 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
