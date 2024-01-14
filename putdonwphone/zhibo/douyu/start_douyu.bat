@@ -1,1 +1,0 @@
-python ./atuo_start_douyu.py
