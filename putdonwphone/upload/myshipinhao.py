@@ -424,6 +424,9 @@ if __name__ == '__main__':
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
         BACK_PATH = r"D:\mp4\bak"
+    elif platform.system() == "Darwin":
+        OUT_PATH = r"/root/mp4/output"
+        BACK_PATH = r"/root/mp4/bak"
     else:
         OUT_PATH = r"/root/mp4/output"
         BACK_PATH = r"/root/mp4/bak"

@@ -21,8 +21,8 @@ DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 TOTAL_WORK_TIME = 180
 TOTAL_COUNT= 0
 one_work_time =30
+STEPS = 1
 #STEPS = 10
-STEPS = 10
 TOTAL_WORK_TIME_COUNT = 0
 ########################################################################
 class CZTOUYU:
@@ -42,6 +42,8 @@ class CZTOUYU:
         self.browser = None
         self.input_directory = mp4_input_directory
         self.only_msg = only_msg
+
+        self.context = None
         print("create CMyDouyin")
 
     def __del__(self):
@@ -60,8 +62,8 @@ class CZTOUYU:
             #   self.browser = playwright.chromium.launch(headless=display_headless)
                 self.browser = playwright.chromium.launch(headless=display_headless)
             else:
-                # self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
-                self.browser = playwright.firefox.launch(headless=display_headless)
+                self.browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+                #self.browser = playwright.firefox.launch(headless=display_headless)
             login_page = self.login_or_restore_cookies()
             self.helper_start_zhibo(login_page, picture_path, habit_name,habit_detail)
             if self.browser.is_connected:
@@ -86,9 +88,16 @@ class CZTOUYU:
         """
           登录
         """
-        context = self.browser.new_context()
-        context.clear_cookies()
-        page = context.new_page()
+        if platform.system() == "Linux":
+            user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+        elif platform.system() =="Darwin":
+            user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        else:
+            user_agent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
+        
+        self.context = self.browser.new_context(user_agent=user_agent)
+        self.context.clear_cookies()
+        page =  self.context.new_page()
         page.goto(self.login_url)
 
         if os.path.exists(self.cookies_path):
@@ -96,7 +105,7 @@ class CZTOUYU:
             # 从文件中加载 cookies
             with open(self.cookies_path, 'r',encoding='utf-8') as f:
                 cookies = json.load(f)
-            context.add_cookies(cookies)
+            self.context.add_cookies(cookies)
             time.sleep(3)
         else:
             # 扫名二维码登录 需要人工处理
@@ -241,6 +250,7 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
             task = get_task_msg()
             page.get_by_placeholder("这里输入聊天内容").fill(task)
             logging.info(task)
+            print(task)
             time.sleep(1)
             page.locator("css=.ChatSend-button ").click()
         print(count)
@@ -285,9 +295,11 @@ def interface_auo_start_douyu_zhibo(input_directory, only_msg):
     zhibo_url = "https://www.douyu.com/creator/main/live"
     watch_room_url = "https://www.douyu.com/11975253"
     if platform.system() == "Windows":
-        cookies_path = r"D:\mp4\etc\zhibodouyu.json"
+        cookies_path = r"D:\mp4\etc\zhibo_douyu_big.json"
+    elif platform.system() == "Darwin":
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhibo_douyu_big.json"
     else:
-        cookies_path = r"/root/bin/zhibodouyu.json"
+        cookies_path = r"/root/bin/zhibo_douyu_big.json"
     
     file_path = ""
     habit_name = ""
@@ -377,7 +389,7 @@ def start_live_stream(input_file, rtmp_url):
     print(error)
 
 
-
+# 01 big leave to small
 if __name__ == '__main__':
     if platform.system() == "Windows":
         LOG_PATH = r"D:\mp4\log\douyu.log"
