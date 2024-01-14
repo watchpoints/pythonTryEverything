@@ -224,6 +224,7 @@ class CZTOUYU:
 
 def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     """弹幕提醒"""
+    logging.info("helper_admin_class_rule")
     global TOTAL_COUNT
     page.goto(watch_room_url)
     time.sleep(5)
@@ -238,8 +239,8 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
             return
         if only_msg ==1 or only_msg ==3:
             task = get_task_msg()
-            print(task)
             page.get_by_placeholder("这里输入聊天内容").fill(task)
+            logging.info(task)
             time.sleep(1)
             page.locator("css=.ChatSend-button ").click()
         print(count)
@@ -395,7 +396,7 @@ if __name__ == '__main__':
     MP4_DIR = r"D:\mp4\speak"
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 1
-    # interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
+    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
     # pip install apscheduler
