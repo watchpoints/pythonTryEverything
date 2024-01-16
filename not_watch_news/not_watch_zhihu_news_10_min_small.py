@@ -151,22 +151,30 @@ class CMyZhiHu:
          follow ---
         """
         page.goto("https://www.zhihu.com/follow")
-        time.sleep(3)
-
+        time.sleep(6)
+        print("https://www.zhihu.com/follow")
         # page.locator("xpath=//a[text()='推荐']").click()
         #page.locator("xpath=//a[contains(text(),'推荐']").click()
         page.get_by_role("main").get_by_role("link", name="推荐", exact=True).click()
-        time.sleep(6)
+        time.sleep(4)
         page.mouse.down()
-        
+        print("推荐")
         ## Child
-        element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth=2')
-        time.sleep(2)
-        page.mouse.down()
-        element.hover()
-        time.sleep(3)
-        element.click()
-        time.sleep(6)
+        for index in [2,3,4,5]:
+            page.mouse.down()
+            page.mouse.down()
+            time.sleep(1)
+            page.mouse.down()
+            page.mouse.down()
+            time.sleep(1)
+            element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth={}'.format(index))
+            time.sleep(1)
+            print(element.all_inner_texts())
+            element.hover()
+            time.sleep(3)
+            element.click()
+            print("赞同完成")
+            time.sleep(3)
         print("---------zhihu_auto_agree---------")
 
     ###########################################################################  
