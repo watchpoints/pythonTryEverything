@@ -9,17 +9,14 @@ from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 from putdonwphone import  ffmeg_to_mp4
 from putdonwphone import  englisword
-from putdonwphone import  myzhihu
+from not_watch_news import not_watch_zhihu_news_10_min_small
 from putdonwphone import  mykuaishou2
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 def auto_window_task():
-    
+    """headless自动操作"""
     file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
-    print(file_path)
-    print(habit_name)
-    print(habit_detail)
     time.sleep(random.randint(1,50))
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
@@ -30,7 +27,7 @@ def auto_window_task():
     try:
         # cookies台容易过去了 因此去掉了
         time.sleep(random.randint(1,50))
-        myzhihu.interface_auo_upload_zhihu()
+        not_watch_zhihu_news_10_min_small.interface_auo_upload_zhihu()
         logging.info("---------------myzhihu-----------------")
         time.sleep(random.randint(1,50))
         mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path, habit_name,habit_detail)
