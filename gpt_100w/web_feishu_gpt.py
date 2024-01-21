@@ -5,18 +5,18 @@ import platform
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
 
-class CBaiduQA:
+class CDouBaoQA:
     """
-    This class represents a CBaiduQA.
+    This class represents a CDouBaoQA.
     """
-    def __init__(self,cookies_path: str, login_url: str, ask_url: str):
+    def __init__(self,cookies_path: str, login_url:str):
         self.cookies_path = cookies_path
         self.login_url = login_url
-        self.ask_url = ask_url
+        self.ask_url = login_url
         # playwright 部分
         self.browser = None
         self.page = None
-        print("create CMyShipinhao")
+        print("create CDouBaoQA")
 
     def __del__(self):
         print("CBaiduQA is being destroyed")
@@ -80,10 +80,10 @@ class CBaiduQA:
         page.wait_for_url(self.ask_url)
         print(msg)
 
-        page.locator("css=.ant-input.wBs12eIN").fill("你是谁？")
+        page.get_by_role("textbox", name="发消息").fill("你是谁")
         time.sleep(2)
-        page.locator("css=.VAtmtpqL").click()
-        time.sleep(20)
+        page.get_by_role("button", name="发送").click()
+        time.sleep(10)
 
 
         data = page.locator("css=.custom-html").inner_text()
@@ -92,15 +92,14 @@ class CBaiduQA:
 def ask_test():
     """test"""
     sys = platform.system()
-    login_url = "https://yiyan.baidu.com/"
-    upload_picture_url = "https://yiyan.baidu.com/"
+    login_url = "https://www.doubao.com/"
     if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\baid_login.json"
+        cookies_path = r"D:\mp4\etc\doubao_login.json"
     elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/baid_login.json"
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/doubao_login.json"
     else:
-        cookies_path = r"/root/bin/baid_login.json"
-    autoupload = CBaiduQA(cookies_path, login_url, upload_picture_url)
+        cookies_path = r"/root/bin/doubao_login.json"
+    autoupload = CDouBaoQA(cookies_path, login_ur)
     autoupload.crate_browser_instance()
 
     for i in range(10):
@@ -108,7 +107,7 @@ def ask_test():
         autoupload.yiyan_auto_answer_qa(autoupload.page,"")
 
 if __name__ == '__main__':
-    # playwright codegen https://yiyan.baidu.com/
+    # playwright codegen https://www.doubao.com/
     ask_test()
 # pass 被检测到了
 
