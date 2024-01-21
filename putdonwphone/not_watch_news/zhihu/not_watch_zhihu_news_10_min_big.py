@@ -126,7 +126,6 @@ class CMyZhiHu:
         page.get_by_role("textbox").locator('nth=-1').fill(msg)
         # page.locator(".InputLike").fill(habit_detail)
         time.sleep(3)
-        
         print("开始上传图片")
         page.locator(".css-88f71l > button:nth-child(2)").click()
         time.sleep(2)
