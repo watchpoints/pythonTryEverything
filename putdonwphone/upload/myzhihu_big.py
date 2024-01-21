@@ -225,7 +225,7 @@ if __name__ == '__main__':
     }
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 图文1习惯养成--早睡早起
-    backsched.add_job(interface_auo_upload_zhihu, CronTrigger.from_crontab("0 12 * * *"))
+    backsched.add_job(interface_auo_upload_zhihu, CronTrigger.from_crontab("0 6 * * *"))
 
     print("start zhihu")
     backsched.start()
