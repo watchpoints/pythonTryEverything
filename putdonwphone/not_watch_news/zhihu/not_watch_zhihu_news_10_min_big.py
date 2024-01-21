@@ -120,7 +120,7 @@ class CMyZhiHu:
         # page.locator("a").filter(has_text="发布想法").click()
 
         time.sleep(2)
-        # page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
         msg = habit_name + "\r\n"
         msg += habit_detail
         page.get_by_role("textbox").locator('nth=-1').fill(msg)

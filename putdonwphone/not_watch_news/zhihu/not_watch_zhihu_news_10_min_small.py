@@ -6,6 +6,8 @@ import platform
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
 #from pythonTryEverything.putdonwphone.data import englisword
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 from learn import learn_english_speak
 ########################################################################
 class CMyZhiHu:
@@ -116,11 +118,11 @@ class CMyZhiHu:
         # #dropdown.get_by_role("listitem").filter(has_text="python").click()
         # # 对于ul-li的元素，可以用listitem 的角色定位方式
         # page.locator("a").filter(has_text="发布想法").click()
-        
-        
+
         time.sleep(2)
-        
-        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        # page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        msg = habit_name + "\r\n"
+        msg += habit_detail
         page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
         # page.locator(".InputLike").fill(habit_detail)
         time.sleep(3)
@@ -366,23 +368,23 @@ class CMyZhiHu:
     #################################################################################
 
 
-def interface_auo_upload_zhihu():
+def interface_auo_upload_zhihu_small():
     """
       对外调用接口
     """
-    print("interface_auo_upload_zhihu")
-   
+    print("interface_auo_upload_zhihu_small")
+    
     sys = platform.system()
     login_url = "https://www.zhihu.com/"
     upload_picture_url = "https://www.zhihu.com/"
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\zhihu_xiaohao.json"
+        cookies_path = r"D:\mp4\etc\zhihu_small.json"
     elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_xiaohao.json"
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
     else:
-        cookies_path = r"/root/bin/zhihu_xiaohao.json"
-    file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_pic2()
+        cookies_path = r"/root/bin/zhihu_small.json"
+    file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_big()
 
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
     # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
@@ -398,9 +400,9 @@ def interface_auo_upload_zhihu():
         autoupload.browser = browser
         login_page = autoupload.login_or_restore_cookies()
         # 发布想法
-        autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+        #autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
         # 赞同
-        autoupload.zhihu_auto_agree(login_page)
+        #autoupload.zhihu_auto_agree(login_page)
         
         # 回答问题
         #autoupload.zhihu_auto_answer(login_page)
@@ -409,4 +411,14 @@ def interface_auo_upload_zhihu():
 
 if __name__ == '__main__':
     print("---interface_auo_upload_zhihu---")
-    interface_auo_upload_zhihu()
+    interface_auo_upload_zhihu_small()
+    job_defaults = {
+        'coalesce': False,
+        'max_instances': 1
+    }
+    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # 图文1习惯养成--早睡早起
+    backsched.add_job(interface_auo_upload_zhihu_small, CronTrigger.from_crontab("0 6 * * *"))
+
+    print("start zhihu")
+    backsched.start()
