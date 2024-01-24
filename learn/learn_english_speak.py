@@ -183,6 +183,8 @@ def interface_get_daily_englis_word_big():
         get_up_path = '/root/code/python/config/01_get_up.txt'
         pic_path = r"D:\mp4\action_card"
     temp_file_list = read_pic_rand_two3(pic_path)
+    if len(temp_file_list) ==0 and sys == "Darwin":
+        temp_file_list.append("/Users/wangchuanyi/mp4/action_card/1.jpg")
     getup = GetupHabit1(save_picture_path, default_picture_path, get_up_path)
     temp_file_list.append(getup.save_picture_path)
     temp_habit_name,temp_habit_detail = getup.interface_get_up()
