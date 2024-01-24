@@ -239,9 +239,6 @@ class CMyZhiHu:
 
         page_answer.get_by_role("button", name="发布回答").click()
         time.sleep(30)
-
-        
-
     ###################################################
     # def like_other_things(self, page: Page, user_list):
     #     """
@@ -365,7 +362,24 @@ class CMyZhiHu:
         page.get_by_role("button", name="发布").click()
         print("发布")
         time.sleep(5)
+
     #################################################################################
+    def zhihu_auto_guanzhu(self, page: Page):
+        """
+         赞同 三个积分 playwright codegen https://www.zhihu.com/creator
+         follow ---
+        """
+        try:
+            page.goto("https://www.zhihu.com/creator")
+            time.sleep(5)
+            page.mouse.down()
+            page.get_by_role("button", name="去完成").nth(2).click()
+            time.sleep(4)
+            page.locator(".css-yxuzwv").first.click()
+            page.mouse.down()
+        finally:
+            print("-----")
+    ###############################
 
 
 def interface_auo_upload_zhihu_small():
@@ -402,10 +416,14 @@ def interface_auo_upload_zhihu_small():
         # 发布想法
         #autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
         # 赞同
-        #autoupload.zhihu_auto_agree(login_page)
+        # autoupload.zhihu_auto_agree(login_page)
         
+        # 推荐关注
+        # playwright codegen https://www.zhihu.com/creator
+        #autoupload.zhihu_auto_guanzhu(login_page)
+
         # 回答问题
-        #autoupload.zhihu_auto_answer(login_page)
+        autoupload.zhihu_auto_answer(login_page)
         # 关闭浏览器
         autoupload.browser.close()
 
