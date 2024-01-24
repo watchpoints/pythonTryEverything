@@ -204,9 +204,9 @@ def read_pic_rand_two3(input_path):
             print(temp_file_path)
         else:
             file_list.append(temp_file_path)
-        # print("add" + temp_file_path)
-        count += 1
-        if count > 3:
+            print("add" + temp_file_path)
+            count += 1
+        if count >=2:
             break
     # print("read_pic_rand_two" + str(file_list))
     return file_list
