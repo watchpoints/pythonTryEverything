@@ -134,11 +134,11 @@ class CMyZhiHu:
             page.locator(".css-n71hcb").click()
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path_list)
-        time.sleep(5)
+        time.sleep(20)
        
         
         page.get_by_role("button", name="插入图片").click()
-        time.sleep(5)
+        time.sleep(8)
         
         print("结束上传图片")
         
