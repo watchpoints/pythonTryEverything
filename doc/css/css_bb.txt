@@ -1,0 +1,13 @@
+
+<button data-v-b145b4ae="" data-v-70ef7c0f="" 
+class="bl-button live-skin-highlight-button-bg live-skin-button-text bl-button--primary bl-button--small"><!----> <span data-v-b145b4ae="" class="txt">发送</span></button>
+
+
+
+<div data-v-811d1f78="" data-clipboard-text="?streamname=live_514996834_23592400&amp;key=a83e1bde5368d6c403dc350d268c2e5b&amp;schedule=rtmp&amp;pflag=1" class="dp-i-block v-middle copy-btn">复制</div>
+
+
+
+<div data-v-811d1f78="" data-clipboard-text="rtmp://live-push.bilivideo.com/live-bvc/" 
+ class="dp-i-block v-middle copy-btn">复制
+</div>
