@@ -9,7 +9,7 @@ from apscheduler.triggers.cron import CronTrigger
 from apscheduler.schedulers.background import BackgroundScheduler
 from putdonwphone import  ffmeg_to_mp4
 from putdonwphone import  englisword
-from not_watch_news import not_watch_zhihu_news_10_min_small
+from putdonwphone.not_watch_news.zhihu import not_watch_zhihu_news_10_min_small
 from putdonwphone import  mykuaishou2
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
@@ -17,7 +17,7 @@ DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
 def auto_window_task():
     """headless自动操作"""
     file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
-    time.sleep(random.randint(1,50))
+    time.sleep(random.randint(1,5))
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
         BACK_PATH = r"D:\mp4\bak"
@@ -26,10 +26,10 @@ def auto_window_task():
         BACK_PATH = r"/root/mp4/bak"
     try:
         # cookies台容易过去了 因此去掉了
-        time.sleep(random.randint(1,50))
-        not_watch_zhihu_news_10_min_small.interface_auo_upload_zhihu()
+        time.sleep(random.randint(1,5))
+        not_watch_zhihu_news_10_min_small.interface_auo_upload_zhihu_small()
         logging.info("---------------myzhihu-----------------")
-        time.sleep(random.randint(1,50))
+        time.sleep(random.randint(1,5))
         mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path, habit_name,habit_detail)
         logging.info("---------------mykuaishou2-----------------")
     finally:
@@ -37,7 +37,7 @@ def auto_window_task():
 
 def auto_upload_mp4():
     
-    time.sleep(random.randint(1,10))
+    time.sleep(random.randint(1,5))
     if platform.system() == "Windows":
         OUT_PATH = r"D:\mp4\output"
         BACK_PATH = r"D:\mp4\bak"
@@ -68,16 +68,6 @@ def timeout_handler(signum, frame):
         TimeoutException: _description_
     """
     raise TimeoutException("Function execution timed out.")
-
-def my_test():
-    """_summary_
-    """
-    file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
-    print(file_path)
-    print(habit_name)
-    print(habit_detail)
-    mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path, habit_name,habit_detail)
-    myzhihu.interface_auo_upload_zhihu()
 ###########################################################
  
 if __name__ == "__main__":
@@ -104,7 +94,6 @@ if __name__ == "__main__":
         'coalesce': False,
         'max_instances': 1
     }
-    #my_test()
     auto_window_task()
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
