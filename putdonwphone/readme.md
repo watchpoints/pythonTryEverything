@@ -47,6 +47,15 @@ pip3 install werobot
 pip3 install flask
 pip3 install  wechatpy
 pip3 install pyperclip
+
+
+pip3 install playwright
+pip3 install apscheduler
+pip3 install cryptography
+pip3 install werobot
+pip3 install flask
+pip3 install  wechatpy
+pip3 install pyperclip
 # 技术栈
 
 - Chrome + ChromeDriver
