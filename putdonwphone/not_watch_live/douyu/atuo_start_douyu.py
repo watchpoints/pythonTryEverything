@@ -22,7 +22,7 @@ TOTAL_WORK_TIME = 180
 TOTAL_COUNT= 0
 one_work_time =30
 #STEPS = 10
-STEPS = 2
+STEPS = 10
 TOTAL_WORK_TIME_COUNT = 0
 ########################################################################
 class CZTOUYU:
@@ -193,7 +193,8 @@ class CZTOUYU:
         #rtmp_timeout_task(self.input_directory,rtmp_stream)
         print(self.watch_room_url)
         
-        helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        time.sleep(120)
         self.browser.close()
                 
         # 3小时
@@ -227,7 +228,7 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     # 累计3个小时 自动退出
     while True:
         
-        if count > 5 or page.is_closed() :
+        if count > 18 or page.is_closed() :
             return
         if only_msg ==1 or only_msg ==3:
             task = get_task_msg()
@@ -358,7 +359,7 @@ def start_live_stream(input_file, rtmp_url):
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件 
     #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy -maxrate 500k -bufsize 1000k  -f flv -y "{rtmp_url}"'
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 1M -bufsize 2M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 500k -bufsize 2M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -428,7 +429,7 @@ def start_live_stream1(input_file, rtmp_url):
 if __name__ == '__main__':
     if platform.system() == "Windows":
         LOG_PATH = r"D:\mp4\log\douyu.log"
-        MP4_DIR =r"d:\mp4\speak"
+        MP4_DIR =r"D:\mp4\heng_sleep"
     if platform.system() == "Darwin":
         LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
         MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
