@@ -277,10 +277,12 @@ def interface_auo_start_douyu_zhibo(input_directory, only_msg):
     zhibo_url = "https://www.douyu.com/creator/main/live"
     watch_room_url = "https://www.douyu.com/11975253"
     if platform.system() == "Windows":
-        cookies_path = r"D:\mp4\etc\zhibodouyu.json"
+        cookies_path = r"D:\mp4\etc\douyu_small.json"
+    elif platform.system() == "Darwin":
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/douyu_small.json"
     else:
         cookies_path = r"/root/bin/zhibodouyu.json"
-    
+
     file_path = ""
     habit_name = ""
     habit_detail =""
@@ -356,7 +358,7 @@ def start_live_stream(input_file, rtmp_url):
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件 
     #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy -maxrate 500k -bufsize 1000k  -f flv -y "{rtmp_url}"'
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 300k -bufsize 600k -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 1M -bufsize 2M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -426,6 +428,10 @@ def start_live_stream1(input_file, rtmp_url):
 if __name__ == '__main__':
     if platform.system() == "Windows":
         LOG_PATH = r"D:\mp4\log\douyu.log"
+        MP4_DIR =r"d:\mp4\speak"
+    if platform.system() == "Darwin":
+        LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
+        MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
     else:
         LOG_PATH = "douyu.log"
     logging.basicConfig(level=logging.DEBUG,
@@ -438,7 +444,7 @@ if __name__ == '__main__':
         'coalesce': False,
         'max_instances': 1
     }
-    MP4_DIR = r"D:\mp4\speak"
+    
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
     #interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
@@ -454,6 +460,6 @@ if __name__ == '__main__':
     #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
     
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                      CronTrigger.from_crontab("0 21 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+                      CronTrigger.from_crontab("0 23 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
