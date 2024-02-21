@@ -22,7 +22,7 @@ TOTAL_WORK_TIME = 180
 TOTAL_COUNT= 0
 one_work_time =30
 #STEPS = 10
-STEPS = 1
+STEPS = 10
 TOTAL_WORK_TIME_COUNT = 0
 ########################################################################
 class CBiBiZh:
@@ -151,7 +151,7 @@ class CBiBiZh:
         # time.sleep(2)
         # rtpm_url = pyperclip.paste()
         # time.sleep(1)
-        rtmp_url = "rtmp://live-push.bilivideo.com/live-bvc"
+        rtmp_url = "rtmp://txy2.live-push.bilivideo.com/live-bvc"
         print(rtmp_url)
 
         # page.locator("div").filter(has_text="直播码").locator("svg").click()
@@ -185,8 +185,9 @@ class CBiBiZh:
         print(self.watch_room_url)
         
         helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        #self.browser.close()
         # 默认直播3个小时
-        time.sleep(3*0*60)
+        #time.sleep(3*0*60)
         try:
             self.auto_stop_zhibo()
         finally:
@@ -217,10 +218,10 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     page.mouse.down()
     print("count")
     count = 0
-    # 累计3 自动退出
+    # 累计3h 自动退出
     while True:
         
-        if count > 3 or page.is_closed() :
+        if count > 18 or page.is_closed() :
             return
         if only_msg ==1 or only_msg ==3:
             task = get_task_msg()
