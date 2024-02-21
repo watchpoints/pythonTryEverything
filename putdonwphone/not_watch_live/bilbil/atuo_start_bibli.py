@@ -183,11 +183,11 @@ class CBiBiZh:
         time.sleep(1)
         #rtmp_timeout_task(self.input_directory,rtmp_stream)
         print(self.watch_room_url)
-        
-        helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
-        #self.browser.close()
+        time.sleep(60)
+        #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        self.browser.close()
         # 默认直播3个小时
-        #time.sleep(3*0*60)
+        time.sleep(3*60*50)
         try:
             self.auto_stop_zhibo()
         finally:
@@ -351,7 +351,7 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 2M -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 500k -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
