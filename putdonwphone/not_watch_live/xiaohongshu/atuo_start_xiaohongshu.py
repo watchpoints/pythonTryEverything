@@ -87,7 +87,7 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 300k -bufsize 600k -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 3M -bufsize 6M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -161,13 +161,13 @@ def interface_auo_start_xiaohongshu_zhibo(path,rtmp_url):
 if __name__ == '__main__':
     if platform.system() == "Windows":
         LOG_PATH = r"D:\mp4\log\xiaohongshu.log"
-        MP4_DIR = r"D:\mp4\heng_sleep"
+        MP4_DIR = r"D:\mp4\speak"
     if platform.system() == "Darwin":
         LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
         MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
     else:
         LOG_PATH = "xiaohongshu.log"
-        MP4_DIR = r"D:\mp4\heng_sleep"
+        MP4_DIR = r"D:\mp4\speak"
     logging.basicConfig(level=logging.DEBUG,
                         format=LOG_FORMAT,
                         datefmt=DATE_FORMAT,

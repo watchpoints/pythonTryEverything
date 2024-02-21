@@ -22,7 +22,7 @@ TOTAL_WORK_TIME = 180
 TOTAL_COUNT= 0
 one_work_time =30
 #STEPS = 10
-STEPS = 10
+STEPS = 1
 TOTAL_WORK_TIME_COUNT = 0
 ########################################################################
 class CBiBiZh:
@@ -151,7 +151,7 @@ class CBiBiZh:
         # time.sleep(2)
         # rtpm_url = pyperclip.paste()
         # time.sleep(1)
-        rtmp_url = "rtmp://live-push.bilivideo.com/live-bvc/"
+        rtmp_url = "rtmp://live-push.bilivideo.com/live-bvc"
         print(rtmp_url)
 
         # page.locator("div").filter(has_text="直播码").locator("svg").click()
@@ -187,20 +187,26 @@ class CBiBiZh:
         helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
         # 默认直播3个小时
         time.sleep(3*0*60)
-
-        self.auto_stop_zhibo()
+        try:
+            self.auto_stop_zhibo()
+        finally:
+            print("stop_zhibo")
         
     def helper_stop_zhibo(self, page: Page):
         """
          自动停直播
         """
-        page.goto(self.zhibo_url)
-        time.sleep(6)
-        page.mouse.down()
-        time.sleep(1)
-        print("关闭直播")
-        page.get_by_text("关闭直播").click()
-        time.sleep(10)
+        try:
+            page.goto(self.zhibo_url)
+            time.sleep(6)
+            page.mouse.down()
+            time.sleep(1)
+            print("关闭直播")
+            page.get_by_text("关闭直播").click()
+            time.sleep(10)
+        finally:
+            print("helper_stop_zhibo")
+            
 
 def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     """弹幕提醒"""
@@ -211,10 +217,10 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     page.mouse.down()
     print("count")
     count = 0
-    # 累计3个小时 自动退出
+    # 累计3 自动退出
     while True:
         
-        if count > 30 or page.is_closed() :
+        if count > 3 or page.is_closed() :
             return
         if only_msg ==1 or only_msg ==3:
             task = get_task_msg()
@@ -344,7 +350,7 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 3M -bufsize 6M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -419,7 +425,7 @@ if __name__ == '__main__':
         LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
         MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
     else:
-        LOG_PATH = "bibi.log"
+        LOG_PATH = "bibi.log1"
         MP4_DIR = r"D:\mp4\speak"
     logging.basicConfig(level=logging.DEBUG,
                         format=LOG_FORMAT,
@@ -439,10 +445,10 @@ if __name__ == '__main__':
     # 习惯养成--早睡早起
 
     backsched.add_job(interface_auo_start_bibi_zhibo,
-                     CronTrigger.from_crontab("30 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("30 11 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
     
     backsched.add_job(interface_auo_start_bibi_zhibo,
-                      CronTrigger.from_crontab("0 21 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+                      CronTrigger.from_crontab("0 20 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
