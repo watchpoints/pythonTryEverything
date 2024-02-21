@@ -438,7 +438,7 @@ if __name__ == '__main__':
         'coalesce': False,
         'max_instances': 1
     }
-    MP4_DIR = r"D:\mp4\heng_sleep"
+    MP4_DIR = r"D:\mp4\speak"
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
     #interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
