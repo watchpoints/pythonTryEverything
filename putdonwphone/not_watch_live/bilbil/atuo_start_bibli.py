@@ -174,20 +174,23 @@ class CBiBiZh:
         logging.debug(rtpm_code)
         print(rtmp_stream)
         
+        #self.browser.close() 
+        
         # 开始推流
+        rtmp_timeout_task(self.input_directory,rtmp_stream)
         # Create a thread with arguments
-        my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
+        #my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
         #Start the thread
-        my_thread.daemon = True
-        my_thread.start()
-        time.sleep(1)
+        #my_thread.daemon = True
+        #my_thread.start()
+        #time.sleep(1)
         #rtmp_timeout_task(self.input_directory,rtmp_stream)
-        print(self.watch_room_url)
-        time.sleep(60)
+        #print(self.watch_room_url)
+        #time.sleep(60)
         #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
-        self.browser.close()
+        
         # 默认直播3个小时
-        time.sleep(3*60*50)
+        #time.sleep(3*60*50)
         try:
             self.auto_stop_zhibo()
         finally:
@@ -440,16 +443,17 @@ if __name__ == '__main__':
     }
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
-    interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
+    #interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
     # interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
 
     backsched.add_job(interface_auo_start_bibi_zhibo,
-                     CronTrigger.from_crontab("30 11 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("10 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
     
     backsched.add_job(interface_auo_start_bibi_zhibo,
-                      CronTrigger.from_crontab("0 20 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+                      CronTrigger.from_crontab("0 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+    p'r't
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live

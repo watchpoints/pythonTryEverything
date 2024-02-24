@@ -455,12 +455,12 @@ if __name__ == '__main__':
     # pip install apscheduler
     #12点:发一个图文
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("24 7 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("49 20 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
     #backsched.add_job(interface_auo_start_douyu_zhibo,
     #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
     
-    backsched.add_job(interface_auo_start_douyu_zhibo,
-                      CronTrigger.from_crontab("0 23 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+    #backsched.add_job(interface_auo_start_douyu_zhibo,
+    #                  CronTrigger.from_crontab("0 23 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
