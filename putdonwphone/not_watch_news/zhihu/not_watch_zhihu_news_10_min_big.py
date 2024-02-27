@@ -421,9 +421,9 @@ def interface_auo_upload_zhihu():
         autoupload.zhihu_auto_agree(login_page)
         # 推荐关注
         # playwright codegen https://link.bilibili.com/p/center/index#/my-room/start-live
-        # autoupload.zhihu_auto_guanzhu(login_page)
+        #autoupload.zhihu_auto_guanzhu(login_page)
         # 回答问题
-        autoupload.zhihu_auto_answer(login_page)
+        #autoupload.zhihu_auto_answer(login_page)
 
         # 关闭浏览器
         autoupload.browser.close()
