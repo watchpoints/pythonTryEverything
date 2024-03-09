@@ -2,6 +2,7 @@
 
 from auto.write.shipinhao import  myshipinhao_watchpoints
 from auto.write.kuaishou import  auto_post_kuaisou
+from auto.write.xiaohongshu import  auto_xiaohongsh_small
 import os
 import logging
 import platform
@@ -67,11 +68,14 @@ def auto_upload_mp4():
     for file in  file_list:
         try:
             print(file)
-            #myshipinhao_watchpoints.interface_auto_upload_mp4_shipinhao("mp4",file,"","")
+            myshipinhao_watchpoints.interface_auto_upload_mp4_shipinhao("mp4",file,"","")
             print("interface_auto_upload_mp4_shipinhao.....")
             time.sleep(3)
-            #auto_post_kuaisou.interface_auo_upload_mp4_kuaishou(file)
+            auto_post_kuaisou.interface_auo_upload_mp4_kuaishou(file)
             print("interface_auo_upload_mp4_kuaishou.....")
+            time.sleep(3)
+            auto_xiaohongsh_small.interface_auo_upload_mp4_myxiaohongshu(file)
+            print("interface_auo_upload_mp4_myxiaohongshu.....")
         finally:
             print("...")
             # 删除文件
@@ -145,7 +149,7 @@ if __name__ == "__main__":
     # 习惯养成--早睡早起
     # pip install apscheduler
     #12点:发一个图文
-    backsched.add_job(auto_window_task, CronTrigger.from_crontab("0 18 * * *"), id="get_up")
+    #backsched.add_job(auto_window_task, CronTrigger.from_crontab("0 18 * * *"), id="get_up")
     #1点:开始切换文件
     #backsched.add_job(change_mp4_to_small, CronTrigger.from_crontab("0 1 * * *"), id="cut_big_file")
     #4点:开始上传文件
