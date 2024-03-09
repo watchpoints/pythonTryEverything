@@ -3,6 +3,7 @@
 from auto.write.shipinhao import  myshipinhao_watchpoints
 from auto.write.kuaishou import  auto_post_kuaisou
 from auto.write.xiaohongshu import  auto_xiaohongsh_small
+from auto.write.zhihu import  auto_write_zhihu_small
 import os
 import logging
 import platform
@@ -75,6 +76,9 @@ def auto_upload_mp4():
             print("interface_auo_upload_mp4_kuaishou.....")
             time.sleep(3)
             auto_xiaohongsh_small.interface_auo_upload_mp4_myxiaohongshu(file)
+            print("interface_auo_upload_mp4_myxiaohongshu.....")
+            time.sleep(3)
+            auto_write_zhihu_small.interface_auo_upload_mp4_zhihu(file)
             print("interface_auo_upload_mp4_myxiaohongshu.....")
         finally:
             print("...")
