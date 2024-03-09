@@ -1,7 +1,7 @@
 """This module provides 发文助手"""
 
 from auto.write.shipinhao import  myshipinhao_watchpoints
-
+from auto.write.kuaishou import  auto_post_kuaisou
 import os
 import logging
 import platform
@@ -52,6 +52,7 @@ def find_mp4_files(directory):
 def auto_upload_mp4():
     """_summary_
     """
+    print("auto_upload_mp4")
     if platform.system() == "Windows":
         input_path = r"D:\mp4\auto_write\mp4"
         back_path = r"D:\mp4\bak"
@@ -61,11 +62,16 @@ def auto_upload_mp4():
     file_list = find_mp4_files(input_path)
     if len(file_list) == 0:
         logging.info("no task")
+        print("no task")
         return
     for file in  file_list:
         try:
             print(file)
-            myshipinhao_watchpoints.interface_auto_upload_mp4_shipinhao("mp4",file,"","")
+            #myshipinhao_watchpoints.interface_auto_upload_mp4_shipinhao("mp4",file,"","")
+            print("interface_auto_upload_mp4_shipinhao.....")
+            time.sleep(3)
+            #auto_post_kuaisou.interface_auo_upload_mp4_kuaishou(file)
+            print("interface_auo_upload_mp4_kuaishou.....")
         finally:
             print("...")
             # 删除文件
