@@ -16,7 +16,7 @@ from auto.write.zhihu import  auto_write_zhihu_small
 from auto.data import  englisword
 from auto.write.csdn import auto_write_csdn
 from auto.write.douyu import atuo_write_douyu
-
+from auto.write.weibo import auto_write_weibo
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -134,23 +134,25 @@ def auto_upload_thing():
     print(habit_detail)
     print(file_path)
     try:
-        # auto_post_kuaisou.interface_auo_upload_mp4_kuaishou(file)
-        # print("interface_auo_upload_mp4_kuaishou.....")
-
+        
         time.sleep(3)
-        #auto_write_zhihu_small.interface_auo_upload_msg_zhihu(pic_list,habit_name,habit_detail)
+        auto_write_zhihu_small.interface_auo_upload_msg_zhihu(pic_list,habit_name,habit_detail)
         print("interface_auo_upload_msg_zhihu.....")
 
         time.sleep(3)
-        #auto_write_csdn.interface_auo_upload_mycsdn(pic_list,habit_name,habit_detail)
+        auto_write_csdn.interface_auo_upload_mycsdn(pic_list,habit_name,habit_detail)
         print("interface_auo_upload_mycsdn.....")
 
         time.sleep(3)
-        #auto_xiaohongsh_small.interface_auo_upload_msg_myxiaohongshu(pic_list,habit_name,habit_detail)
+        auto_xiaohongsh_small.interface_auo_upload_msg_myxiaohongshu(pic_list,habit_name,habit_detail)
         print("interface_auo_upload_mp4_myxiaohongshu.....")
 
         time.sleep(3)
         atuo_write_douyu.interface_auto_post_msg_douyu(pic_list, habit_name, habit_detail)
+        print("interface_auto_post_msg_douyu.....")
+
+        time.sleep(3)
+        auto_write_weibo.interface_auo_upload_msg_weibo(pic_list, habit_name, habit_detail)
         print("interface_auto_post_msg_douyu.....")
 
     finally:
