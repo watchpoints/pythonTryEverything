@@ -439,6 +439,48 @@ def interface_auo_upload_mp4_zhihu(mp4_file_path):
     habit_name = "#" + file_name + "\r\n"
     habit_name += " 日拱一卒无有尽，功不唐捐终入海" + "\r\n"
     autoupload.upload_mp4(mp4_file_path, habit_name)
+###############################################################
+
+def interface_auo_upload_msg_zhihu(file_path_list:str,habit_name :str,habit_detail :str):
+    """
+      对外调用接口
+    """
+    print("interface_auo_upload_zhihu_small")
+    
+    sys = platform.system()
+    login_url = "https://www.zhihu.com/"
+    upload_picture_url = "https://www.zhihu.com/"
+    upload_mp4_url = "https://www.zhihu.com/"
+    if sys == "Windows":
+        cookies_path = r"D:\mp4\etc\zhihu_small.json"
+    elif sys == "Darwin":
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
+    else:
+        cookies_path = r"/root/bin/zhihu_small.json"
+    autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    with sync_playwright() as playwright:
+        display_headless = False
+        sys = platform.system()
+        if sys == "Linux":
+            display_headless = True
+            browser = playwright.chromium.launch(headless=display_headless)
+        else:
+            browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+        autoupload.browser = browser
+        login_page = autoupload.login_or_restore_cookies()
+        # 发布想法
+        autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+        # 赞同
+        autoupload.zhihu_auto_agree(login_page)
+        
+        # 推荐关注
+        # playwright codegen https://www.zhihu.com/creator
+        autoupload.zhihu_auto_guanzhu(login_page)
+
+        # 回答问题
+        #autoupload.zhihu_auto_answer(login_page)
+        # 关闭浏览器
+        autoupload.browser.close() 
 if __name__ == '__main__':
     path =  r"D:\mp4\自媒体增长时间飞轮.mp4"
     interface_auo_upload_mp4_zhihu(path)

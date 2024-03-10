@@ -200,7 +200,7 @@ class CMyRedBook:
 
 
 
-def interface_auo_upload_myxiaohongshu(file_type,file_path,habit_name,habit_detail):
+def interface_auo_upload_msg_myxiaohongshu(file_path,habit_name,habit_detail):
     """
       对外调用接口
     """
@@ -210,42 +210,28 @@ def interface_auo_upload_myxiaohongshu(file_type,file_path,habit_name,habit_deta
     upload_mp4_url = "https://creator.xiaohongshu.com/publish/publish?source=official"
     sys = platform.system()
     if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\xiaohongshu.json"
-        save_picture_path = r"D:\mp4\etc\temp.png"
-        default_picture_path = r"D:\mp4\etc\ZfCYoSG1BE_small.jpg"
-        get_up_path = r"D:\mp4\etc\01_get_up.txt"
-        out_path = r"D:\mp4\output"
-        # BACK_PATH = r"D:\mp4\bak"
+        cookies_path = r"D:\mp4\etc\xiaohongshu_small.json"
     elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/etcxiaohongshu.json"
-        save_picture_path = r"/Users/wangchuanyi/etc/temp.png"
-        default_picture_path = r"/Users/wangchuanyi/etc/ZfCYoSG1BE_small.jpg"
-        get_up_path = '/Users/wangchuanyi/etc/01_get_up.txt'
+        cookies_path = r"/Users/wangchuanyi/xiaohongshu_small.json"
     else:
-        cookies_path = r"/root/bin/xiaohongshu.json"
-        save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
-        default_picture_path = r"/root/code/python/putdonwphone/upload/ZfCYoSG1BE_small.jpg"
-        get_up_path = '/root/code/python/config/01_get_up.txt'
-        out_path = r"/root/mp4/output"
+        cookies_path = r"/root/bin/xiaohongshu_small.json"
         # BACK_PATH = r"/root/mp4/bak"
 
     autoupload = CMyRedBook(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-    if file_type == "pic":
-        print("this is pic")
-        autoupload.upload_picture(file_path, habit_name, habit_detail)
-    else:
-        for root,_,files in os.walk(out_path):
-            for file in files:
-                # 拼接路径
-                mp4_file_path = os.path.join(root,file)
-                if file.endswith('.mp4'):
-                    file_name = os.path.basename(mp4_file_path)
-                    file_name = file_name.split('.')[0]
-                    msg = "#" + file_name + "\r\n"
-                    msg += habit_detail
-                    print(habit_name)
-                    if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
-                        logging.info("upload_mp4 %s", mp4_file_path)
+    autoupload.upload_picture(file_path, habit_name, habit_detail)
+    # else:
+    #     for root,_,files in os.walk(out_path):
+    #         for file in files:
+    #             # 拼接路径
+    #             mp4_file_path = os.path.join(root,file)
+    #             if file.endswith('.mp4'):
+    #                 file_name = os.path.basename(mp4_file_path)
+    #                 file_name = file_name.split('.')[0]
+    #                 msg = "#" + file_name + "\r\n"
+    #                 msg += habit_detail
+    #                 print(habit_name)
+    #                 if autoupload.upload_mp4(mp4_file_path,habit_name,msg):
+    #                     logging.info("upload_mp4 %s", mp4_file_path)
 
 def interface_not_quit_red_tool(file_type):
     """

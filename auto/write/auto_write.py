@@ -1,55 +1,56 @@
 """This module provides 发文助手"""
 
+import os
+import logging
+import platform
+import time
+import shutil
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
+
+### 本地目录
 from auto.write.shipinhao import  myshipinhao_watchpoints
 from auto.write.kuaishou import  auto_post_kuaisou
 from auto.write.xiaohongshu import  auto_xiaohongsh_small
 from auto.write.zhihu import  auto_write_zhihu_small
-import os
-import logging
-import platform
-import random
-import time
-import shutil
-from apscheduler.schedulers.blocking import BlockingScheduler
+from auto.data import  englisword
+from auto.write.csdn import auto_write_csdn
+from auto.write.douyu import atuo_write_douyu
 
-from apscheduler.triggers.cron import CronTrigger
-from apscheduler.schedulers.background import BackgroundScheduler
-from putdonwphone import  ffmeg_to_mp4
-from putdonwphone import  englisword
-from putdonwphone.not_watch_news.zhihu import not_watch_zhihu_news_10_min_small
-from putdonwphone import  mykuaishou2
 
 LOG_FORMAT = "[%(asctime)s][%(levelname)s][%(filename)s:%(funcName)s:%(lineno)d] %(message)s"
 DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-def auto_window_task():
-    """headless自动操作"""
-    file_path, habit_name,habit_detail  = englisword.interface_get_daily_englis_word()
-    time.sleep(random.randint(1,5))
-    if platform.system() == "Windows":
-        OUT_PATH = r"D:\mp4\output"
-        BACK_PATH = r"D:\mp4\bak"
-    else:
-        OUT_PATH = r"/root/mp4/output"
-        BACK_PATH = r"/root/mp4/bak"
-    try:
-        # cookies台容易过去了 因此去掉了
-        time.sleep(random.randint(1,5))
-        not_watch_zhihu_news_10_min_small.interface_auo_upload_zhihu_small()
-        logging.info("---------------myzhihu-----------------")
-        time.sleep(random.randint(1,5))
-        mykuaishou2.interface_auo_upload_kuaishou2("pic",file_path, habit_name,habit_detail)
-        logging.info("---------------mykuaishou2-----------------")
-    finally:
-        print("---------------")
+
 
 
 def find_mp4_files(directory):
+    """ 获取视频文件"""
     mp4_files = []
-    for root, dirs, files in os.walk(directory):
+    for root, __, files in os.walk(directory):
         for file in files:
             if file.endswith('.mp4'):
                 mp4_files.append(os.path.join(root, file))
     return mp4_files
+
+def find_daily_msg(directory_path):
+    """ 每日输出内容 和图片内容"""
+    pic_list = []
+    content = ""
+    for root, _, files in os.walk(directory_path):
+        # 文件集合
+        for file in files:
+            if file.endswith(".png") or  file.endswith(".jpg"):
+                file_path = os.path.join(root, file)
+                pic_list.append(file_path)
+            if file.endswith(".txt"):
+                file_path = os.path.join(root, file)
+                with open(file_path, encoding='UTF-8') as f:
+                    print(f"文件 {file_path} 的内容是：")
+                    for line in f:
+                        #print(line.strip())  # 逐行读取并打印文件内容
+                        content += (line.strip()) + "\r\n"
+    return content,pic_list
+
 
 def auto_upload_mp4():
     """_summary_
@@ -100,39 +101,81 @@ def auto_upload_mp4():
                 os.remove(file_path)
                 print(f"已删除文件: {file_path}")
 
-def change_mp4_to_small():
-    """_summary_
-    """
-    logging.debug("change_mp4_to_small")
-    try:
-        ffmeg_to_mp4.interface_mp4_to_post()
-    except Exception as myunkonw:
-        logging.error(f"处理视频文件时出错: {str(myunkonw)}")
-#########################
-class TimeoutException(Exception):
-    pass
-def timeout_handler(signum, frame):
-    """_summary_
-    Args:
-        signum (_type_): _description_
-        frame (_type_): _description_
 
-    Raises:
-        TimeoutException: _description_
+
+
+#######################记录每日反思###################################
+
+def auto_upload_thing():
     """
-    raise TimeoutException("Function execution timed out.")
+      每天写50字产品理解输出，10行代码
+    """
+    print("auto_upload_thing")
+    
+    file_path, habit_name,habit_detail = englisword.interface_get_daily_englis_word_pic()
+    
+    if platform.system() == "Windows":
+        input_path = r"D:\mp4\auto_write"
+        back_path = r"D:\mp4\bak"
+    else:
+        input_path = r"/root/mp4/auto_write"
+        back_path = r"/root/mp4/bak"
+    print(back_path)
+    data,pic_list = find_daily_msg(input_path)
+    if len(data) == 0:
+        data = habit_detail
+    else:
+        habit_name = '日拱一卒'
+    if len(pic_list) == 0:
+        pic_list = file_path
+    else:
+        pic_list.append(pic_list)
+    print(habit_name)
+    print(habit_detail)
+    print(file_path)
+    try:
+        # auto_post_kuaisou.interface_auo_upload_mp4_kuaishou(file)
+        # print("interface_auo_upload_mp4_kuaishou.....")
+
+        time.sleep(3)
+        #auto_write_zhihu_small.interface_auo_upload_msg_zhihu(pic_list,habit_name,habit_detail)
+        print("interface_auo_upload_msg_zhihu.....")
+
+        time.sleep(3)
+        #auto_write_csdn.interface_auo_upload_mycsdn(pic_list,habit_name,habit_detail)
+        print("interface_auo_upload_mycsdn.....")
+
+        time.sleep(3)
+        #auto_xiaohongsh_small.interface_auo_upload_msg_myxiaohongshu(pic_list,habit_name,habit_detail)
+        print("interface_auo_upload_mp4_myxiaohongshu.....")
+
+        time.sleep(3)
+        atuo_write_douyu.interface_auto_post_msg_douyu(pic_list, habit_name, habit_detail)
+        print("interface_auto_post_msg_douyu.....")
+
+    finally:
+        print("...")
+    time.sleep(1)
+    # 遍历目录
+    for root, __, files in os.walk(input_path):
+        for file in files:
+            if file.endswith(".txt") or file.endswith(".jpg") or file.endswith(".png") :
+                file_path = os.path.join(root, file)
+                # 删除文件
+                os.remove(file_path)
+                print(f"已删除文件: {file_path}")
 ###########################################################
  
 if __name__ == "__main__":
     if platform.system() == "Windows":
-        log_path = r"D:\mp4\log\pythonTryEverythingWin.log"
+        LOG_PATH = r"D:\mp4\log\write.log"
     else:
-        log_path = "pythonTryEverythingWin.log"
+        LOG_PATH = "write.log"
         
     logging.basicConfig(level=logging.DEBUG,
                         format=LOG_FORMAT,
                         datefmt=DATE_FORMAT,
-                        filename=log_path
+                        filename=LOG_PATH
                         )
 
     logging.info("""
@@ -148,16 +191,16 @@ if __name__ == "__main__":
         'max_instances': 1
     }
     auto_upload_mp4()
+    auto_upload_thing()
     #auto_window_task()
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
     # pip install apscheduler
     #12点:发一个图文
-    #backsched.add_job(auto_window_task, CronTrigger.from_crontab("0 18 * * *"), id="get_up")
-    #1点:开始切换文件
-    #backsched.add_job(change_mp4_to_small, CronTrigger.from_crontab("0 1 * * *"), id="cut_big_file")
+    backsched.add_job(auto_upload_thing, CronTrigger.from_crontab("0 6 * * *"), id="get_up")
+
     #4点:开始上传文件
-    backsched.add_job(auto_upload_mp4, CronTrigger.from_crontab("0 6 * * *"), id="put_small_file")
+    backsched.add_job(auto_upload_mp4, CronTrigger.from_crontab("0 7 * * *"), id="put_small_file")
     print("start pythonTryEverythingWin")
     backsched.start()
     
