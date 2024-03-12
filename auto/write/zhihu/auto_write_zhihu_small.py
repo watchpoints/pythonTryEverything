@@ -475,7 +475,7 @@ def interface_auo_upload_msg_zhihu(file_path_list:str,habit_name :str,habit_deta
         
         # 推荐关注
         # playwright codegen https://www.zhihu.com/creator
-        autoupload.zhihu_auto_guanzhu(login_page)
+        #autoupload.zhihu_auto_guanzhu(login_page)
 
         # 回答问题
         #autoupload.zhihu_auto_answer(login_page)
