@@ -361,8 +361,8 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件 
-    #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 2M -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy -maxrate 500k -bufsize 1000k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 500k -bufsize 2M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250

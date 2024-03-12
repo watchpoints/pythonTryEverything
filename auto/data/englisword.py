@@ -100,13 +100,13 @@ class GetupHabit:
         # Current date
         current_date = datetime.now()
         # Specific date (2023-12-10)
-        target_date = datetime(2023, 12, 1)
+        target_date = datetime(2024, 3, 1)
         # Calculate the difference in days
         difference_in_days = (current_date - target_date).days
 
-        temp_habit_name = "挑战早睡早起100天" + "第" + str(difference_in_days) + "天"
+        temp_habit_name = "挑战早起30分钟读书" + "第" + str(difference_in_days) + "天"
         data = self.get_every_word()
-        title = "#挑战早睡早起100天" + "\r\n"
+        title = "#挑战早起30分钟读书" + "\r\n"
         title += data['content'] + "\r\n"
         title += data['note'] + "\r\n"
         print(str(data['fenxiang_img']))
