@@ -183,22 +183,25 @@ class CZTOUYU:
         rtmp_stream =  rtpm_url + "/" + rtpm_code
         logging.debug(rtpm_code)
         print(rtmp_stream)
+        #self.browser.close()
+        
         # 开始推流
+        rtmp_timeout_task(self.input_directory,rtmp_stream)
         # Create a thread with arguments
-        my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
+        #my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
         #Start the thread
-        my_thread.daemon = True
-        my_thread.start()
-        time.sleep(1)
+        #my_thread.daemon = True
+        #my_thread.start()
+        #time.sleep(1)
         #rtmp_timeout_task(self.input_directory,rtmp_stream)
         print(self.watch_room_url)
         
         #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
-        time.sleep(120)
-        self.browser.close()
+        #time.sleep(120)
+        #self.browser.close()
                 
         # 3小时
-        time.sleep(3*60*60)
+        #time.sleep(3*60*60)
         #关闭直播
         self.auto_stop_zhibo()
         
@@ -429,7 +432,7 @@ def start_live_stream1(input_file, rtmp_url):
 if __name__ == '__main__':
     if platform.system() == "Windows":
         LOG_PATH = r"D:\mp4\log\douyu.log"
-        MP4_DIR =r"D:\mp4\heng_sleep"
+        MP4_DIR =r"D:\mp4\speak"
     if platform.system() == "Darwin":
         LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
         MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
@@ -455,7 +458,7 @@ if __name__ == '__main__':
     # pip install apscheduler
     #12点:发一个图文
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("49 20 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("20 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
     #backsched.add_job(interface_auo_start_douyu_zhibo,
     #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
