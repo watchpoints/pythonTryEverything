@@ -49,6 +49,7 @@ def find_daily_msg(directory_path):
                     for line in f:
                         #print(line.strip())  # 逐行读取并打印文件内容
                         content += (line.strip()) + "\r\n"
+                        print(content)
     return content,pic_list
 
 
@@ -122,7 +123,8 @@ def auto_upload_thing():
         back_path = r"/root/mp4/bak"
     print(back_path)
     data,pic_list = find_daily_msg(input_path)
-    if len(data) == 0:
+    print(data)
+    if len(data) < 10:
         data = habit_detail
     else:
         habit_name = '日拱一卒'
