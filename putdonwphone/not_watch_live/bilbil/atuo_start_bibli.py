@@ -132,7 +132,6 @@ class CBiBiZh:
 
         page.get_by_text("选择分类", exact=True).click()
         time.sleep(3)
-        #page.locator("a").filter(has_text="知识 · 校园学习").click()
         page.get_by_role("main").get_by_text("生活", exact=True).click()
         time.sleep(3)
         page.get_by_text("UP主日常", exact=True).click()
@@ -447,21 +446,13 @@ if __name__ == '__main__':
     }
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
-    #interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
-    # interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
+    interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
-
     backsched.add_job(interface_auo_start_bibi_zhibo,
-                     CronTrigger.from_crontab("3 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("3 18 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
-    
-<<<<<<< HEAD
-    #backsched.add_job(interface_auo_start_bibi_zhibo,
-    #                 CronTrigger.from_crontab("0 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
-=======
     backsched.add_job(interface_auo_start_bibi_zhibo,
                       CronTrigger.from_crontab("0 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
->>>>>>> 75673412bc385648dfa6d0221720eb6d328a068f
     backsched.start()
     # playwright codegen https://www.bilibili.com/
