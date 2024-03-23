@@ -183,22 +183,25 @@ class CZTOUYU:
         rtmp_stream =  rtpm_url + "/" + rtpm_code
         logging.debug(rtpm_code)
         print(rtmp_stream)
+        #self.browser.close()
+        
         # 开始推流
+        rtmp_timeout_task(self.input_directory,rtmp_stream)
         # Create a thread with arguments
-        my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
+        #my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
         #Start the thread
-        my_thread.daemon = True
-        my_thread.start()
-        time.sleep(1)
+        #my_thread.daemon = True
+        #my_thread.start()
+        #time.sleep(1)
         #rtmp_timeout_task(self.input_directory,rtmp_stream)
         print(self.watch_room_url)
         
         #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
-        time.sleep(120)
-        self.browser.close()
+        #time.sleep(120)
+        #self.browser.close()
                 
         # 3小时
-        time.sleep(3*60*60)
+        #time.sleep(3*60*60)
         #关闭直播
         self.auto_stop_zhibo()
         
@@ -310,7 +313,7 @@ def rtmp_timeout_task(input_directory,output_url):
             local_file_to_rtmp(input_directory,output_url)
             timestamp2 = time.time()
             time_difference = timestamp2 - timestamp1
-            if int(time_difference) > 10800:
+            if int(time_difference) > 21800:
                 logging.info("timeout")
                 break
     except Exception as mye:
@@ -358,8 +361,8 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件 
-    #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy -maxrate 500k -bufsize 1000k  -f flv -y "{rtmp_url}"'
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 500k -bufsize 2M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 2M -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -429,7 +432,7 @@ def start_live_stream1(input_file, rtmp_url):
 if __name__ == '__main__':
     if platform.system() == "Windows":
         LOG_PATH = r"D:\mp4\log\douyu.log"
-        MP4_DIR =r"D:\mp4\heng_sleep"
+        MP4_DIR =r"D:\mp4\speak"
     if platform.system() == "Darwin":
         LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
         MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
@@ -455,7 +458,11 @@ if __name__ == '__main__':
     # pip install apscheduler
     #12点:发一个图文
     backsched.add_job(interface_auo_start_douyu_zhibo,
+<<<<<<< HEAD
                      CronTrigger.from_crontab("30 2 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+=======
+                     CronTrigger.from_crontab("20 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+>>>>>>> 75673412bc385648dfa6d0221720eb6d328a068f
 
     #backsched.add_job(interface_auo_start_douyu_zhibo,
     #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")

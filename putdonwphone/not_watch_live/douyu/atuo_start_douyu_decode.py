@@ -25,7 +25,7 @@ one_work_time =30
 STEPS = 10
 TOTAL_WORK_TIME_COUNT = 0
 ########################################################################
-class CBiBiZh:
+class CZTOUYU:
     """
     This class represents a GetupHabit.
 
@@ -42,7 +42,6 @@ class CBiBiZh:
         self.browser = None
         self.input_directory = mp4_input_directory
         self.only_msg = only_msg
-        self.context = None
         print("create CMyDouyin")
 
     def __del__(self):
@@ -54,6 +53,7 @@ class CBiBiZh:
         """
         with sync_playwright() as playwright:
             display_headless = False
+            #display_headless = True
             if platform.system() == "Linux":
                 display_headless = True
             if sys == "Linux":
@@ -85,17 +85,9 @@ class CBiBiZh:
         """
           登录
         """
-        user_agent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
-
-
-        if platform.system() == "Linux":
-            user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        elif platform.system() == "Linux":
-            user_agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
-        
-        self.context = self.browser.new_context(user_agent=user_agent)
-        self.context.clear_cookies()
-        page = self.context.new_page()
+        context = self.browser.new_context()
+        context.clear_cookies()
+        page = context.new_page()
         page.goto(self.login_url)
 
         if os.path.exists(self.cookies_path):
@@ -103,7 +95,7 @@ class CBiBiZh:
             # 从文件中加载 cookies
             with open(self.cookies_path, 'r',encoding='utf-8') as f:
                 cookies = json.load(f)
-            self.context.add_cookies(cookies)
+            context.add_cookies(cookies)
             time.sleep(3)
         else:
             # 扫名二维码登录 需要人工处理
@@ -129,35 +121,53 @@ class CBiBiZh:
         print(f"open  {self.zhibo_url}")
         page.mouse.down()
         print(picture_path,habit_name,habit_detail)
-
-        page.get_by_text("选择分类", exact=True).click()
-        time.sleep(5)
-        page.locator("a").filter(has_text="知识 · 校园学习").click()
-        time.sleep(3)
-        print("选择分类 完成")
-        page.mouse.down()
-        page.mouse.down()
+        
         # Text match
         # https://sqa.stackexchange.com/questions/29079/how-to-access-a-hyper-link-using-xpath
-        page.locator("xpath=//button[contains(text(),'开始直播')]").click()
+        page.locator("xpath=//a[contains(text(),'开直播')]").click()
         time.sleep(5)
-        print("开始直播")
         
-        # rtmp
-        # dropdown = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=0")
-        # dropdown.hover()
-        # time.sleep(1)
-        # dropdown.click()
-        # time.sleep(2)
-        # rtpm_url = pyperclip.paste()
-        # time.sleep(1)
-        rtmp_url = "rtmp://txy2.live-push.bilivideo.com/live-bvc"
-        print(rtmp_url)
-
+        print("开始直播")
+        # many span
+        # page.locator("xpath=//div[span[text()='开始直播')]").click()
+        # page.locator("css=.start--1NvkXEZ").click()
+        page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/span[1]').click()
+        time.sleep(5)
+        # 申请成功，您现在可以直播了
+        page.get_by_text("确定").click()
+        time.sleep(5)
+        print("确定")
+        # 从直播房价调回去
+        page.goto(self.zhibo_url)
+        print(f"reload  {self.zhibo_url}")
+        time.sleep(7)
+        
+        
+        # # rtmp地址
+        # rtpm_url = page.locator("css=.shark-Input.input--2DEflcU").inputValue()
+        # print(rtpm_url)
+        
+        # #直播码
+        # rtpm_code = page.locator("css=.shark-Input.input--2DEflcU").inputValue()
+        # print(rtpm_url)
+        
+        # page.locator("div").filter(has_text="rtmp地址").locator("svg").click()
+        # dropdown = page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[1]/svg')
+        dropdown = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=0")
+        dropdown.hover()
+        time.sleep(1)
+        dropdown.click()
+        time.sleep(2)
+        rtpm_url = pyperclip.paste()
+        time.sleep(1)
+        print(rtpm_url)
+        #rtmp://sendtc3.douyu.com/live
+    
+        
         # page.locator("div").filter(has_text="直播码").locator("svg").click()
         # dropdown1 = page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[2]/svg')
         # 元素匹配器 - nth
-        dropdown1 = page.locator("css=.dp-i-block.v-middle.copy-btn").locator("nth=3")
+        dropdown1 = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=1")
         dropdown1.hover()
         time.sleep(1)
         dropdown1.click()
@@ -170,12 +180,10 @@ class CBiBiZh:
         logging.debug(rtpm_code)
         #11975253rWycoTVM?wsSecret=d3f8b9b7cb13599952f8d3e8fae27901&wsTime=65915099&wsSeek=off&wm=0&tw=0&roirecognition=0&record=flv&origin=tct&txHost=sendtc3.douyu.com
         
-        rtmp_stream =  rtmp_url + "/" + rtpm_code
+        rtmp_stream =  rtpm_url + "/" + rtpm_code
         logging.debug(rtpm_code)
         print(rtmp_stream)
-        
-        self.browser.close()
-        time.sleep(1)
+        #self.browser.close()
         
         # 开始推流
         rtmp_timeout_task(self.input_directory,rtmp_stream)
@@ -186,32 +194,30 @@ class CBiBiZh:
         #my_thread.start()
         #time.sleep(1)
         #rtmp_timeout_task(self.input_directory,rtmp_stream)
-        #print(self.watch_room_url)
-        #time.sleep(60)
-        #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        print(self.watch_room_url)
         
-        # 默认直播3个小时
-        #time.sleep(3*60*50)
-        try:
-            self.auto_stop_zhibo()
-        finally:
-            print("stop_zhibo")
+        #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        #time.sleep(120)
+        #self.browser.close()
+                
+        # 3小时
+        #time.sleep(3*60*60)
+        #关闭直播
+        self.auto_stop_zhibo()
         
     def helper_stop_zhibo(self, page: Page):
         """
          自动停直播
         """
-        try:
-            page.goto(self.zhibo_url)
-            time.sleep(6)
-            page.mouse.down()
-            time.sleep(1)
-            print("关闭直播")
-            page.get_by_text("关闭直播").click()
-            time.sleep(10)
-        finally:
-            print("helper_stop_zhibo")
-            
+        page.goto(self.zhibo_url)
+        time.sleep(6)
+        page.mouse.down()
+        time.sleep(1)
+        print("关闭直播")
+        page.get_by_text("关闭直播").click()
+        time.sleep(10)
+        page.get_by_text("直接下播").click()
+        time.sleep(10)
 
 def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     """弹幕提醒"""
@@ -222,7 +228,7 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     page.mouse.down()
     print("count")
     count = 0
-    # 累计3h 自动退出
+    # 累计3个小时 自动退出
     while True:
         
         if count > 18 or page.is_closed() :
@@ -230,9 +236,9 @@ def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
         if only_msg ==1 or only_msg ==3:
             task = get_task_msg()
             print(task)
-            #page.get_by_placeholder("发个弹幕呗～").fill(task)
+            page.get_by_placeholder("这里输入聊天内容").fill(task)
             time.sleep(1)
-            #page.locator("css=.bl-button.live-skin-highlight-button-bg.live-skin-button-text.bl-button--primary.bl-button--small").click()
+            page.locator("css=.ChatSend-button ").click()
         print(count)
         sleep_time = STEPS*60 + random.randint(1,10)
         TOTAL_COUNT += 1
@@ -267,24 +273,24 @@ def get_task_msg():
     elif 0 == get_rest_time:
         task += "倒计时结束！是不是期待已久的休息时间？把握住，开启属于你的放松时刻吧:" + "\r\n"
     return task
-def interface_auo_start_bibi_zhibo(input_directory, only_msg):
+def interface_auo_start_douyu_zhibo(input_directory, only_msg):
     """
       对外调用接口
     """
-    login_url = "https://live.bilibili.com/"
-    zhibo_url = "https://link.bilibili.com/p/center/index#/my-room/start-live"
-    watch_room_url = "https://live.bilibili.com/21954555"
+    login_url = "https://www.douyu.com/"
+    zhibo_url = "https://www.douyu.com/creator/main/live"
+    watch_room_url = "https://www.douyu.com/11975253"
     if platform.system() == "Windows":
-        cookies_path = r"D:\mp4\etc\bibi_big.json"
+        cookies_path = r"D:\mp4\etc\douyu_small.json"
     elif platform.system() == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/bibi_big.json"
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/douyu_small.json"
     else:
-        cookies_path = r"/root/bin/bibi_big.json"
-    
+        cookies_path = r"/root/bin/zhibodouyu.json"
+
     file_path = ""
     habit_name = ""
     habit_detail =""
-    autoupload = CBiBiZh(cookies_path, login_url, zhibo_url,watch_room_url,input_directory,only_msg)
+    autoupload = CZTOUYU(cookies_path, login_url, zhibo_url,watch_room_url,input_directory,only_msg)
     try:
         autoupload.auto_start_zhibo(file_path, habit_name,habit_detail)
     except Exception as mye:
@@ -301,13 +307,13 @@ def rtmp_timeout_task(input_directory,output_url):
         output_url (_type_): _description_
     """
     try:
-        # 设置超时时间为3个小时
+        # signal.alarm(7200)   # 设置超时时间为2个小时 3个小时 10800
         timestamp1 = time.time()
         while True:
             local_file_to_rtmp(input_directory,output_url)
             timestamp2 = time.time()
             time_difference = timestamp2 - timestamp1
-            if int(time_difference) > 8*60*60:
+            if int(time_difference) > 21800:
                 logging.info("timeout")
                 break
     except Exception as mye:
@@ -354,8 +360,9 @@ def start_live_stream(input_file, rtmp_url):
         output_url (_type_): _description_
     """
     sys.stdout.reconfigure(encoding='utf-8')
-    # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 1M -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件 
+    #ffmpeg_cmd = f'ffmpeg -re -i {input_file} -vcodec copy -acodec copy -maxrate 500k -bufsize 1000k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 500k -bufsize 2M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -421,17 +428,16 @@ def start_live_stream1(input_file, rtmp_url):
     print(error)
 
 
-# playwright codegen https://link.bilibili.com/p/center/index#/my-room/start-live
+
 if __name__ == '__main__':
     if platform.system() == "Windows":
-        LOG_PATH = r"D:\mp4\log\bibi.log"
-        MP4_DIR = r"D:\mp4\speak"
+        LOG_PATH = r"D:\mp4\log\douyu.log"
+        MP4_DIR =r"D:\mp4\speak"
     if platform.system() == "Darwin":
         LOG_PATH = r"/Users/wangchuanyi/mp4/log/bibi.log"
         MP4_DIR = r"/Users/wangchuanyi/mp4/zhibo"
     else:
-        LOG_PATH = "bibi.log1"
-        MP4_DIR = r"D:\mp4\speak"
+        LOG_PATH = "douyu.log"
     logging.basicConfig(level=logging.DEBUG,
                         format=LOG_FORMAT,
                         datefmt=DATE_FORMAT,
@@ -442,23 +448,22 @@ if __name__ == '__main__':
         'coalesce': False,
         'max_instances': 1
     }
+    
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
-    #interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
-    interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
+    #interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
+    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
+    # pip install apscheduler
+    #12点:发一个图文
+    backsched.add_job(interface_auo_start_douyu_zhibo,
+                     CronTrigger.from_crontab("20 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
-    backsched.add_job(interface_auo_start_bibi_zhibo,
-                     CronTrigger.from_crontab("3 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
-
+    #backsched.add_job(interface_auo_start_douyu_zhibo,
+    #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
     
-<<<<<<< HEAD
-    #backsched.add_job(interface_auo_start_bibi_zhibo,
-    #                 CronTrigger.from_crontab("0 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
-=======
-    backsched.add_job(interface_auo_start_bibi_zhibo,
-                      CronTrigger.from_crontab("0 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
->>>>>>> 75673412bc385648dfa6d0221720eb6d328a068f
+    #backsched.add_job(interface_auo_start_douyu_zhibo,
+    #                  CronTrigger.from_crontab("0 23 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live

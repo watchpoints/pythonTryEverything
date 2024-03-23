@@ -161,8 +161,6 @@ def post_douyu_msg(browser, coook_path, content):
     browser.refresh()
     time.sleep(5)
     
-    
-    
     last = len(content)
     if len(content) - 100 > 0:
         last = len(content) - 125

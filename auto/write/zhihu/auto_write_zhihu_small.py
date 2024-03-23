@@ -1,4 +1,4 @@
-"""This module provides mydouyn"""
+"""This module provides zhuhu small"""
 import json
 import os
 import time
@@ -56,7 +56,6 @@ class CMyZhiHu:
         """
         with sync_playwright() as playwright:
             display_headless = False
-            # display_headless = True
             sys = platform.system()
             if sys == "Linux":
                 display_headless = True
@@ -69,7 +68,7 @@ class CMyZhiHu:
         """
           登录
         """
-        userAgent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.21 Safari/537.36"
+        userAgent ="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
         sys = platform.system()
         if sys == "Linux":
             userAgent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
@@ -120,12 +119,13 @@ class CMyZhiHu:
         # page.locator("a").filter(has_text="发布想法").click()
 
         time.sleep(2)
-        page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
+        # page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
         msg = habit_name + "\r\n"
         msg += habit_detail
-        page.get_by_role("textbox").locator('nth=-1').fill(msg)
+        page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
         # page.locator(".InputLike").fill(habit_detail)
         time.sleep(3)
+        
         print("开始上传图片")
         page.locator(".css-88f71l > button:nth-child(2)").click()
         time.sleep(2)
@@ -134,35 +134,18 @@ class CMyZhiHu:
             page.locator(".css-n71hcb").click()
         file_chooser = fc_info.value
         file_chooser.set_files(picture_path_list)
-        time.sleep(20)
+        time.sleep(5)
        
         
         page.get_by_role("button", name="插入图片").click()
-        time.sleep(8)
+        time.sleep(5)
         
         print("结束上传图片")
         
         page.get_by_role("button", name="发布").click()
         print("发布")
         time.sleep(5)
-    def zhihu_auto_guanzhu(self, page: Page):
-        """
-         赞同 三个积分 playwright codegen https://www.zhihu.com/creator
-         follow ---
-        """
-        try:
-            page.goto("https://www.zhihu.com/creator")
-            time.sleep(5)
-            page.mouse.down()
-            page.get_by_role("button", name="去完成").nth(2).click()
-            time.sleep(4)
-            page.locator(".css-yxuzwv").first.click()
-            page.mouse.down()
-        finally:
-            print("-----")
-        
-    
-    ####################################
+
     def zhihu_auto_agree(self, page: Page):
         """
          赞同 三个积分 playwright codegen https://www.zhihu.com/
@@ -194,7 +177,7 @@ class CMyZhiHu:
             print("赞同完成")
             time.sleep(3)
         print("---------zhihu_auto_agree---------")
-   
+
     ###########################################################################  
     def zhihu_auto_answer(self, page: Page):
         """
@@ -255,9 +238,6 @@ class CMyZhiHu:
 
         page_answer.get_by_role("button", name="发布回答").click()
         time.sleep(30)
-
-        
-
     ###################################################
     # def like_other_things(self, page: Page, user_list):
     #     """
@@ -289,48 +269,35 @@ class CMyZhiHu:
     #         file_chooser.set_files(picture_path_list)
     #         time.sleep(5)
      ################################################################################
-    def msg_up_load_mp4(self, page: Page, mp4_path: str, msg: str):
+    def msg_up_load_mp4(self, page: Page, mp4_file_path: str, msg: str):
         """
         msg_up_load_mp4
         """
         page.goto(self.upload_mp4_url)
-        time.sleep(3)
+        time.sleep(5)
         print(f"open  {self.upload_mp4_url}")
         
-        # 使用文本内容定位元素
-        example_element = page.locator("xpath=//div[contains(text(), '发布视频')]")
-        example_element.click()
-        print("点击 发布视频")
+         # 点击选择文件，输入文件
+        with page.expect_file_chooser() as fc_info:
+            page.locator("xpath=//button[contains(text(), '上传视频')]").click()
+        file_chooser = fc_info.value
+        file_chooser.set_files(mp4_file_path)
+        time.sleep(120)
+        print("上传视频完成")
+        ## https://www.zhihu.com/zvideo/upload-video
+
+      
+        page.mouse.down()
+        page.get_by_placeholder("填写视频简介，让更多人找到你的视频").fill(msg)
         time.sleep(3)
-
-        # 使用文本内容定位元素
         
-        page.locator(
-            "label:has-text(\"点击上传 或直接将视频文件拖入此区域为了更好的观看体验和平台安全，平台将对上传的视频预审。超过40秒的视频建议上传横版视频\")").set_input_files(
-            mp4_path)
-            
-        print("视频文件拖入此区域")
-        time.sleep(20)
-        # # 点击选择文件，输入文件
-        # with page.expect_file_chooser() as fc_info:
-        #     # 找到拖拽区域  
-        #     page.click("xpath=//button[contains(text(), '上传图片')]")
-        #     # 问题 文件弹框后 不自动退出 无法后续自动化操作
-        #     file_chooser = fc_info.value
-        #     file_chooser.set_files(picture_path)
-
-        # time.sleep(3)
-        # page.mouse.down()
-        # page.mouse.down()
-
-        # # 填写描述
-        # page.locator("css=.iGOvMbhp8tU-").fill(msg)
-        # time.sleep(3)
+        page.mouse.down()
+        page.locator("css=.RadioButton.VideoUploadForm-radio.css-1u1atbi").locator('nth=0').click()
+        time.sleep(6)
         # # 发布
-        # page.locator("xpath=//button[./span[text()='发布']]").click()
-        # time.sleep(5)
+        page.get_by_role("button", name="发布视频").click()
         print("发布")
-        time.sleep(600)
+        time.sleep(8)
         
     def auto_help_answer(self, page: Page, picture_path_list,habit_name:str, habit_detail:str):
         """
@@ -381,25 +348,42 @@ class CMyZhiHu:
         page.get_by_role("button", name="发布").click()
         print("发布")
         time.sleep(5)
+
     #################################################################################
+    def zhihu_auto_guanzhu(self, page: Page):
+        """
+         赞同 三个积分 playwright codegen https://www.zhihu.com/creator
+         follow ---
+        """
+        try:
+            page.goto("https://www.zhihu.com/creator")
+            time.sleep(5)
+            page.mouse.down()
+            page.get_by_role("button", name="去完成").nth(2).click()
+            time.sleep(4)
+            page.locator(".css-yxuzwv").first.click()
+            page.mouse.down()
+        finally:
+            print("-----")
+    ###############################
 
 
-def interface_auo_upload_zhihu():
+def interface_auo_upload_zhihu_small():
     """
       对外调用接口
     """
-    print("interface_auo_upload_zhihu")
+    print("interface_auo_upload_zhihu_small")
     
     sys = platform.system()
     login_url = "https://www.zhihu.com/"
     upload_picture_url = "https://www.zhihu.com/"
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\zhihu_big.json"
+        cookies_path = r"D:\mp4\etc\zhihu_small.json"
     elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_big.json"
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
     else:
-        cookies_path = r"/root/bin/zhihu_big.json"
+        cookies_path = r"/root/bin/zhihu_small.json"
     file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_big()
 
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
@@ -419,25 +403,99 @@ def interface_auo_upload_zhihu():
         autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
         # 赞同
         autoupload.zhihu_auto_agree(login_page)
+        
         # 推荐关注
-        # playwright codegen https://link.bilibili.com/p/center/index#/my-room/start-live
-        #autoupload.zhihu_auto_guanzhu(login_page)
+        # playwright codegen https://www.zhihu.com/creator
+        autoupload.zhihu_auto_guanzhu(login_page)
+
         # 回答问题
         #autoupload.zhihu_auto_answer(login_page)
-
         # 关闭浏览器
         autoupload.browser.close()
 
-if __name__ == '__main__':
-    print("---interface_auo_upload_zhihu---")
-    interface_auo_upload_zhihu()
-    job_defaults = {
-        'coalesce': False,
-        'max_instances': 1
-    }
-    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    # 图文1习惯养成--早睡早起
-    backsched.add_job(interface_auo_upload_zhihu, CronTrigger.from_crontab("0 6 * * *"))
+####################################################
 
-    print("start zhihu")
-    backsched.start()
+def interface_auo_upload_mp4_zhihu(mp4_file_path):
+    """
+      对外调用接口
+    """
+    print("interface_auo_upload_zhihu_small")
+    
+    sys = platform.system()
+    login_url = "https://www.zhihu.com/"
+    upload_picture_url = "https://www.zhihu.com/"
+    upload_mp4_url = "https://www.zhihu.com/zvideo/upload-video"
+    if sys == "Windows":
+        cookies_path = r"D:\mp4\etc\zhihu_small.json"
+    elif sys == "Darwin":
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
+    else:
+        cookies_path = r"/root/bin/zhihu_small.json"
+    #file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_big()
+
+    autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    # mp4_path = r"D:\github\pythonTryEverything\putdonwphone\upload\WeChat_20231210084509.mp4"
+    file_name = os.path.basename(mp4_file_path)
+    file_name = file_name.split('.')[0]
+    habit_name = "#" + file_name + "\r\n"
+    habit_name += " 日拱一卒无有尽，功不唐捐终入海" + "\r\n"
+    autoupload.upload_mp4(mp4_file_path, habit_name)
+###############################################################
+
+def interface_auo_upload_msg_zhihu(file_path_list:str,habit_name :str,habit_detail :str):
+    """
+      对外调用接口
+    """
+    print("interface_auo_upload_zhihu_small")
+    try:
+        sys = platform.system()
+        login_url = "https://www.zhihu.com/"
+        upload_picture_url = "https://www.zhihu.com/"
+        upload_mp4_url = "https://www.zhihu.com/"
+        if sys == "Windows":
+            cookies_path = r"D:\mp4\etc\zhihu_small.json"
+        elif sys == "Darwin":
+            cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
+        else:
+            cookies_path = r"/root/bin/zhihu_small.json"
+        autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+        with sync_playwright() as playwright:
+            display_headless = False
+            sys = platform.system()
+            if sys == "Linux":
+                display_headless = True
+                browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            autoupload.browser = browser
+            login_page = autoupload.login_or_restore_cookies()
+            # 发布想法
+            autoupload.msg_up_load(login_page, file_path_list, habit_name,habit_detail)
+            # 赞同
+            autoupload.zhihu_auto_agree(login_page)
+            
+            # 推荐关注
+            # playwright codegen https://www.zhihu.com/creator
+            #autoupload.zhihu_auto_guanzhu(login_page)
+
+            # 回答问题
+            #autoupload.zhihu_auto_answer(login_page)
+            # 关闭浏览器
+            autoupload.browser.close()
+    except Exception as mye:
+        print(mye)
+if __name__ == '__main__':
+    path =  r"D:\mp4\自媒体增长时间飞轮.mp4"
+    interface_auo_upload_mp4_zhihu(path)
+    # print("---interface_auo_upload_zhihu---")
+    # interface_auo_upload_zhihu_small()
+    # job_defaults = {
+    #     'coalesce': False,
+    #     'max_instances': 1
+    # }
+    # backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # # 图文1习惯养成--早睡早起
+    # backsched.add_job(interface_auo_upload_zhihu_small, CronTrigger.from_crontab("0 6 * * *"))
+
+    # print("start zhihu")
+    # backsched.start()
