@@ -458,7 +458,11 @@ if __name__ == '__main__':
     # pip install apscheduler
     #12点:发一个图文
     backsched.add_job(interface_auo_start_douyu_zhibo,
+<<<<<<< HEAD
+                     CronTrigger.from_crontab("30 2 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+=======
                      CronTrigger.from_crontab("20 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+>>>>>>> 75673412bc385648dfa6d0221720eb6d328a068f
 
     #backsched.add_job(interface_auo_start_douyu_zhibo,
     #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
