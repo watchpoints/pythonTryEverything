@@ -1,3 +1,24 @@
+   print(item.locator("css=.message-username-desc").get_by_text())
+    TypeError: Locator.get_by_text() missing 1 required positional argument: 'text'
+
+
+    
+<div class="vue-recycle-scroller__item-wrapper" style="min-height: 376px;">
+
+<div class="vue-recycle-scroller__item-view" style="transform: translateY(0px);"><div data-v-2e776bc0="" data-index="0"><div data-v-406dc768="" data-v-2e776bc0="" class="live-message-item-container"><div data-v-406dc768="" class="live-message-item"><span data-v-406dc768="" class="message-type">通知</span><!----><span data-v-406dc768="" class="message-content">欢迎来到直播间。直播间内禁止未成年人打赏礼物或进行直播/连麦，禁止主播诱导观众私下交易，直播及连麦时禁止出现违法违规、色情低俗、诱导欺诈、抽烟酗酒等内容。请谨慎判断，理性消费，避免财产及人身损失，发现违规行为请及时投诉。</span></div></div></div></div><div 
+
+class="vue-recycle-scroller__item-view" style="transform: translateY(220px);"><div data-v-2e776bc0="" data-index="1"><div data-v-406dc768="" data-v-2e776bc0="" class="live-message-item-container"><div data-v-406dc768="" class="live-message-item"><span data-v-406dc768="" class="message-type">主题</span><!----><span data-v-406dc768="" class="message-content">聊聊天</span></div></div></div></div><div class="vue-recycle-scroller__item-view" style="transform: translateY(272px);"><div data-v-2e776bc0="" data-index="2"><div data-v-406dc768="" data-v-2e776bc0="" class="live-message-item-container"><div data-v-406dc768="" class="live-message-item"><span data-v-406dc768="" class="message-type">主播</span><!----><span data-v-406dc768="" class="message-username-desc">一年践行十二本书:</span><span data-v-406dc768="" class="message-content">111</span></div></div></div></div><div class="vue-recycle-scroller__item-view" style="transform: translateY(324px);">
+
+<div data-v-2e776bc0="" data-index="3">
+    <div data-v-406dc768="" data-v-2e776bc0="" class="live-message-item-container"><div data-v-406dc768="" class="live-message-item"><span data-v-406dc768="" class="message-type">主播</span><!----><span data-v-406dc768="" class="message-username-desc">一年践行十二本书:</span>
+    
+    <span data-v-406dc768="" class="message-content">222</span>
+    </div></div></div></div>
+</div>
+
+--------
+
+
 paused in debugger是指按f12打开开发者工具后，功能受限的一种情况
  
  
