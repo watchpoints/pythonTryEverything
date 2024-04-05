@@ -185,7 +185,7 @@ class CZTOUYU:
         print(rtmp_stream)
         time.sleep(10)
         self.browser.close()
-        
+
         # 开始推流
         rtmp_timeout_task(self.input_directory,rtmp_stream)
         # Create a thread with arguments
@@ -456,6 +456,6 @@ if __name__ == '__main__':
 
 
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("30 2 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("30 5 * * *"), args=[MP4_DIR,2],id="get_up")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
