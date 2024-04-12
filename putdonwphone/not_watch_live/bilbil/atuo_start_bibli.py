@@ -131,11 +131,13 @@ class CBiBiZh:
         print(picture_path,habit_name,habit_detail)
 
         page.get_by_text("选择分类", exact=True).click()
-        time.sleep(5)
-        page.locator("a").filter(has_text="知识 · 校园学习").click()
         time.sleep(3)
+        page.get_by_role("main").get_by_text("生活", exact=True).click()
+        time.sleep(3)
+        page.get_by_text("UP主日常", exact=True).click()
+        time.sleep(3)
+        page.get_by_role("button", name="确定").click()
         print("选择分类 完成")
-        page.mouse.down()
         page.mouse.down()
         # Text match
         # https://sqa.stackexchange.com/questions/29079/how-to-access-a-hyper-link-using-xpath
@@ -174,7 +176,8 @@ class CBiBiZh:
         logging.debug(rtpm_code)
         print(rtmp_stream)
         
-        #self.browser.close() 
+        self.browser.close()
+        time.sleep(1)
         
         # 开始推流
         rtmp_timeout_task(self.input_directory,rtmp_stream)
@@ -306,7 +309,7 @@ def rtmp_timeout_task(input_directory,output_url):
             local_file_to_rtmp(input_directory,output_url)
             timestamp2 = time.time()
             time_difference = timestamp2 - timestamp1
-            if int(time_difference) > 3*60*60:
+            if int(time_difference) > 8*60*60:
                 logging.info("timeout")
                 break
     except Exception as mye:
@@ -354,7 +357,7 @@ def start_live_stream(input_file, rtmp_url):
     """
     sys.stdout.reconfigure(encoding='utf-8')
     # 构建 FFmpeg 命令行，这里使用 -re 表示以实时速率读取输入文件
-    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 500k -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
+    ffmpeg_cmd = f'ffmpeg -re -i {input_file} -c:v libx264 -preset veryfast -maxrate 1M -bufsize 4M -pix_fmt yuv420p -c:a aac -b:a 128k  -f flv -y "{rtmp_url}"'
     print(ffmpeg_cmd)
     # cmd = shlex.split(ffmpeg_cmd)
     #https://blog.csdn.net/cnweike/article/details/73620250
@@ -443,16 +446,13 @@ if __name__ == '__main__':
     }
     # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
     ONLIY_MSG = 2
-    #interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
-    # interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
+    interface_auo_start_bibi_zhibo(MP4_DIR,ONLIY_MSG)
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 习惯养成--早睡早起
-
     backsched.add_job(interface_auo_start_bibi_zhibo,
-                     CronTrigger.from_crontab("10 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
+                     CronTrigger.from_crontab("3 18 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
-    
     backsched.add_job(interface_auo_start_bibi_zhibo,
                       CronTrigger.from_crontab("0 6 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
     backsched.start()
-    # playwright codegen https://www.douyu.com/creator/main/live
+    # playwright codegen https://www.bilibili.com/

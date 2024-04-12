@@ -50,6 +50,8 @@ def find_daily_msg(directory_path):
                         #print(line.strip())  # 逐行读取并打印文件内容
                         content += (line.strip()) + "\r\n"
                         print(content)
+    print("===================")
+    print(content)
     return content,pic_list
 
 
@@ -125,16 +127,18 @@ def auto_upload_thing():
     data,pic_list = find_daily_msg(input_path)
     print(data)
     if len(data) < 10:
-        data = habit_detail
+        print("NO DATA")
     else:
+        # 自己日更 鼓励自己
         habit_name = '日拱一卒'
+        habit_detail = data
     if len(pic_list) == 0:
         pic_list = file_path
     else:
         pic_list.append(pic_list)
-    print(habit_name)
+    
     print(habit_detail)
-    print(file_path)
+    print(pic_list)
     try:
         
         time.sleep(3)

@@ -109,7 +109,7 @@ class GetupHabit:
         title = "#挑战早起30分钟读书" + "\r\n"
         title += data['content'] + "\r\n"
         title += data['note'] + "\r\n"
-        print(str(data['fenxiang_img']))
+        #print(str(data['fenxiang_img']))
         self.down_picture(data['fenxiang_img'])
         title += datetime.now().strftime('%Y-%m-%d') + "\r\n"
         weather = self.get_weather()
@@ -175,7 +175,7 @@ def read_pic_rand_two(input_path):
     count = 0
     while True:
         index = random.randint(0,73)
-        print(index)
+        #print(index)
         name = str(index)  + ".jpg"
         temp_file_path = os.path.join(input_path, name)
         if not os.path.exists(temp_file_path):

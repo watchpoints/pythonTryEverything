@@ -1,3 +1,4 @@
+git push
 git add *.py
 git add *.bat
 git add *.sh

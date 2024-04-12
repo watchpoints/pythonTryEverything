@@ -113,9 +113,9 @@ class CZTOUYU:
          解析直播推流地址：防止自动黑屏 断流后 扣费 定时直播2个小时。
         """
         # 只测试留言功能
-        if self.only_msg == 1:
-            helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
-            return
+        # if self.only_msg == 1:
+        #     helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
+        #     return
         page.goto(self.zhibo_url)
         time.sleep(5)
         print(f"open  {self.zhibo_url}")
@@ -183,8 +183,9 @@ class CZTOUYU:
         rtmp_stream =  rtpm_url + "/" + rtpm_code
         logging.debug(rtpm_code)
         print(rtmp_stream)
-        #self.browser.close()
-        
+        time.sleep(10)
+        self.browser.close()
+
         # 开始推流
         rtmp_timeout_task(self.input_directory,rtmp_stream)
         # Create a thread with arguments
@@ -313,7 +314,7 @@ def rtmp_timeout_task(input_directory,output_url):
             local_file_to_rtmp(input_directory,output_url)
             timestamp2 = time.time()
             time_difference = timestamp2 - timestamp1
-            if int(time_difference) > 21800:
+            if int(time_difference) > 22600:
                 logging.info("timeout")
                 break
     except Exception as mye:
@@ -448,22 +449,13 @@ if __name__ == '__main__':
         'coalesce': False,
         'max_instances': 1
     }
-    
-    # 1.  只留言 2   只直播 3. 留言和和直播一块不支持。
-    ONLIY_MSG = 2
-    #interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
-    interface_auo_start_douyu_zhibo(MP4_DIR,ONLIY_MSG)
-    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    # 习惯养成--早睡早起
-    # pip install apscheduler
-    #12点:发一个图文
-    backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("20 19 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_up")
 
-    #backsched.add_job(interface_auo_start_douyu_zhibo,
-    #                 CronTrigger.from_crontab("0 12 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_mid")
-    
-    #backsched.add_job(interface_auo_start_douyu_zhibo,
-    #                  CronTrigger.from_crontab("0 23 * * *"), args=[MP4_DIR,ONLIY_MSG],id="get_sleep")
+    interface_auo_start_douyu_zhibo(MP4_DIR,2)
+    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+
+
+
+    backsched.add_job(interface_auo_start_douyu_zhibo,
+                     CronTrigger.from_crontab("30 5 * * *"), args=[MP4_DIR,2],id="get_up")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
