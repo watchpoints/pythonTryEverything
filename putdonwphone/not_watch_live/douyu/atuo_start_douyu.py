@@ -33,7 +33,8 @@ class CZTOUYU:
     - save_picture_path (str): The path to save pictures.
     - default_picture_path (str): The default path for pictures.
     """
-    def __init__(self,cookies_path: str, login_url: str, zhibo_url: str, watch_room_url: str, mp4_input_directory: str, only_msg):
+    def __init__(self,cookies_path: str, login_url: str, zhibo_url: str,
+                 watch_room_url: str, mp4_input_directory: str, only_msg):
         self.cookies_path = cookies_path
         self.login_url = login_url
         self.zhibo_url = zhibo_url
@@ -62,9 +63,12 @@ class CZTOUYU:
                 self.browser = playwright.chromium.launch(channel="chrome",
                                                           headless=display_headless)
             login_page = self.login_or_restore_cookies()
-            self.helper_start_zhibo(login_page, picture_path, habit_name,habit_detail)
-            if self.browser.is_connected:
-                self.browser.close()
+            try:
+                self.helper_start_zhibo(login_page, picture_path, habit_name,habit_detail)
+                if self.browser.is_connected:
+                    self.browser.close()
+            except Exception as mye:
+                print(mye)
     def auto_stop_zhibo(self):
         """停止直播"""
         with sync_playwright() as playwright:
@@ -210,16 +214,19 @@ class CZTOUYU:
         """
          自动停直播
         """
-        page.goto(self.zhibo_url)
-        time.sleep(6)
-        page.mouse.down()
-        time.sleep(1)
-        print("关闭直播")
-        page.get_by_text("关闭直播").click()
-        time.sleep(10)
-        page.get_by_text("直接下播").click()
-        time.sleep(10)
-
+        try:
+            page.goto(self.zhibo_url)
+            time.sleep(6)
+            page.mouse.down()
+            time.sleep(1)
+            print("关闭直播")
+            page.get_by_text("关闭直播").click()
+            time.sleep(10)
+            page.get_by_text("直接下播").click()
+            time.sleep(10)
+        except Exception as mye:
+            print(mye)
+            
 def helper_admin_class_rule(page: Page, watch_room_url, only_msg):
     """弹幕提醒"""
     global TOTAL_COUNT

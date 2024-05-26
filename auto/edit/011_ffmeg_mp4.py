@@ -42,11 +42,11 @@ def get_info(input_path):
     
 
 if __name__ == '__main__':
-    input_path = r"D:\mp4\1.mp4"  # 输入视频文件路径
-    output_path = r"D:\mp4\455.mp4"  # 输出视频文件路径
+    input_path = r"D:\mp4\input\2.mp4"  # 输入视频文件路径
+    output_path = r"D:\mp4\input\23.mp4"  # 输出视频文件路径
     pic_path =r"D:\mp4\db\万国志\p01.jpg"
-    start_time = "00:36:11"  # 开始剪辑的时间点，格式为 HH:MM:SS
-    end_time = "00:47:18"  # 结束剪辑的时间点，格式为 HH:MM:SS
+    start_time = "01:22:00"  # 开始剪辑的时间点，格式为 HH:MM:SS
+    end_time = "02:08:00"  # 结束剪辑的时间点，格式为 HH:MM:SS
     trim_video(input_path,output_path,start_time,end_time)
     #trim_and_encode_video(input_path,output_path,start_time,end_time)
   
