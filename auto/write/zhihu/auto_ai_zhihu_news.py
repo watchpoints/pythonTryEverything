@@ -705,7 +705,7 @@ def auto_ai_tools_zhihu():
 
 if __name__ == '__main__':
 
-    #auto_ai_tools_zhihu()
+    auto_ai_tools_zhihu()
    
     print("---interface_auo_upload_zhihu---")
     job_defaults = {
