@@ -5,7 +5,7 @@ import json
 import os
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-from zhipuai import ZhipuAI
+#from zhipuai import ZhipuAI
 
 def QuitAndSave(signum, frame):#监听退出信号
     print ('catched singal: %d' % signum)
@@ -111,24 +111,23 @@ class wechatlive():
             if self.browser.is_connected:
                 self.browser.close()
 
-def zhipu_ai():
-    """
-     ai
-    """
-    client = ZhipuAI(api_key="de143fda204456eaf43e834b0f3b6be8.GvP7iMxkqBPnElaM") # 填写您自己的APIKey
-    response = client.chat.completions.create(
-        model="glm-4",  # 填写需要调用的模型名称
-        messages=[
-            {"role": "user", "content": "讲个笑话"}
-        ],
-    )
-    print(response.choices[0].message)
-    data = response.choices[0].message)
+# def zhipu_ai():
+#     """
+#      ai
+#     """
+#     client = ZhipuAI(api_key="de143fda204456eaf43e834b0f3b6be8.GvP7iMxkqBPnElaM") # 填写您自己的APIKey
+#     response = client.chat.completions.create(
+#         model="glm-4",  # 填写需要调用的模型名称
+#         messages=[
+#             {"role": "user", "content": "讲个笑话"}
+#         ],
+#     )
+#     print(response.choices[0].message)
 
 if __name__ == '__main__':#执行层
-    zhipu_ai()
+    #zhipu_ai()
     #信号监听
     signal.signal(signal.SIGTERM, QuitAndSave)
     signal.signal(signal.SIGINT, QuitAndSave)
     weobj = wechatlive()
-    #weobj.Connect()
+    weobj.Connect()

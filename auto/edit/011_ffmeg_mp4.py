@@ -42,15 +42,9 @@ def get_info(input_path):
     
 
 if __name__ == '__main__':
-    input_path = '/Users/wangchuanyi/mp4/zhibo/1.mp4'  # 输入视频文件路径
-    output_path = '/Users/wangchuanyi/mp4/zhibo/3.mp4'  # 输出视频文件路径
+    input_path = r"D:\mp4\input\2.mp4"  # 输入视频文件路径
+    output_path = r"D:\mp4\input\23.mp4"  # 输出视频文件路径
     pic_path =r"D:\mp4\db\万国志\p01.jpg"
-    start_time = "00:11:18"  # 开始剪辑的时间点，格式为 HH:MM:SS
-    end_time = "01:39:00"  # 结束剪辑的时间点，格式为 HH:MM:SS
+    start_time = "00:36:11"  # 开始剪辑的时间点，格式为 HH:MM:SS
+    end_time = "00:47:18"  # 结束剪辑的时间点，格式为 HH:MM:SS
     trim_video(input_path,output_path,start_time,end_time)
-    #trim_and_encode_video(input_path,output_path,start_time,end_time)
-  
-## video:0kB audio:0kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown 输入事件格式不对 36:00:00
-## ffprobe ffprobe是ffmpeg提供的三大工具之一，用来查看音视频文件的各种信息，比如：封装格式、音频/视频流信息、数据包信息等。
-## ffprobe的源码是ffprobe.c
-

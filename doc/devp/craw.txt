@@ -1,0 +1,24 @@
+https://www.douyu.com/11975253
+It looks like you are using Playwright Sync API inside the asyncio loop.
+Please use the Async API instead.
+Traceback (most recent call last):
+  File "D:\pythonTryEverything\putdonwphone\not_watch_live\douyu\atuo_start_douy
+u.py", line 296, in interface_auo_start_douyu_zhibo
+    autoupload.auto_start_zhibo(file_path, habit_name,habit_detail)
+  File "D:\pythonTryEverything\putdonwphone\not_watch_live\douyu\atuo_start_douy
+u.py", line 65, in auto_start_zhibo
+    self.helper_start_zhibo(login_page, picture_path, habit_name,habit_detail)
+  File "D:\pythonTryEverything\putdonwphone\not_watch_live\douyu\atuo_start_douy
+u.py", line 207, in helper_start_zhibo
+    self.auto_stop_zhibo()
+  File "D:\pythonTryEverything\putdonwphone\not_watch_live\douyu\atuo_start_douy
+u.py", line 70, in auto_stop_zhibo
+    with sync_playwright() as playwright:
+  File "C:\tools\python3.11\Lib\site-packages\playwright\sync_api\_context_manag
+er.py", line 47, in __enter__
+    raise Error(
+playwright._impl._errors.Error: It looks like you are using Playwright Sync API
+inside the asyncio loop.
+Please use the Async API instead.
+load cookies
+login_or_restore_cookies

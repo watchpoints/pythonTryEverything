@@ -12,4 +12,8 @@ Luna AI 的外观由 Live2D、Vtube Studio、xuniren、UE5 结合 Audio2Face、E
 
 # window 搭建
 
+pip install zhipuai
+
+
+
 
