@@ -692,12 +692,14 @@ def auto_ai_tools_zhihu():
     sys = platform.system()
     if sys == "Windows":
         save_picture_path = r"D:\mp4\etc\temp.png"
+        save_file_path = r"D:\mp4\etc\temp.png" + current_date_str + ".txt"
     elif sys == "Darwin":
         save_picture_path = r"/Users/wangchuanyi/mp4/etc/temp.png"
+        save_file_path = "/Users/wangchuanyi/temp/" + current_date_str + ".txt"
     else:
         save_picture_path = r"/root/code/python/putdonwphone/upload/temp.png"
+        save_file_path = "/root/code/python/putdonwphone/upload" + current_date_str + ".txt"
     web_url = "https://jobcher.github.io/github_trending_" + current_date_str
-    save_file_path = "/Users/wangchuanyi/temp/" + current_date_str + ".txt"
     article_title = "打工人日报:" + current_date_str
     save_picture_path,article_msg = get_url_content(web_url, save_file_path,save_picture_path)
     push_msg_zhihu_article(article_title, article_msg,save_picture_path)
