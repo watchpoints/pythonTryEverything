@@ -567,11 +567,11 @@ def push_msg_zhihu_article(artilce_title:str, artilce_msg:str, save_picture_path
             # 发布文章
             autoupload.push_msg_to_article(login_page, artilce_title, artilce_msg,save_picture_path)
             # 赞同
-            #autoupload.zhihu_auto_agree(login_page)
+            autoupload.zhihu_auto_agree(login_page)
             
             # 推荐关注
             # playwright codegen https://www.zhihu.com/creator
-            #autoupload.zhihu_auto_guanzhu(login_page)
+            autoupload.zhihu_auto_guanzhu(login_page)
 
         
             autoupload.browser.close()
