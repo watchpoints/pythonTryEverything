@@ -112,8 +112,8 @@ class GetupHabit:
         #print(str(data['fenxiang_img']))
         self.down_picture(data['fenxiang_img'])
         title += datetime.now().strftime('%Y-%m-%d') + "\r\n"
-        weather = self.get_weather()
-        title += weather + "\r\n"
+        #weather = self.get_weather()
+        #title += weather + "\r\n"
         title += "\r\n"
         title += self.read_get_up_from_txt(self.get_up_path)
         return temp_habit_name,title

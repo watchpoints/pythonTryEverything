@@ -1,0 +1,13 @@
+
+
+
+VSCode - 配置Python的默认解释器
+为什么：识别安装依赖的python库
+Ctrl + Shift + p 打开命令行面板
+输入 Python:Select Interpreter 命令，配置默认的解释器
+选择默认python位置
+
+
+content="2024-05-16 打工人日报"
+
+

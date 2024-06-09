@@ -42,10 +42,10 @@ class CZTOUYU:
         self.browser = None
         self.input_directory = mp4_input_directory
         self.only_msg = only_msg
-        print("create CMyDouyin")
+        print("create CZTOUYU")
 
     def __del__(self):
-        print("CMyDouyin is being destroyed")
+        print("CZTOUYU is being destroyed")
 
     def auto_start_zhibo(self, picture_path: str, habit_name:str, habit_detail:str):
         """
