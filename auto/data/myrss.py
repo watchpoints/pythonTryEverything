@@ -22,7 +22,7 @@ class PoetryRSS():
         self.rss_url = rss_url
 
     def get_context(self):
-        response = requests.get(self.rss_url,timeout=20).text
+        response = requests.get(self.rss_url,timeout=300).text
         return self.parse_context(response)
 
     def parse_context(self, response):
@@ -71,7 +71,7 @@ def down_picture(image_url: str,save_picture_path: str):
     下载图片
     """
     # 发送 GET 请求获取图片内容
-    response = requests.get(image_url,timeout=30)
+    response = requests.get(image_url,timeout=300)
     # 检查请求是否成功
     if response.status_code == 200:
         # 获取图片内容
@@ -99,9 +99,9 @@ def get_daily_poetry(url,picture_path):
             browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
         context = browser.new_context()
         page = context.new_page() # 诗歌内容
-
+        print(url)
         page.goto(url)
-        time.sleep(6)
+        time.sleep(120)
         
         # 查找所有图片元素
         images = page.query_selector_all('img')
