@@ -101,7 +101,7 @@ def get_daily_poetry(url,picture_path):
         page = context.new_page() # 诗歌内容
         print(url)
         page.goto(url)
-        time.sleep(120)
+        time.sleep(30)
         
         # 查找所有图片元素
         images = page.query_selector_all('img')
