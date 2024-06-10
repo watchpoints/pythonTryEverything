@@ -11,6 +11,7 @@ from playwright.sync_api import Page
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from learn import learn_english_speak
+
 ########################################################################
 class CMyZhiHu:
     """
@@ -97,6 +98,55 @@ class CMyZhiHu:
                 f.write(json.dumps(cookies))
         print("login_or_restore_cookies")
         return page
+    
+    def post_ai_drawing_poetry(self, page: Page, item):
+        """
+            每天一句中国古诗词
+        """
+        page.goto(self.upload_picture_url)
+        time.sleep(6)
+        print(f"open  {self.upload_picture_url}")
+        # 从主页进入 headless不行
+        page.locator("xpath=//div[contains(text(), '写想法')]").click()
+        print("打开写想法窗口")
+        time.sleep(2)
+        # 写标题：项目名称
+        page.get_by_placeholder("请输入标题（选填）").fill( "AI画图")
+
+        msg = item['art_desc']
+        msg += "\r\n"
+        msg += "#古诗词绘画" 
+        msg += "\r\n"
+        msg += "# 关注我,每天一句中国古诗词,一起研究AI有意思的应用"
+
+        page.get_by_role("textbox").locator('nth=-1').fill(msg)
+        time.sleep(3)
+        
+        print("开始上传图片")
+        page.locator(".css-88f71l > button:nth-child(2)").click()
+        time.sleep(2)
+        print("本地上传")
+        picture_path_list = []
+        picture_dir_path = item['file_path']
+        for root, dirs, files in os.walk(picture_dir_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                print(file_path)
+                picture_path_list.append(file_path)
+        #上传图片
+        with page.expect_file_chooser() as fc_info:
+            page.locator(".css-n71hcb").click()
+        file_chooser = fc_info.value
+        file_chooser.set_files(picture_path_list)
+        time.sleep(5)
+
+        page.get_by_role("button", name="插入图片").click()
+        time.sleep(5)
+        print("结束上传图片")
+        page.get_by_role("button", name="发布").click()
+        print("发布")
+        time.sleep(5)
+
 
     def msg_up_load(self, page: Page, picture_path_list,habit_name:str, habit_detail:str):
         """
@@ -417,6 +467,21 @@ class CMyZhiHu:
         finally:
             print("-----")
     ###############################
+#######################################################
+    def get_hot_ask(self, page: Page):
+        """
+        获取热门问答
+        playwright codegen https://www.zhihu.com/creator/hot-question/hot/0/day
+        """
+        page.goto("https://www.zhihu.com/creator/hot-question/hot/0/day")
+        time.sleep(4)
+        
+        # # man question 第二个问题 下表是3
+        # with self.context.expect_page(timeout=20000) as new_page_info:
+        #     #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
+        #     page.locator("div:nth-child(3) > .css-n9ov20 > .css-wfj162 > .css-nyeu1f > div > .Button").click(timeout=20000)
+        # time.sleep(5)
+    ####################################################
 
 
 def interface_auo_upload_zhihu_small():
@@ -568,12 +633,11 @@ def push_msg_zhihu_article(artilce_title:str, artilce_msg:str, save_picture_path
             autoupload.push_msg_to_article(login_page, artilce_title, artilce_msg,save_picture_path)
             # 赞同
             autoupload.zhihu_auto_agree(login_page)
-            
+
             # 推荐关注
             # playwright codegen https://www.zhihu.com/creator
-            autoupload.zhihu_auto_guanzhu(login_page)
-
-        
+            #autoupload.zhihu_auto_guanzhu(login_page)
+            
             autoupload.browser.close()
     except Exception as mye:
         print(mye)
@@ -673,6 +737,7 @@ def get_url_content(url, file_path, save_picture_path):
         browser.close()
         return save_picture_path,all_msg
 
+###############################################
 def auto_ai_tools_zhihu():
     """
       读取文章内容 
@@ -703,8 +768,46 @@ def auto_ai_tools_zhihu():
     article_title = "打工人日报:" + current_date_str
     save_picture_path,article_msg = get_url_content(web_url, save_file_path,save_picture_path)
     push_msg_zhihu_article(article_title, article_msg,save_picture_path)
-    
 
+
+#################接口：获取数据 ##############################
+
+##################接口：对外提供任务###############################
+def post_poetry_drawing_to_zhihu_thing(items):
+    """
+     AI画图。每天一句中国古诗词，生成 AI 图片 Powered by Bing DALL-E-3.
+     https://github.com/liruifengv/we-drawing
+    """
+    print("AI画图。每天一句中国古诗词")
+    try:
+        sys = platform.system()
+        login_url = "https://www.zhihu.com/"
+        upload_picture_url = "https://www.zhihu.com/"
+        upload_mp4_url = "https://www.zhihu.com/"
+        if sys == "Windows":
+            cookies_path = r"D:\mp4\etc\zhihu_small.json"
+        elif sys == "Darwin":
+            cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
+        else:
+            cookies_path = r"/root/bin/zhihu_small.json"
+        autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+        with sync_playwright() as playwright:
+            display_headless = False
+            sys = platform.system()
+            if sys == "Linux":
+                display_headless = True
+                browser = playwright.chromium.launch(headless=display_headless)
+            else:
+                browser = playwright.chromium.launch(channel="chrome",headless=display_headless)
+            autoupload.browser = browser
+            login_page = autoupload.login_or_restore_cookies()
+            # 想法
+            for item in items:
+                autoupload.post_ai_drawing_poetry(login_page,item)
+            autoupload.browser.close()
+    except Exception as mye:
+        print(mye)
+    
 if __name__ == '__main__':
 
     auto_ai_tools_zhihu()

@@ -1,5 +1,11 @@
+<div class="flex flex-wrap w-full md:w-3/4 mt-5">
+  <img src="/images/1714950068047/0.jpg" alt="离别家乡岁月多，近来人事半消磨。" class="hover:opacity-75 transition ease-in-out duration-150 w-full md:w-1/2" id="image-poster-1714950068047-0" data-astro-transition-scope="astro-cxy46a3v-2">
+  <img src="/images/1714950068047/1.jpg" alt="离别家乡岁月多，近来人事半消磨。" class="hover:opacity-75 transition ease-in-out duration-150 w-full md:w-1/2" id="image-poster-1714950068047-1" data-astro-transition-scope="astro-cxy46a3v-3">
+  <img src="/images/1714950068047/2.jpg" alt="离别家乡岁月多，近来人事半消磨。" class="hover:opacity-75 transition ease-in-out duration-150 w-full md:w-1/2" id="image-poster-1714950068047-2" data-astro-transition-scope="astro-cxy46a3v-4">
+  <img src="/images/1714950068047/3.jpg" alt="离别家乡岁月多，近来人事半消磨。" class="hover:opacity-75 transition ease-in-out duration-150 w-full md:w-1/2" id="image-poster-1714950068047-3" data-astro-transition-scope="astro-cxy46a3v-5">
+</div>
 
-<button type="button" class="Button css-d0uhtl FEfUrdfMIKpQDJDqkjte Button--primary Button--blue epMJl0lFQuYbC7jrwr_o JmYzaky7MEPMFcJDLNMG">发布</button>
+
 
 
 ------
