@@ -61,7 +61,20 @@ def get_daily_drawing():
         count+=1
         # 输出拼接的路径
         print(file_path)
-        myrss.get_daily_poetry(item['art_link'],file_path)
+        # https://we-drawing.com/images/1715122872472/
+        # https://daily-poetry-image.vercel.app/images/1715122872472
+        # 原始网址
+        original_url = item['art_link']
+        # 需要替换的部分
+        old_part = "https://daily-poetry-image.vercel.app/images/"
+        new_part = "https://we-drawing.com/images/"
+
+        # 替换部分
+        new_url = original_url.replace(old_part, new_part)
+
+        # 输出替换后的网址
+        print(new_url)
+        myrss.get_daily_poetry(new_url,file_path)
         data1 = {"art_title": item['art_title'],
                 "art_desc": item['art_desc'],
                 "art_update": item['art_update'],
@@ -74,6 +87,10 @@ def get_daily_drawing():
 def post_thing_daily_porety_drawing():
     """
     每天一句中国古诗词，生成 AI 图片 Powered by Bing DALL-E-3.
+    https://we-drawing.com/images/1715122872472/
+    https://daily-poetry-image.vercel.app/images/1715122872472
+    
+
     """
     ## 第一步 诗词作为提示词 绘制图片
     result = get_daily_drawing()
