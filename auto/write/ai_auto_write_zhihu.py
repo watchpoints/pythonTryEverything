@@ -5,12 +5,13 @@
 # DateTime:2024/06/10 17:00
 import os
 import platform
+import logging
 from auto.data import myrss
 from auto.write.zhihu import auto_ai_zhihu_news
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 ################ 全局变量#################
-global_count = 1
+global_count = 30
 ###############01 获取数据#################
 def get_daily_drawing():
     """
@@ -27,6 +28,7 @@ def get_daily_drawing():
         print(f"索引 {index} 的内容是 {item}")
         if global_count == index:
             global_count+=1
+            logging.info("day"+str(global_count))
             temp+=1
             daily_item.append(item)
             # # 打印标题

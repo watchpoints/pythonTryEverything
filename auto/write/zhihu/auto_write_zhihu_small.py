@@ -477,47 +477,10 @@ def interface_auo_upload_msg_zhihu(file_path_list:str,habit_name :str,habit_deta
             # 推荐关注
             # playwright codegen https://www.zhihu.com/creator
             #autoupload.zhihu_auto_guanzhu(login_page)
-
-<<<<<<< HEAD
-        # 回答问题
+           # 回答问题
         #autoupload.zhihu_auto_answer(login_page)
         # 关闭浏览器
         autoupload.browser.close() 
-  #############################################
-def test():
-    sys = platform.system()
-    login_url = "https://www.zhihu.com/"
-    upload_picture_url = "https://www.zhihu.com/"
-    upload_mp4_url = "https://www.zhihu.com/"
-    if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\zhihu_small.json"
-    elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
-    else:
-        cookies_path = r"/root/bin/zhihu_small.json"
-    file_path_list, habit_name,habit_detail = learn_english_speak.interface_get_daily_englis_word_big()
-    interface_auo_upload_msg_zhihu(file_path_list,habit_name,habit_detail)
-=======
-            # 回答问题
-            #autoupload.zhihu_auto_answer(login_page)
-            # 关闭浏览器
-            autoupload.browser.close()
     except Exception as mye:
         print(mye)
->>>>>>> 8a2884fdbc3063a49c1ad7e33a90d508cf957d05
-if __name__ == '__main__':
-    test()
-    # path =  r"D:\mp4\自媒体增长时间飞轮.mp4"
-    # interface_auo_upload_mp4_zhihu(path)
-    # # print("---interface_auo_upload_zhihu---")
-    # # interface_auo_upload_zhihu_small()
-    # # job_defaults = {
-    # #     'coalesce': False,
-    # #     'max_instances': 1
-    # # }
-    # # backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    # # # 图文1习惯养成--早睡早起
-    # # backsched.add_job(interface_auo_upload_zhihu_small, CronTrigger.from_crontab("0 6 * * *"))
-
-    # # print("start zhihu")
-    # # backsched.start()
+        
