@@ -90,7 +90,6 @@ def post_thing_daily_porety_drawing():
     https://we-drawing.com/images/1715122872472/
     https://daily-poetry-image.vercel.app/images/1715122872472
     
-
     """
     ## 第一步 诗词作为提示词 绘制图片
     result = get_daily_drawing()
@@ -107,6 +106,6 @@ if __name__ == '__main__':
     }
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 汇总 最新资料 每日新闻
-    backsched.add_job(post_thing_daily_porety_drawing, CronTrigger.from_crontab("0 21 * * *"))
+    backsched.add_job(post_thing_daily_porety_drawing, CronTrigger.from_crontab("12 0 * * *"))
     backsched.start()
 
