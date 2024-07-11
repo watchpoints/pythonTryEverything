@@ -158,12 +158,8 @@ class CMyZhiHu:
 
         question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
         print(question_title)
-        # #question_example = question_page.locator("css=.RichText.ztext.css-jflero").locator("nth=0").text_content()
-        # question_example = question_page.locator("css=.RichText.ztext.css-jflero:first-child").text_content()
-        # if len(question_example) ==0:
-        #     question_example =None
-        # print(question_example)
-        time.sleep(2)
+        
+        time.sleep(200)
         print("---写回答-----")
         #写回答
         #question_page.get_by_role("main").get_by_role("button", name="​写回答").click()
