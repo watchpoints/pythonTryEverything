@@ -10,6 +10,7 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from learn import learn_english_speak
 from selenium import webdriver
+from auto.write.zhihu import mykimi
 ########################################################################
 class CMyZhiHu:
     """
@@ -159,7 +160,11 @@ class CMyZhiHu:
         question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
         print(question_title)
         
-        time.sleep(200)
+        time.sleep(3)
+        resulut = mykimi.Get_msg_by_kimi(question_title)
+        if len(resulut) == 0:
+            return None
+        
         print("---写回答-----")
         #写回答
         #question_page.get_by_role("main").get_by_role("button", name="​写回答").click()
@@ -175,8 +180,11 @@ class CMyZhiHu:
         page_answer = page_answer1.value
         page_answer.wait_for_load_state()
 
-        #question_page.get_by_role("textbox").fill(question_title)
-        page_answer.locator("css=.notranslate.public-DraftEditor-content").fill(question_title)
+       
+        # 自动发布---填写回答内容
+        print("begin answer")
+        page_answer.locator("css=.notranslate.public-DraftEditor-content").fill(resulut)
+        time.sleep(5)
         page_answer.mouse.down()
         page_answer.mouse.down()
         page_answer.mouse.down()
@@ -185,12 +193,11 @@ class CMyZhiHu:
         page_answer.get_by_role("option", name="包含 AI 辅助创作").click()
         time.sleep(3)
 
-        page_answer.get_by_text("允许规范转载").click()
-        page_answer.get_by_role("option", name="禁止转载").click()
-        time.sleep(1)
-
+        # page_answer.get_by_text("允许规范转载").click()
+        # page_answer.get_by_role("option", name="禁止转载").click()
+        # time.sleep(10)
         page_answer.get_by_role("button", name="发布回答").click()
-        time.sleep(30)
+        time.sleep(10)
     ###################################################
     # def like_other_things(self, page: Page, user_list):
     #     """
@@ -283,11 +290,11 @@ def help_ohter_by_qa():
     upload_picture_url = "https://www.zhihu.com/"
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\zhihu_small.json"
+        cookies_path = r"D:\mp4\etc\zhihu_qa.json"
     elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_small.json"
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_qa.json"
     else:
-        cookies_path = r"/root/bin/zhihu_small.json"
+        cookies_path = r"/root/bin/zhihu_qa.json"
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
     #zse_ck = autoupload.get_signed_header()
    
@@ -305,8 +312,9 @@ def help_ohter_by_qa():
 
         # 回答问题
         autoupload.zhihu_auto_answer(login_page)
+        #autoupload.zhihu_auto_answer(login_page)
         # 关闭浏览器
-        autoupload.browser.close()
+        autoupload.browser.close() 
 
 ####################################################
 
@@ -354,11 +362,11 @@ def interface_auo_upload_msg_zhihu(file_path_list:str,habit_name :str,habit_deta
         
 if __name__ == '__main__':
     help_ohter_by_qa()
-    # job_defaults = {
-    #      'coalesce': False,
-    #      'max_instances': 1
-    # }
-    # backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    # # 汇总 最新资料 每日新闻
-    # backsched.add_job(post_thing_daily_porety_drawing, CronTrigger.from_crontab("12 0 * * *"))
-    # backsched.start()
+    job_defaults = {
+         'coalesce': False,
+         'max_instances': 1
+    }
+    backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
+    # 汇总 最新资料 每日新闻
+    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 5 * * *"))
+    backsched.start()
