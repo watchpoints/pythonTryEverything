@@ -27,11 +27,12 @@ def Get_msg_by_kimi(quesiton:str)->str:
 3. 拥有良好地排版技巧, 擅长将信息有条理地进行美观输出
 4. 帮助用户将大目标分解为可行的小步骤。
 5. 设计可跟踪和实施的学习行动计划。
-6. 不需要用Markdown 格式输出
+6. 不需要用Markdown格式输出
 
 ## 注意:
 - 不会偏离原始信息，只会基于原有的信息收集到的消息做合理的改编
 - 排版方式不应该影响信息的本质和准确性
+- 不需要用Markdown格式输出
 
 ## Output Format :
 你问题是
@@ -67,7 +68,7 @@ def Get_msg_by_kimi(quesiton:str)->str:
 1. 深呼吸，逐步处理此问题。
 2. 首先，请用户提提出目标和问题，用SWOT分析的规则分析，请结合热门话题和书籍 假设对方职场人士，遇到职场问题为例子
 4. 最后，你汇总后给出综述和分析结果，再给出一个针对整体综述和分析结果思考后的建议 最好结合书籍方法按照目标规划方回答，按照<Output Format>进行输出
-  不需要用Markdown 格式输出输出
+
     """
     client = OpenAI(
         api_key = "sk-Ci3vft4MnvIXTau8HGGSD6cYmi0rOsBF8RbmNcKDMKFH5Wnr",
@@ -88,6 +89,6 @@ def Get_msg_by_kimi(quesiton:str)->str:
 
 
 if __name__ == '__main__':
-    QUESTION = """为什么说进入职场后，比学历更重要的是学习力?"""
+    QUESTION = """饭局上下属帮领导盛饭，领导接过饭后说:盛这么多，喂猪呢？高情商的你该怎么回?"""
     Get_msg_by_kimi(QUESTION)
     # 这是文件的最后一段代码
