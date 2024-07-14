@@ -35,7 +35,7 @@ def Get_msg_by_kimi(quesiton:str)->str:
 - 不需要用Markdown格式输出
 
 ## Output Format :
-你问题是
+感谢邀请回答,你的问题是
 ...
 下面是我的回答
 一. 利用什么优势抓住什么机会
