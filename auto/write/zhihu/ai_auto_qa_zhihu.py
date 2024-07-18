@@ -190,6 +190,7 @@ class CMyZhiHu:
         time.sleep(5)
         
         picture_path_list = bingpic.get_random_jpg_files(self.pic_path)
+        print(picture_path_list)
         if len(picture_path_list) > 0:
             print("开始上传图片")
             page_answer.get_by_role("button", name="图片").click()
@@ -200,10 +201,9 @@ class CMyZhiHu:
             file_chooser = fc_info.value
             file_chooser.set_files(picture_path_list)
             time.sleep(10)
-            page.get_by_role("button", name="插入图片").click()
-            # time.sleep(5)
+            page_answer.get_by_role("button", name="插入图片").click()
+            time.sleep(5)
         
-        # print("结束上传图片")
         page_answer.mouse.down()
         page_answer.mouse.down()
         page_answer.mouse.down()
@@ -313,7 +313,7 @@ def help_ohter_by_qa():
         pic_path = r"D:\mp4\wallpapers\2024\01"
     elif sys == "Darwin":
         cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_qa.json"
-        pic_path = r"D:\mp4\wallpapers\2024\01"
+        pic_path = r"/Users/wangchuanyi/mp4/pic"
     else:
         cookies_path = r"/root/bin/zhihu_qa.json"
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
@@ -389,6 +389,5 @@ if __name__ == '__main__':
          'max_instances': 1
     }
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    # 汇总 最新资料 每日新闻
-    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 5 * * *"))
+    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 0 * * *"))
     backsched.start()

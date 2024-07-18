@@ -19,10 +19,10 @@ def get_random_jpg_files(target_dir, count=3):
     random_jpg_files = random.sample(jpg_files, min(3, len(jpg_files)))
     
     # 返回完整的文件路径
-    return [os.path.join(dir_path, f) for f in random_jpg_files]
-
-# 使用示例
-dir_path = r"D:\mp4\2024\01"  # 替换为你的目录路径
-random_files = get_random_jpg_files(dir_path)
-for file_path in random_files:
-    print(file_path)
+    return [os.path.join(target_dir, f) for f in random_jpg_files]
+if __name__ == '__main__':
+    # 使用示例
+    dir_path = r"/Users/wangchuanyi/mp4/pic"  # 替换为你的目录路径
+    random_files = get_random_jpg_files(dir_path)
+    for file_path in random_files:
+        print(file_path)
