@@ -8,7 +8,6 @@ from playwright.sync_api import Page
 #from pythonTryEverything.putdonwphone.data import englisword
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
-from auto.write.util import bingpic
 from learn import learn_english_speak
 from selenium import webdriver
 from auto.write.zhihu import mykimi
@@ -189,19 +188,20 @@ class CMyZhiHu:
         page_answer.locator("css=.notranslate.public-DraftEditor-content").fill(resulut)
         time.sleep(5)
         
-        picture_path_list = bingpic.get_random_jpg_files(self.pic_path)
-        if len(picture_path_list) > 0:
-            print("开始上传图片")
-            page_answer.get_by_role("button", name="图片").click()
-            time.sleep(3)
-            print("本地上传")
-            with page_answer.expect_file_chooser() as fc_info:
-                page_answer.locator(".css-n71hcb").click()
-            file_chooser = fc_info.value
-            file_chooser.set_files(picture_path_list)
-            time.sleep(10)
-            page.get_by_role("button", name="插入图片").click()
-            # time.sleep(5)
+        bingpic.get_random_jpg_files(self.pic_path)
+        print("开始上传图片")
+        page_answer.get_by_role("button", name="图片").click()
+        time.sleep(3)
+        print("本地上传")
+        with page_answer.expect_file_chooser() as fc_info:
+             page_answer.locator(".css-n71hcb").click()
+        file_chooser = fc_info.value
+        file_chooser.set_files(picture_path_list)
+        time.sleep(10)
+       
+        
+        page.get_by_role("button", name="插入图片").click()
+        # time.sleep(5)
         
         # print("结束上传图片")
         page_answer.mouse.down()
@@ -310,14 +310,11 @@ def help_ohter_by_qa():
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
         cookies_path = r"D:\mp4\etc\zhihu_qa.json"
-        pic_path = r"D:\mp4\wallpapers\2024\01"
     elif sys == "Darwin":
         cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_qa.json"
-        pic_path = r"D:\mp4\wallpapers\2024\01"
     else:
         cookies_path = r"/root/bin/zhihu_qa.json"
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-    autoupload.pic_path = pic_path
     #zse_ck = autoupload.get_signed_header()
    
 
