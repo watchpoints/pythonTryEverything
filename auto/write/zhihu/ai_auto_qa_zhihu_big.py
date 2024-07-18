@@ -8,6 +8,7 @@ from playwright.sync_api import Page
 #from pythonTryEverything.putdonwphone.data import englisword
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
+from auto.write.util import bingpic
 from learn import learn_english_speak
 from selenium import webdriver
 from auto.write.zhihu import mykimi
@@ -111,7 +112,7 @@ class CMyZhiHu:
                 print(cookies)
             self.context.add_cookies(cookies)
             self.context.add_cookies([
-                         {"name": "__zse_ck", "value": "001_2NzwjJPAHL=5po/JQ2N8cxTB+cA+56jPH3pt5SxdE7uYZHSo+XcH/sc=IMo6WrWS9CFziCu8akMtctM+qXfHQsx1ewSq5aQfpj484G9R5/Kyqk64cDPk5iplyCr+T4xG", "domain": ".zhihu.com", "path": "/", "expires": int(time.time()) + 5000}
+                         {"name": "__zse_ck", "value": "001_NO1yeVu8OTge=pdV2+jUzJ6hE=Tlufr/TQe=9ASCZCBE9DRxTvSoVax79SkArQIorPs2ZNd9X=kzjzFKTzNDsjJHuoq8saSvka5yu33sQHtWhqEyz5xhO4LxYKh=aDGd", "domain": ".zhihu.com", "path": "/", "expires": int(time.time()) + 5000}
                          ])
             time.sleep(3)
         else:
@@ -137,8 +138,39 @@ class CMyZhiHu:
         print("login_or_restore_cookies")
         return page
 
-
-    ###########################################################################  
+    #######################自动点赞#########################################
+    def zhihu_auto_agree(self, page: Page):
+        """
+         赞同 三个积分 playwright codegen https://www.zhihu.com/
+         follow ---
+        """
+        page.goto("https://www.zhihu.com/follow")
+        time.sleep(6)
+        print("https://www.zhihu.com/follow")
+        # page.locator("xpath=//a[text()='推荐']").click()
+        #page.locator("xpath=//a[contains(text(),'推荐']").click()
+        page.get_by_role("main").get_by_role("link", name="推荐", exact=True).click()
+        time.sleep(4)
+        page.mouse.down()
+        print("推荐")
+        ## Child
+        for index in [2,3,4]:
+            page.mouse.down()
+            page.mouse.down()
+            time.sleep(1)
+            page.mouse.down()
+            page.mouse.down()
+            time.sleep(1)
+            element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth={}'.format(index))
+            time.sleep(1)
+            print(element.all_inner_texts())
+            element.hover()
+            time.sleep(3)
+            element.click()
+            print("赞同完成")
+            time.sleep(3)
+        print("---------zhihu_auto_agree---------")
+    ##################################自动回答#########################################  
     def zhihu_auto_answer(self, page: Page):
         """
         回答问题 playwright codegen https://www.zhihu.com/creator/featured-question/goodat-topic/all
@@ -166,6 +198,7 @@ class CMyZhiHu:
         if len(resulut) == 0:
             return None
         resulut = resulut.replace("**", "")
+        resulut = resulut.replace("###", "")
         #去掉字符串中的所有 **（双星号)
         print("---写回答-----")
         #写回答
@@ -188,22 +221,21 @@ class CMyZhiHu:
         page_answer.locator("css=.notranslate.public-DraftEditor-content").fill(resulut)
         time.sleep(5)
         
-        bingpic.get_random_jpg_files(self.pic_path)
-        print("开始上传图片")
-        page_answer.get_by_role("button", name="图片").click()
-        time.sleep(3)
-        print("本地上传")
-        with page_answer.expect_file_chooser() as fc_info:
-             page_answer.locator(".css-n71hcb").click()
-        file_chooser = fc_info.value
-        file_chooser.set_files(picture_path_list)
-        time.sleep(10)
-       
+        picture_path_list = bingpic.get_random_jpg_files(self.pic_path)
+        print(picture_path_list)
+        if len(picture_path_list) > 0:
+            print("开始上传图片")
+            page_answer.get_by_role("button", name="图片").click()
+            time.sleep(3)
+            print("本地上传")
+            with page_answer.expect_file_chooser() as fc_info:
+                page_answer.locator(".css-n71hcb").click()
+            file_chooser = fc_info.value
+            file_chooser.set_files(picture_path_list)
+            time.sleep(10)
+            page_answer.get_by_role("button", name="插入图片").click()
+            time.sleep(5)
         
-        page.get_by_role("button", name="插入图片").click()
-        # time.sleep(5)
-        
-        # print("结束上传图片")
         page_answer.mouse.down()
         page_answer.mouse.down()
         page_answer.mouse.down()
@@ -309,12 +341,15 @@ def help_ohter_by_qa():
     upload_picture_url = "https://www.zhihu.com/"
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
-        cookies_path = r"D:\mp4\etc\zhihu_qa.json"
+        cookies_path = r"D:\mp4\etc\zhihu_qa_big.json"
+        pic_path = r"D:\mp4\wallpapers\2024\01"
     elif sys == "Darwin":
-        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_qa.json"
+        cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_qa_big.json"
+        pic_path = r"/Users/wangchuanyi/mp4/pic"
     else:
-        cookies_path = r"/root/bin/zhihu_qa.json"
+        cookies_path = r"/root/bin/zhihu_qa_big.json"
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
+    autoupload.pic_path = pic_path
     #zse_ck = autoupload.get_signed_header()
    
 
@@ -329,11 +364,13 @@ def help_ohter_by_qa():
         autoupload.browser = browser
         login_page = autoupload.login_or_restore_cookies()
 
-        # 回答问题
+        # 自动问答
         autoupload.zhihu_auto_answer(login_page)
-        #autoupload.zhihu_auto_answer(login_page)
+        # 自动赞同
+        autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
         autoupload.browser.close() 
+        print("-----end------")
 
 ####################################################
 
@@ -386,6 +423,5 @@ if __name__ == '__main__':
          'max_instances': 1
     }
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    # 汇总 最新资料 每日新闻
-    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 5 * * *"))
+    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 0 * * *"))
     backsched.start()

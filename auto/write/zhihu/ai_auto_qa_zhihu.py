@@ -2,6 +2,7 @@
 import json
 import os
 import time
+import random
 import platform
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
@@ -139,7 +140,39 @@ class CMyZhiHu:
         return page
 
 
-    ###########################################################################  
+    #######################自动点赞#########################################
+    def zhihu_auto_agree(self, page: Page):
+        """
+         赞同 三个积分 playwright codegen https://www.zhihu.com/
+         follow ---
+        """
+        page.goto("https://www.zhihu.com/follow")
+        time.sleep(6)
+        print("https://www.zhihu.com/follow")
+        # page.locator("xpath=//a[text()='推荐']").click()
+        #page.locator("xpath=//a[contains(text(),'推荐']").click()
+        page.get_by_role("main").get_by_role("link", name="推荐", exact=True).click()
+        time.sleep(4)
+        page.mouse.down()
+        print("推荐")
+        ## Child
+        for index in [2,3,4]:
+            page.mouse.down()
+            page.mouse.down()
+            time.sleep(1)
+            page.mouse.down()
+            page.mouse.down()
+            time.sleep(1)
+            element = page.locator("xpath=//button[contains(text(),'赞同')]").locator('nth={}'.format(index))
+            time.sleep(1)
+            print(element.all_inner_texts())
+            element.hover()
+            time.sleep(3)
+            element.click()
+            print("赞同完成")
+            time.sleep(3)
+        print("---------zhihu_auto_agree---------")
+    ##################################自动回答#########################################   
     def zhihu_auto_answer(self, page: Page):
         """
         回答问题 playwright codegen https://www.zhihu.com/creator/featured-question/goodat-topic/all
@@ -167,6 +200,7 @@ class CMyZhiHu:
         if len(resulut) == 0:
             return None
         resulut = resulut.replace("**", "")
+        resulut = resulut.replace("###", "")
         #去掉字符串中的所有 **（双星号)
         print("---写回答-----")
         #写回答
@@ -333,10 +367,12 @@ def help_ohter_by_qa():
         login_page = autoupload.login_or_restore_cookies()
 
         # 回答问题
+        time.sleep(random.randint(0, 20))
         autoupload.zhihu_auto_answer(login_page)
-        #autoupload.zhihu_auto_answer(login_page)
+        time.sleep(random.randint(0, 20))
+        autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
-        autoupload.browser.close() 
+        autoupload.browser.close()
 
 ####################################################
 
