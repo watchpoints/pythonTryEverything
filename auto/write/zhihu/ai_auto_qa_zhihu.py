@@ -164,7 +164,8 @@ class CMyZhiHu:
         resulut = mykimi.Get_msg_by_kimi(question_title)
         if len(resulut) == 0:
             return None
-        
+        resulut = resulut.replace("**", "")
+        #去掉字符串中的所有 **（双星号)
         print("---写回答-----")
         #写回答
         #question_page.get_by_role("main").get_by_role("button", name="​写回答").click()
