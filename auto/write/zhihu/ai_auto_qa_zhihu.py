@@ -200,7 +200,7 @@ class CMyZhiHu:
         if len(resulut) == 0:
             return None
         resulut = resulut.replace("**", "")
-        resulut = resulut.replace("###", "")
+        resulut = resulut.replace("#", "")
         #去掉字符串中的所有 **（双星号)
         print("---写回答-----")
         #写回答
@@ -234,7 +234,7 @@ class CMyZhiHu:
                 page_answer.locator(".css-n71hcb").click()
             file_chooser = fc_info.value
             file_chooser.set_files(picture_path_list)
-            time.sleep(10)
+            time.sleep(30)
             page_answer.get_by_role("button", name="插入图片").click()
             time.sleep(5)
         
@@ -373,6 +373,7 @@ def help_ohter_by_qa():
         autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
         autoupload.browser.close()
+        print("--------small---------")
 
 ####################################################
 

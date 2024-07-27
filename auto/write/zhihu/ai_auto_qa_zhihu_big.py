@@ -232,9 +232,9 @@ class CMyZhiHu:
                 page_answer.locator(".css-n71hcb").click()
             file_chooser = fc_info.value
             file_chooser.set_files(picture_path_list)
-            time.sleep(10)
+            time.sleep(30)
             page_answer.get_by_role("button", name="插入图片").click()
-            time.sleep(5)
+            time.sleep(2)
         
         page_answer.mouse.down()
         page_answer.mouse.down()
@@ -369,8 +369,8 @@ def help_ohter_by_qa():
         # 自动赞同
         autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
-        autoupload.browser.close() 
-        print("-----end------")
+        autoupload.browser.close()
+        print("----- big end big------")
 
 ####################################################
 
