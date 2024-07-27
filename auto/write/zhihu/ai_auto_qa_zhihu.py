@@ -345,7 +345,7 @@ def help_ohter_by_qa():
     upload_mp4_url = "https://www.zhihu.com/"
     if sys == "Windows":
         cookies_path = r"D:\mp4\etc\zhihu_qa.json"
-        pic_path = r"D:\mp4\wallpapers\2024\01"
+        pic_path = r"D:\mp4\wallpapers\2024\02"
     elif sys == "Darwin":
         cookies_path = r"/Users/wangchuanyi/mp4/etc/zhihu_qa.json"
         pic_path = r"/Users/wangchuanyi/mp4/pic"
@@ -370,7 +370,7 @@ def help_ohter_by_qa():
         # 回答问题
         time.sleep(random.randint(0, 20))
         # 连续回答三个问题 这个做法不如 一次获取三个问题，每个问题继续回答
-        count = 0 
+        count = 0
         while(count < 3):
             autoupload.zhihu_auto_answer(login_page)
             time.sleep(random.randint(0, 30))
