@@ -234,7 +234,7 @@ class CMyZhiHu:
                 page_answer.locator(".css-n71hcb").click()
             file_chooser = fc_info.value
             file_chooser.set_files(picture_path_list)
-            time.sleep(30)
+            time.sleep(40) # 防止图片过大 来不及上传
             page_answer.get_by_role("button", name="插入图片").click()
             time.sleep(5)
         
