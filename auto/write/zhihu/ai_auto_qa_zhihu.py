@@ -353,9 +353,7 @@ def help_ohter_by_qa():
         cookies_path = r"/root/bin/zhihu_qa.json"
     autoupload = CMyZhiHu(cookies_path, login_url, upload_picture_url,upload_mp4_url)
     autoupload.pic_path = pic_path
-    #zse_ck = autoupload.get_signed_header()
-   
-
+    #zse_ck = au
     with sync_playwright() as playwright:
         display_headless = False
         sys = platform.system()
@@ -372,8 +370,11 @@ def help_ohter_by_qa():
         # 连续回答三个问题 这个做法不如 一次获取三个问题，每个问题继续回答
         count = 0
         while(count < 3):
-            autoupload.zhihu_auto_answer(login_page)
-            time.sleep(random.randint(0, 30))
+            try:
+                autoupload.zhihu_auto_answer(login_page)
+                time.sleep(random.randint(0, 30))
+            except Exception as mye:
+                print(mye)
             count = count + 1
         autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
