@@ -252,6 +252,8 @@ class CMyZhiHu:
         # time.sleep(10)
         page_answer.get_by_role("button", name="发布回答").click()
         time.sleep(10)
+        page_answer.close()
+        page_answer1.close()
     ###################################################
     # def like_other_things(self, page: Page, user_list):
     #     """
@@ -368,7 +370,7 @@ def help_ohter_by_qa():
         # 回答问题
         time.sleep(random.randint(0, 20))
         # 连续回答三个问题 这个做法不如 一次获取三个问题，每个问题继续回答
-        count = 0
+        count = 1
         while(count < 3):
             try:
                 autoupload.zhihu_auto_answer(login_page)
