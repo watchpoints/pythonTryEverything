@@ -432,5 +432,5 @@ if __name__ == '__main__':
          'max_instances': 1
     }
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
-    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 1 * * *"))
+    backsched.add_job(help_ohter_by_qa, CronTrigger.from_crontab("30 0 * * *"))
     backsched.start()
