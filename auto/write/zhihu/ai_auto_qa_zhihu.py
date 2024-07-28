@@ -182,7 +182,7 @@ class CMyZhiHu:
         time.sleep(5)
         page.get_by_role("link", name="擅长话题").click()
         print("为你推荐,这个时间设置5秒，太短，改为10秒")
-        time.sleep(10)
+        time.sleep(20)
         # man question 第二个问题 下标是3
         with self.context.expect_page(timeout=20000) as new_page_info:
             #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
@@ -234,7 +234,7 @@ class CMyZhiHu:
                 page_answer.locator(".css-n71hcb").click()
             file_chooser = fc_info.value
             file_chooser.set_files(picture_path_list)
-            time.sleep(240) # 防止图片过大 来不及上传,4miniute
+            time.sleep(180) # 防止图片过大 来不及上传,3miniute
             page_answer.get_by_role("button", name="插入图片").click()
             print("insert the pic")
             time.sleep(5)
@@ -252,6 +252,7 @@ class CMyZhiHu:
         # time.sleep(10)
         page_answer.get_by_role("button", name="发布回答").click()
         time.sleep(10)
+        page_answer.close()
     ###################################################
     # def like_other_things(self, page: Page, user_list):
     #     """
@@ -368,7 +369,7 @@ def help_ohter_by_qa():
         # 回答问题
         time.sleep(random.randint(0, 20))
         # 连续回答三个问题 这个做法不如 一次获取三个问题，每个问题继续回答
-        count = 0
+        count = 1
         while(count < 3):
             try:
                 autoupload.zhihu_auto_answer(login_page)
