@@ -11,7 +11,7 @@ from auto.write.zhihu import auto_ai_zhihu_news
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 ################ 全局变量#################
-global_count = 30
+global_count = 100
 ###############01 获取数据#################
 def get_daily_drawing():
     """
