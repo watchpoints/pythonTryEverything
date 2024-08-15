@@ -377,6 +377,7 @@ def help_ohter_by_qa():
         #         print(mye)
         #     count = count + 1
         autoupload.zhihu_auto_answer(login_page)
+        autoupload.zhihu_auto_answer(login_page)
         autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
         autoupload.browser.close()
