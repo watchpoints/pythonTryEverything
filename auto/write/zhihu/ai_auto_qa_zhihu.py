@@ -185,7 +185,7 @@ class CMyZhiHu:
         page.wait_for_timeout(20000)
         # man question 第二个问题 下标是3
         with page.expect_popup(timeout=20000) as new_page_info:
-            page.locator("div:nth-child(3) > .css-1hbj689 > div:nth-child(2) > .Button").click()
+            page.locator("div:nth-child(4) > .css-1hbj689 > div:nth-child(2) > .Button").click()
         time.sleep(5)
         question_page = new_page_info.value
         question_page.wait_for_load_state()
@@ -252,36 +252,23 @@ class CMyZhiHu:
         page_answer.get_by_role("button", name="发布回答").click()
         time.sleep(10)
         page_answer.close()
-    ###################################################
-    # def like_other_things(self, page: Page, user_list):
-    #     """
-    #     喜欢 playwright codegen https://www.zhihu.com/
-    #     """
-    #     for  cur_url in user_list:
-    #         page.goto(cur_url)
-    #         time.sleep(6)
-    #         print(f"open  {cur_url}")
-    #         # 从主页进入 headless不行
-    #         page.locator("xpath=//div[contains(text(), '写想法')]").click()
-    #         print("点击 发布图文")
-            
-            
-    #         time.sleep(2)
-            
-    #         page.get_by_placeholder("请输入标题（选填）").fill(habit_name)
-    #         page.get_by_role("textbox").locator('nth=-1').fill(habit_detail)
-    #         # page.locator(".InputLike").fill(habit_detail)
-    #         time.sleep(3)
-            
-    #         print("开始上传图片")
-    #         page.locator(".css-88f71l > button:nth-child(2)").click()
-    #         time.sleep(2)
-    #         print("本地上传")
-    #         with page.expect_file_chooser() as fc_info:
-    #             page.locator(".css-n71hcb").click()
-    #         file_chooser = fc_info.value
-    #         file_chooser.set_files(picture_path_list)
-    #         time.sleep(5)
+
+  #################################################################################
+    def zhihu_auto_guanzhu(self, page: Page):
+        """
+         关注 playwright codegen https://www.zhihu.com/
+        """
+        try:
+            page.goto("https://www.zhihu.com/follow")
+            page.wait_for_timeout(5000)
+            page.mouse.down()
+            page.mouse.down()
+            page.wait_for_timeout(1000)
+            page.locator(".css-ns7srl > div:nth-child(2) > .Button").first.click()
+            page.wait_for_timeout(1000)
+        except Exception as err:
+            print(f"Unexpected {err=}")
+         
      ################################################################################
         
     def auto_help_answer(self, page: Page, picture_path_list,habit_name:str, habit_detail:str):
@@ -379,6 +366,9 @@ def help_ohter_by_qa():
         autoupload.zhihu_auto_answer(login_page)
         autoupload.zhihu_auto_answer(login_page)
         autoupload.zhihu_auto_agree(login_page)
+        # playwright codegen https://www.zhihu.com/creator
+        autoupload.zhihu_auto_guanzhu(login_page)
+
         # 关闭浏览器
         autoupload.browser.close()
         print("--------small---------")
