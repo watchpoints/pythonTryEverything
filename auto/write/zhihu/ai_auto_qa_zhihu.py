@@ -110,7 +110,7 @@ class CMyZhiHu:
             # 从文件中加载 cookies
             with open(self.cookies_path, 'r',encoding='utf-8') as f:
                 cookies = json.load(f)
-                print(cookies)
+                #print(cookies)
             self.context.add_cookies(cookies)
             self.context.add_cookies([
                          {"name": "__zse_ck", "value": "001_2NzwjJPAHL=5po/JQ2N8cxTB+cA+56jPH3pt5SxdE7uYZHSo+XcH/sc=IMo6WrWS9CFziCu8akMtctM+qXfHQsx1ewSq5aQfpj484G9R5/Kyqk64cDPk5iplyCr+T4xG", "domain": ".zhihu.com", "path": "/", "expires": int(time.time()) + 5000}
@@ -184,14 +184,13 @@ class CMyZhiHu:
         print("为你推荐,这个时间设置5秒，太短，改为10秒")
         time.sleep(10)
         # man question 第二个问题 下标是3
-        with self.context.expect_page(timeout=20000) as new_page_info:
-            #page.locator("xpath=//*[contains(text(),'写回答')]").locator("nth=1")
-            #CSS选择器
-            page.locator("div:nth-child(4) > .css-1hbj689 > .css-ra7giy > div > .Button").click(timeout=20000)
+        with page.expect_popup(timeout=20000) as new_page_info:
+            page.locator("div:nth-child(3) > .css-1hbj689 > div:nth-child(2) > .Button").click()
         time.sleep(5)
         question_page = new_page_info.value
         question_page.wait_for_load_state()
-
+        print("---open  new -----")
+        # playwright codegen https://www.zhihu.com/
         question_title = question_page.locator("h1.QuestionHeader-title").locator("nth=1").text_content()
         print(question_title)
         
@@ -234,7 +233,7 @@ class CMyZhiHu:
                 page_answer.locator(".css-n71hcb").click()
             file_chooser = fc_info.value
             file_chooser.set_files(picture_path_list)
-            time.sleep(240) # 防止图片过大 来不及上传,4miniute
+            time.sleep(120) # 防止图片过大 来不及上传,2miniute
             page_answer.get_by_role("button", name="插入图片").click()
             print("insert the pic")
             time.sleep(5)
@@ -370,14 +369,15 @@ def help_ohter_by_qa():
         # 回答问题
         time.sleep(random.randint(0, 20))
         # 连续回答三个问题 这个做法不如 一次获取三个问题，每个问题继续回答
-        count = 1
-        while(count < 3):
-            try:
-                autoupload.zhihu_auto_answer(login_page)
-                time.sleep(random.randint(0, 30))
-            except Exception as mye:
-                print(mye)
-            count = count + 1
+        # count = 1
+        # while(count < 3):
+        #     try:
+        #         autoupload.zhihu_auto_answer(login_page)
+        #         time.sleep(random.randint(0, 30))
+        #     except Exception as mye:
+        #         print(mye)
+        #     count = count + 1
+        autoupload.zhihu_auto_answer(login_page)
         autoupload.zhihu_auto_agree(login_page)
         # 关闭浏览器
         autoupload.browser.close()
