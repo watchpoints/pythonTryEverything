@@ -113,7 +113,7 @@ class CMyZhiHu:
                 #print(cookies)
             self.context.add_cookies(cookies)
             self.context.add_cookies([
-                         {"name": "__zse_ck", "value": "001_2NzwjJPAHL=5po/JQ2N8cxTB+cA+56jPH3pt5SxdE7uYZHSo+XcH/sc=IMo6WrWS9CFziCu8akMtctM+qXfHQsx1ewSq5aQfpj484G9R5/Kyqk64cDPk5iplyCr+T4xG", "domain": ".zhihu.com", "path": "/", "expires": int(time.time()) + 5000}
+                         {"name": "__zse_ck", "value": "001_NO1yeVu8OTge=pdV2+jUzJ6hE=Tlufr/TQe=9ASCZCBE9DRxTvSoVax79SkArQIorPs2ZNd9X=kzjzFKTzNDsjJHuoq8saSvka5yu33sQHtWhqEyz5xhO4LxYKh=aDGd", "domain": ".zhihu.com", "path": "/", "expires": int(time.time()) + 5000}
                          ])
             time.sleep(3)
         else:
@@ -363,11 +363,17 @@ def help_ohter_by_qa():
         #     except Exception as mye:
         #         print(mye)
         #     count = count + 1
-        autoupload.zhihu_auto_answer(login_page)
-        autoupload.zhihu_auto_answer(login_page)
-        autoupload.zhihu_auto_agree(login_page)
-        # playwright codegen https://www.zhihu.com/creator
+        # 自动回答
+        #autoupload.zhihu_auto_answer(login_page)
+        #autoupload.zhihu_auto_answer(login_page)
+        #autoupload.zhihu_auto_agree(login_page)
+        
+        # 自动关注
+        #playwright codegen https://www.zhihu.com/creator
         autoupload.zhihu_auto_guanzhu(login_page)
+        
+        # 自动赞同
+        autoupload.zhihu_auto_agree(login_page)
 
         # 关闭浏览器
         autoupload.browser.close()
