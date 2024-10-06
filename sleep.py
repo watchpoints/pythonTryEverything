@@ -18,7 +18,7 @@ from third import mainWechatDaily
 from putdonwphone import mykuaishou2
 from putdonwphone import mydouyin
 from putdonwphone import mytoutiao
-from putdonwphone import myzhihu
+from auto.zsxq import myzhihu
 from putdonwphone import  mycsdn
 from putdonwphone import  englisword
 

@@ -1,3 +1,19 @@
+如何使用xpath 获取 href地址
+
+<a class="link-of-topic" href="https://qoc4h6bgpc.feishu.cn/docx/UNU9drWbBoFaWmx636ycB9wAnXg" 
+title="https%3A%2F%2Fqoc4h6bgpc.feishu.cn%2Fdocx%2FUNU9drWbBoFaWmx6..." target="_blank">\
+https://qoc4h6bgpc.feishu.cn/docx/UNU9drWbBoFaWmx6...
+</a>
+
+# 选择器，查找指定的超级链接
+    link_selector = 'a.link-of-topic'  # 替换为您的链接选择器
+    if page.locator(link_selector).count() > 0:
+        href = item.locator(link_selector).last.get_attribute('href')
+        print(href)
+        
+
+
+---------------
 <div class="flex flex-wrap w-full md:w-3/4 mt-5">
   <img src="/images/1714950068047/0.jpg" alt="离别家乡岁月多，近来人事半消磨。" class="hover:opacity-75 transition ease-in-out duration-150 w-full md:w-1/2" id="image-poster-1714950068047-0" data-astro-transition-scope="astro-cxy46a3v-2">
   <img src="/images/1714950068047/1.jpg" alt="离别家乡岁月多，近来人事半消磨。" class="hover:opacity-75 transition ease-in-out duration-150 w-full md:w-1/2" id="image-poster-1714950068047-1" data-astro-transition-scope="astro-cxy46a3v-3">
