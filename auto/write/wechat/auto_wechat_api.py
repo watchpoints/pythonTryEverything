@@ -4,25 +4,6 @@ import requests
 import time
 import json
 from datetime import datetime
-from werobot import WeRoBot
-
-
-def NewClient():
-    robot = WeRoBot()
-    robot.config["APP_ID"] = os.getenv('WECHAT_APP_ID')
-    robot.config["APP_SECRET"] = os.getenv('WECHAT_APP_SECRET')
-    my_client = robot.client
-    return my_client
-
-
-def get_image_list():
-    client = NewClient()
-    try:
-        media_json = client.get_media_list("image", 0, 20)  ##永久素材
-        print(media_json)
-    except Exception as e:
-        print("upload image error: {}".format(e))
-
 
 # 此函数用于获取
 def get_access_token():
