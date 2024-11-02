@@ -142,7 +142,7 @@ def auto_upload_thing():
     try:
         
         time.sleep(3)
-        auto_write_zhihu_small.interface_auo_upload_msg_zhihu(pic_list,habit_name,habit_detail)
+        #auto_write_zhihu_small.interface_auo_upload_msg_zhihu(pic_list,habit_name,habit_detail)
         print("interface_auo_upload_msg_zhihu.....")
 
         time.sleep(3)

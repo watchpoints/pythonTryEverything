@@ -1,0 +1,11 @@
+
+
+python 加速下载
+https://mirrors.aliyun.com/pypi/simple/ -install
+
+1. pip install moviepy
+2 wechat down okik
+
+
+
+
