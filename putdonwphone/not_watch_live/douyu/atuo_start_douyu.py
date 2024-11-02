@@ -121,7 +121,7 @@ class CZTOUYU:
         #     helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
         #     return
         page.goto(self.zhibo_url)
-        time.sleep(5)
+        page.wait_for_timeout(5*1000)
         print(f"open  {self.zhibo_url}")
         page.mouse.down()
         print(picture_path,habit_name,habit_detail)
@@ -129,41 +129,28 @@ class CZTOUYU:
         # Text match
         # https://sqa.stackexchange.com/questions/29079/how-to-access-a-hyper-link-using-xpath
         page.locator("xpath=//a[contains(text(),'开直播')]").click()
-        time.sleep(5)
+        page.wait_for_timeout(5*1000)
         
         print("开始直播")
-        # many span
-        # page.locator("xpath=//div[span[text()='开始直播')]").click()
-        # page.locator("css=.start--1NvkXEZ").click()
         page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/span[1]').click()
-        time.sleep(5)
+        page.wait_for_timeout(5*1000)
         # 申请成功，您现在可以直播了
         page.get_by_text("确定").click()
-        time.sleep(5)
+        page.wait_for_timeout(5*1000)
         print("确定")
         # 从直播房价调回去
         page.goto(self.zhibo_url)
         print(f"reload  {self.zhibo_url}")
-        time.sleep(7)
+        page.wait_for_timeout(5*1000)
         
         
-        # # rtmp地址
-        # rtpm_url = page.locator("css=.shark-Input.input--2DEflcU").inputValue()
-        # print(rtpm_url)
-        
-        # #直播码
-        # rtpm_code = page.locator("css=.shark-Input.input--2DEflcU").inputValue()
-        # print(rtpm_url)
-        
-        # page.locator("div").filter(has_text="rtmp地址").locator("svg").click()
-        # dropdown = page.locator('xpath=//*[@id="root"]/div[2]/div[2]/div/div[1]/div[1]/div[2]/div[3]/div[1]/svg')
         dropdown = page.locator("css=.svgIcon--2ypAR1M.svg--2uID9Py").locator("nth=0")
         dropdown.hover()
-        time.sleep(1)
+        page.wait_for_timeout(1*1000)
         dropdown.click()
-        time.sleep(2)
+        page.wait_for_timeout(2*1000)
         rtpm_url = pyperclip.paste()
-        time.sleep(1)
+        page.wait_for_timeout(1*1000)
         print(rtpm_url)
         #rtmp://sendtc3.douyu.com/live
     
@@ -176,10 +163,10 @@ class CZTOUYU:
         time.sleep(1)
         dropdown1.click()
         # 等待2秒获取黏贴内容
-        time.sleep(2)
+        page.wait_for_timeout(1*1000)
         rtpm_code = pyperclip.paste()
         print("直播码")
-        time.sleep(1)
+        page.wait_for_timeout(1*1000)
         print(rtpm_code)
         logging.debug(rtpm_code)
         #11975253rWycoTVM?wsSecret=d3f8b9b7cb13599952f8d3e8fae27901&wsTime=65915099&wsSeek=off&wm=0&tw=0&roirecognition=0&record=flv&origin=tct&txHost=sendtc3.douyu.com
@@ -187,18 +174,11 @@ class CZTOUYU:
         rtmp_stream =  rtpm_url + "/" + rtpm_code
         logging.debug(rtpm_code)
         print(rtmp_stream)
-        time.sleep(10)
+        page.wait_for_timeout(10*1000)
         self.browser.close()
 
         # 开始推流
         rtmp_timeout_task(self.input_directory,rtmp_stream)
-        # Create a thread with arguments
-        #my_thread = threading.Thread(target=rtmp_timeout_task, args=(self.input_directory, rtmp_stream))
-        #Start the thread
-        #my_thread.daemon = True
-        #my_thread.start()
-        #time.sleep(1)
-        #rtmp_timeout_task(self.input_directory,rtmp_stream)
         print(self.watch_room_url)
         
         #helper_admin_class_rule(page,self.watch_room_url,self.only_msg)
@@ -315,13 +295,13 @@ def rtmp_timeout_task(input_directory,output_url):
         output_url (_type_): _description_
     """
     try:
-        # signal.alarm(7200)   # 设置超时时间为2个小时 3个小时 10800
+        # 每天自动直播5小时18000
         timestamp1 = time.time()
         while True:
             local_file_to_rtmp(input_directory,output_url)
             timestamp2 = time.time()
             time_difference = timestamp2 - timestamp1
-            if int(time_difference) > 22600:
+            if int(time_difference) > 18000:
                 logging.info("timeout")
                 break
     except Exception as mye:
@@ -429,7 +409,6 @@ def start_live_stream1(input_file, rtmp_url):
     # 获取命令执行结果
     output = result.stdout
     error = result.stderr
-
     # 打印输出结果
     print(output)
     # 打印错误结果
@@ -463,6 +442,6 @@ if __name__ == '__main__':
 
 
     backsched.add_job(interface_auo_start_douyu_zhibo,
-                     CronTrigger.from_crontab("30 5 * * *"), args=[MP4_DIR,2],id="get_up")
+                     CronTrigger.from_crontab("30 11 * * *"), args=[MP4_DIR,2],id="get_up")
     backsched.start()
     # playwright codegen https://www.douyu.com/creator/main/live
