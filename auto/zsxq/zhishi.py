@@ -5,10 +5,10 @@ import time
 import json
 import os
 import platform
-from datetime import datetime
 from playwright.sync_api import sync_playwright
 from playwright.sync_api import Page
-
+### 本地目录
+from auto.public import mydate
 
 class Item:
     def __init__(self, name, date,content):
@@ -54,7 +54,7 @@ class CZSxq:
         with sync_playwright() as playwright:
             self.browser = playwright.chromium.launch(channel="chrome",headless=False)
             login_page = self.login_or_restore_cookies()
-            item_list = self.send_dest_data(login_page,item_list)
+            self.send_dest_data(login_page,item_list)
             self.browser.close()
 
     
@@ -114,6 +114,7 @@ class CZSxq:
         # newbuttion.click()
         # newbuttion.click()
         # page.wait_for_timeout(10000)
+        page.get_by_text("最新", exact=True).click()
         print("点击 最新内容")
         print("点击 精华内容")
         page.wait_for_timeout(1000)
@@ -121,11 +122,12 @@ class CZSxq:
         #itemlist = page.locator("xpath=css=.ng-star-inserted")
         itemlist = page.locator("css=.topic-container")
         print(f"文章：  {itemlist.count()}")
-        item_index = 2
+        item_index = 1
         # 创建一个空列表来保存Person对象
         itemdetail = []
         while item_index < itemlist.count():
             item = itemlist.nth(item_index)
+            item_index =  item_index + 1
             # 作者
             #<div _ngcontent-ng-c1370301819="" class="role owner ng-star-inserted">findyi</div>
             #<div _ngcontent-ng-c1370301819="" class="role member ng-star-inserted">盲而不瞎</div>
@@ -137,13 +139,30 @@ class CZSxq:
             #user = item.locator("css=.role.member.ng-star-inserted").inner_text()
             #print(user)
             date = item.locator("css=.date").inner_text()
-            print(date)
+            # 过滤日期
+            # if not mydate.check_date_equal(date):
+            #     continue
+            # print(date)
+            # if item_index == 4:
+            #     return None
+
             content = item.locator("css=.content").inner_text()
+            
+            # 选择器，查找指定的超级链接
+            link_selector = 'a.link-of-topic'  # 替换为您的链接选择器
+            if item.locator(link_selector).count() > 0:
+                href = item.locator(link_selector).last.get_attribute('href')
+                print(href)
+
+            page.wait_for_timeout(200)
+            if len(href) > 10:
+                content += "请访问：\r\n"
+                content += href
+                href = ""
             print(content)
-            page.wait_for_timeout(2000)
+
             itemdetail.append(Item("",date,content))
-            item_index =  item_index + 1
-        return itemdetail  
+        return itemdetail
        
     def send_dest_data(self, page: Page, itemlist):
         """
@@ -156,38 +175,21 @@ class CZSxq:
         page.mouse.down()
         page.wait_for_timeout(1000)
         #  <div _ngcontent-ng-c2012982032="" class="tip">点击发表主题...</div>
-
-        page.locator("xpath=//div[contains(text(),'点击发表主题...')]").click()
-        
-        print("点击发表主题...")
-        page.wait_for_timeout(1000)
-        # page.get_by_role("button", name="去完成").nth(2).click()
-        #itemlist = page.locator("xpath=css=.ng-star-inserted")
-        itemlist = page.locator("css=.topic-container")
-        print(f"文章：  {itemlist.count()}")
-        item_index = 2
-        # 创建一个空列表来保存Person对象
-        itemdetail = []
-        while item_index < itemlist.count():
-            item = itemlist.nth(item_index)
-            # 作者
-            #<div _ngcontent-ng-c1370301819="" class="role owner ng-star-inserted">findyi</div>
-            #<div _ngcontent-ng-c1370301819="" class="role member ng-star-inserted">盲而不瞎</div>
-            # 日期
-            #<div _ngcontent-ng-c1370301819="" class="date"> 2024-09-24 18:00 <!----><!----><!----><!----></div>
-            # 内容
-            
-
-            #user = item.locator("css=.role.member.ng-star-inserted").inner_text()
-            #print(user)
-            date = item.locator("css=.date").inner_text()
-            print(date)
-            content = item.locator("css=.content").inner_text()
-            print(content)
+        for item in itemlist:
+            print(item)
+            page.locator("xpath=//div[contains(text(),'点击发表主题...')]").click()
+            print("点击发表主题...")
             page.wait_for_timeout(2000)
-            itemdetail.append(Item("",date,content))
-            item_index =  item_index + 1
-        return itemdetail
+            #<div class="ql-editor ql-blank" contenteditable="true" aria-owns="quill-mention-list" data-placeholder="点击发表主题...">
+            # <p><br></p></div>
+            page.locator("quill-editor div").nth(1).fill(item.content)
+            page.wait_for_timeout(2000)
+            #<div _ngcontent-ng-c3190014776="" class="submit-btn">发布</div>
+            page.locator("css=.submit-btn").click()
+            page.wait_for_timeout(30000) #30秒
+
+    
+        
 
 
 ###################################

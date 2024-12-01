@@ -5,12 +5,13 @@
 # DateTime:2024/06/10 17:00
 import os
 import platform
+import logging
 from auto.data import myrss
 from auto.write.zhihu import auto_ai_zhihu_news
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 ################ 全局变量#################
-global_count = 1
+global_count = 100
 ###############01 获取数据#################
 def get_daily_drawing():
     """
@@ -27,6 +28,7 @@ def get_daily_drawing():
         print(f"索引 {index} 的内容是 {item}")
         if global_count == index:
             global_count+=1
+            logging.info("day"+str(global_count))
             temp+=1
             daily_item.append(item)
             # # 打印标题
@@ -90,7 +92,6 @@ def post_thing_daily_porety_drawing():
     https://we-drawing.com/images/1715122872472/
     https://daily-poetry-image.vercel.app/images/1715122872472
     
-
     """
     ## 第一步 诗词作为提示词 绘制图片
     result = get_daily_drawing()
@@ -107,6 +108,6 @@ if __name__ == '__main__':
     }
     backsched = BlockingScheduler(job_defaults=job_defaults, timezone='Asia/Shanghai')
     # 汇总 最新资料 每日新闻
-    backsched.add_job(post_thing_daily_porety_drawing, CronTrigger.from_crontab("0 21 * * *"))
+    backsched.add_job(post_thing_daily_porety_drawing, CronTrigger.from_crontab("12 0 * * *"))
     backsched.start()
 

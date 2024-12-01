@@ -29,7 +29,7 @@ class CMyCsdn:
     def __del__(self):
         print("CMyCsdn is being destroyed")
 
-    def upload_picture(self, picture_path: str, habit_name:str, habit_detail:str):
+    def upload_msg_with_picture(self, picture_path: str, habit_name:str, habit_detail:str):
         """
           upload_picture
         """
@@ -171,11 +171,13 @@ def interface_auo_upload_mycsdn(file_path,habit_name,habit_detail):
         upload_mp4_url = "https://blink.csdn.net/?spm=1020.2143.3001.5353"
         if sys == "Windows":
             cookies_path = r"D:\mp4\etc\mycsdn_small.json"
+        elif sys == "Darwin":
+             cookies_path = r"/Users/wangchuanyi/mp4/etc/mycsdn_small.json"
         else:
             cookies_path = r"/root/bin/mycsdn_small.json"
-     
+
         autoupload = CMyCsdn(cookies_path, login_url, upload_picture_url,upload_mp4_url)
-        autoupload.upload_picture(file_path, habit_name,habit_detail)
+        autoupload.upload_msg_with_picture(file_path, habit_name,habit_detail)
        
 
     except Exception as err:
