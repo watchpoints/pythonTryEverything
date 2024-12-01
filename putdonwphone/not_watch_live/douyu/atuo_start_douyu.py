@@ -295,13 +295,13 @@ def rtmp_timeout_task(input_directory,output_url):
         output_url (_type_): _description_
     """
     try:
-        # 每天自动直播5小时18000
+        # 每天自动直播2小时 7200
         timestamp1 = time.time()
         while True:
             local_file_to_rtmp(input_directory,output_url)
             timestamp2 = time.time()
             time_difference = timestamp2 - timestamp1
-            if int(time_difference) > 18000:
+            if int(time_difference) > 7200:
                 logging.info("timeout")
                 break
     except Exception as mye:
